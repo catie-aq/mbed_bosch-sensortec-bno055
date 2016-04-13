@@ -1,0 +1,15 @@
+{
+  "name": "bno055",
+  "version": "0.0.1",
+  "description": "Bosch Sensortec BNO055 9-axis absolute orientation sensor library",
+  "keywords": [
+    "Bosh",
+    "i2c",
+    "motion",
+    "orientation",
+    "sensor"
+  ],
+  "author": "Bruno Perraudin <b.perraudin@catie.fr>",
+  "license": "Apache-2.0",
+  "dependencies": {}
+}
