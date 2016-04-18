@@ -11,5 +11,7 @@
   ],
   "author": "Bruno Perraudin <b.perraudin@catie.fr>",
   "license": "Apache-2.0",
-  "dependencies": {}
+  "dependencies": {
+    "mbed-drivers": "^1.5.0"
+  }
 }
