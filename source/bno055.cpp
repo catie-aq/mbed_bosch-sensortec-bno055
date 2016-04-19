@@ -44,7 +44,7 @@ int BNO055::i2c_set_register(RegisterAddress registerAddress, char value)
     static char data[2];
     data[0] = static_cast<char>(registerAddress);
     data[1] = value;
-    if (i2c_.write(static_cast<int>(i2cAddress_), data, 2, false) != 0) {
+    if (i2c_.write(static_cast<int>(i2cAddress_) << 1, data, 2, false) != 0) {
         return -1;
     }
     return 0;
@@ -53,10 +53,10 @@ int BNO055::i2c_set_register(RegisterAddress registerAddress, char value)
 int BNO055::i2c_register(RegisterAddress registerAddress, char *value)
 {
     char data = static_cast<char>(registerAddress);
-    if (i2c_.write(static_cast<int>(i2cAddress_), &data, 1, true) != 0) {
+    if (i2c_.write(static_cast<int>(i2cAddress_) << 1, &data, 1, true) != 0) {
         return -1;
     }
-    if (i2c_.read(static_cast<int>(i2cAddress_), value, 1, false) != 0) {
+    if (i2c_.read(static_cast<int>(i2cAddress_) << 1, value, 1, false) != 0) {
         return -2;
     }
     return 0;
@@ -66,10 +66,10 @@ int BNO055::i2c_register(RegisterAddress registerAddress, short *value)
 {
     static char data[2];
     data[0] = static_cast<char>(registerAddress);
-    if (i2c_.write(static_cast<int>(i2cAddress_), data, 1, true) != 0) {
+    if (i2c_.write(static_cast<int>(i2cAddress_) << 1, data, 1, true) != 0) {
         return -1;
     }
-    if (i2c_.read(static_cast<int>(i2cAddress_), data, 2, false) != 0) {
+    if (i2c_.read(static_cast<int>(i2cAddress_) << 1, data, 2, false) != 0) {
         return -2;
     }
     *value = (data[1] << 8) | (0xFF & data[0]);
