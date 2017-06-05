@@ -52,7 +52,15 @@ bool BNO055::initialize(OperationMode mode, bool UseExtCristal)
     wait_ms(20);
     i2c_set_register(RegisterAddress::PwrMode, static_cast<char>(PowerMode::PowerMode_NORMAL));
     wait_ms(10);
-    // \TODO : set unit_select register to use SI unit
+
+    /* Set the output units */
+    uint8_t unitsel = (0 << 7) | // Orientation = Android
+                      (0 << 4) | // Temperature = Celsius
+                      (1 << 2) | // Euler = Rads
+                      (1 << 1) | // Gyro = Rads
+                      (0 << 0);  // Accelerometer = m/s^2
+    i2c_set_register(RegisterAddress::UnitSel, unitsel);
+
     if (UseExtCristal) {
     	i2c_set_register(RegisterAddress::SysTrigger, 0X80);
     	wait_ms(10);
