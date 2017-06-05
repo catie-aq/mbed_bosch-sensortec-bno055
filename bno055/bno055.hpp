@@ -20,6 +20,72 @@
 #include "mbed.h"
 //#include "mbed-drivers/v2/I2C.hpp" // TODO Use I2C asynchronous API
 
+/* Raw values of sensors offsets */
+typedef struct
+{
+    uint16_t accel_offset_x;
+    uint16_t accel_offset_y;
+    uint16_t accel_offset_z;
+    uint16_t gyro_offset_x;
+    uint16_t gyro_offset_y;
+    uint16_t gyro_offset_z;
+    uint16_t mag_offset_x;
+    uint16_t mag_offset_y;
+    uint16_t mag_offset_z;
+
+    uint16_t accel_radius;
+    uint16_t mag_radius;
+} bno055_offsets_t;
+
+/* raw accel values in m/s^2 */
+typedef struct
+{
+    double x;
+    double y;
+    double z;
+} bno055_accel_t;
+
+/* accel values with gravity compensated in m/s^2 */
+typedef struct
+{
+    double x;
+    double y;
+    double z;
+} bno055_linear_accel_t;
+
+/* gyro values in rad/s */
+typedef struct
+{
+    double x;
+    double y;
+    double z;
+} bno055_gyro_t;
+
+/* mag values in uT */
+typedef struct
+{
+    double x;
+    double y;
+    double z;
+} bno055_mag_t;
+
+/* euler values in rad */
+typedef struct
+{
+    double x;
+    double y;
+    double z;
+} bno055_euler_t;
+
+typedef struct
+{
+    double w;
+    double x;
+    double y;
+    double z;
+} bno055_quaternion_t;
+
+
 class BNO055
 {
 public:
@@ -242,10 +308,20 @@ public:
     };
 
     BNO055(I2C * i2c, I2CAddress address = I2CAddress::Address1, int hz = 400000);
-
+    // Functions to start the BNO055 \TODO : add function to modify sensors settings (Brandwidtch, range, etc..) in non fusion mode
     bool initialize(OperationMode mode = OperationMode::OperationMode_NDOF, bool UseExtCristal = false);
     void set_mode(OperationMode mode);
-    void getCalibration(uint8_t* sys, uint8_t* gyro, uint8_t* accel, uint8_t* mag);
+
+    void read_accel(bno055_accel_t* accel);
+    void read_gyro(bno055_gyro_t* gyro);
+    void read_mag(bno055_mag_t* mag);
+    void read_linear_accel(bno055_linear_accel_t* accel);
+    void read_euler(bno055_euler_t* euler);
+    void read_quaternion(bno055_quaternion_t* quat);
+
+    void get_calibration_status(uint8_t* sys, uint8_t* gyro, uint8_t* accel, uint8_t* mag);
+    void get_sensor_offsets(bno055_offsets_t* sensor_offsets);
+    void set_sensor_offsets(const bno055_offsets_t* sensor_offsets);
 
     char chip_id() { return _chipId; }
     char accelerometer_revision_id() { return _accelerometerRevisionId; }
@@ -288,10 +364,12 @@ private:
      */
     int i2c_read_two_bytes_register(RegisterAddress registerAddress, short *value);
 
-    I2C _i2c;
+    /*\TODO: doc */
+    int i2c_read_vector(RegisterAddress registerAddress, int16_t value[3]);
+
+    I2C* _i2c;
     I2CAddress _i2cAddress;
     OperationMode _mode;
-
 
     char _chipId = 0;
     char _accelerometerRevisionId = 0;
