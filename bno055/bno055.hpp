@@ -245,6 +245,7 @@ public:
 
     bool initialize(OperationMode mode = OperationMode::OperationMode_NDOF, bool UseExtCristal = false);
     void set_mode(OperationMode mode);
+    void getCalibration(uint8_t* sys, uint8_t* gyro, uint8_t* accel, uint8_t* mag);
 
     char chip_id() { return _chipId; }
     char accelerometer_revision_id() { return _accelerometerRevisionId; }

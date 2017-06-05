@@ -48,7 +48,7 @@ bool BNO055::initialize(OperationMode mode = OperationMode::OperationMode_NDOF, 
     i2c_read_two_bytes_register(RegisterAddress::SwRevId, &_firmwareVersion);
     i2c_read_register(RegisterAddress::BlRevId, &_bootloaderVersion);
 
-    i2c_set_register(RegisterAddress::OprMode, static_cast<char>(OperationMode::OperationMode_CONFIG));
+    set_mode(OperationMode::OperationMode_CONFIG);
     wait_ms(20);
     i2c_set_register(RegisterAddress::PwrMode, static_cast<char>(PowerMode::PowerMode_NORMAL));
     wait_ms(10);
@@ -57,7 +57,8 @@ bool BNO055::initialize(OperationMode mode = OperationMode::OperationMode_NDOF, 
     	i2c_set_register(RegisterAddress::SysTrigger, 0X80);
     	wait_ms(10);
     }
-    i2c_set_register(RegisterAddress::OprMode, static_cast<char>(mode));
+
+    set_mode(mode);
 	_mode = mode;
     wait_ms(20);
 
@@ -69,6 +70,22 @@ void BNO055::set_mode(OperationMode mode)
 	_mode = mode;
 	i2c_set_register(RegisterAddress::OprMode, static_cast<char>(mode));
 	wait_ms(20);
+}
+
+void BNO055::getCalibration(uint8_t* sys, uint8_t* gyro, uint8_t* accel, uint8_t* mag) {
+  uint8_t calData = read8(BNO055_CALIB_STAT_ADDR);
+  if (sys != NULL) {
+    *sys = (calData >> 6) & 0x03;
+  }
+  if (gyro != NULL) {
+    *gyro = (calData >> 4) & 0x03;
+  }
+  if (accel != NULL) {
+    *accel = (calData >> 2) & 0x03;
+  }
+  if (mag != NULL) {
+    *mag = calData & 0x03;
+  }
 }
 
 int BNO055::i2c_set_register(RegisterAddress registerAddress, char value)
