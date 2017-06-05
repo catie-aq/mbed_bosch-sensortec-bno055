@@ -20,23 +20,55 @@ namespace {
 #define I2C_BUFFER_SIZE_ 32
 }
 
-BNO055::BNO055(PinName sda, PinName scl, I2CAddress address, int hz):
-        i2c_(sda, scl),
-        i2cAddress_(address)
+BNO055::BNO055(I2C * i2c, I2CAddress address, int hz):
+        _i2cAddress(address), _mode(OperationMode::OPERATION_MODE_CONFIG)
 {
-    i2c_.frequency(hz);
+	_i2c = i2c;
+    _i2c.frequency(hz);
 }
 
-void BNO055::initialize()
+bool BNO055::initialize(OperationMode mode = OperationMode::OperationMode_NDOF, bool UseExtCristal)
 {
-    i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageZero));
+	char reg = 0;
+	i2c_read_register(RegisterAddress::ChipId, &reg);
+	if (reg != 0XA0) {
+		wait_ms(1000); //BNO055 may have not finishing to boot !
+		i2c_read_register(RegisterAddress::ChipId, &reg);
+		if (reg != 0XA0) {
+			return false;
+		}
+	}
 
-    i2c_register(RegisterAddress::ChipId, &chipId_);
-    i2c_register(RegisterAddress::AccelRevId, &accelerometerRevisionId_);
-    i2c_register(RegisterAddress::MagRevId, &magnetometerRevisionId_);
-    i2c_register(RegisterAddress::GyroRevId, &gyroscopeRevisionId_);
-    i2c_register(RegisterAddress::SwRevId, &firmwareVersion_);
-    i2c_register(RegisterAddress::BlRevId, &bootloaderVersion_);
+    i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageZero));
+    //Updating BNO055 informations
+    i2c_read_register(RegisterAddress::ChipId, &_chipId);
+    i2c_read_register(RegisterAddress::AccelRevId, &_accelerometerRevisionId);
+    i2c_read_register(RegisterAddress::MagRevId, &_magnetometerRevisionId);
+    i2c_read_register(RegisterAddress::GyroRevId, &_gyroscopeRevisionId);
+    i2c_read_two_bytes_register(RegisterAddress::SwRevId, &_firmwareVersion);
+    i2c_read_register(RegisterAddress::BlRevId, &_bootloaderVersion);
+
+    i2c_set_register(RegisterAddress::OprMode, static_cast<char>(OperationMode::OperationMode_CONFIG));
+    wait_ms(20);
+    i2c_set_register(RegisterAddress::PwrMode, static_cast<char>(PowerMode::PowerMode_NORMAL));
+    wait_ms(10);
+
+    if (UseExtCristal) {
+    	i2c_set_register(RegisterAddress::SysTrigger, 0X80);
+    	wait_ms(10);
+    }
+    i2c_set_register(RegisterAddress::OprMode, static_cast<char>(mode));
+	_mode = mode;
+    wait_ms(20);
+
+    return true;
+}
+
+void BNO055::set_mode(OperationMode mode)
+{
+	_mode = mode;
+	i2c_set_register(RegisterAddress::OprMode, static_cast<char>(mode));
+	wait_ms(20);
 }
 
 int BNO055::i2c_set_register(RegisterAddress registerAddress, char value)
@@ -44,32 +76,32 @@ int BNO055::i2c_set_register(RegisterAddress registerAddress, char value)
     static char data[2];
     data[0] = static_cast<char>(registerAddress);
     data[1] = value;
-    if (i2c_.write(static_cast<int>(i2cAddress_) << 1, data, 2, false) != 0) {
+    if (_i2c.write(static_cast<int>(_i2cAddress) << 1, data, 2, false) != 0) {
         return -1;
     }
     return 0;
 }
 
-int BNO055::i2c_register(RegisterAddress registerAddress, char *value)
+int BNO055::i2c_read_register(RegisterAddress registerAddress, char *value)
 {
     char data = static_cast<char>(registerAddress);
-    if (i2c_.write(static_cast<int>(i2cAddress_) << 1, &data, 1, true) != 0) {
+    if (_i2c.write(static_cast<int>(_i2cAddress) << 1, &data, 1, true) != 0) {
         return -1;
     }
-    if (i2c_.read(static_cast<int>(i2cAddress_) << 1, value, 1, false) != 0) {
+    if (_i2c.read(static_cast<int>(_i2cAddress) << 1, value, 1, false) != 0) {
         return -2;
     }
     return 0;
 }
 
-int BNO055::i2c_register(RegisterAddress registerAddress, short *value)
+int BNO055::i2c_read_two_bytes_register(RegisterAddress registerAddress, short *value)
 {
     static char data[2];
     data[0] = static_cast<char>(registerAddress);
-    if (i2c_.write(static_cast<int>(i2cAddress_) << 1, data, 1, true) != 0) {
+    if (_i2c.write(static_cast<int>(_i2cAddress) << 1, data, 1, true) != 0) {
         return -1;
     }
-    if (i2c_.read(static_cast<int>(i2cAddress_) << 1, data, 2, false) != 0) {
+    if (_i2c.read(static_cast<int>(_i2cAddress) << 1, data, 2, false) != 0) {
         return -2;
     }
     *value = (data[1] << 8) | (0xFF & data[0]);

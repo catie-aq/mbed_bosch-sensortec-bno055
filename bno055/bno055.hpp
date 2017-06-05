@@ -17,7 +17,7 @@
 #ifndef BNO055_H
 #define BNO055_H
 
-#include "mbed-drivers/mbed.h"
+#include "mbed.h"
 //#include "mbed-drivers/v2/I2C.hpp" // TODO Use I2C asynchronous API
 
 class BNO055
@@ -218,16 +218,40 @@ public:
         PageOne                 = (0X01)
     };
     
-    BNO055(PinName sda, PinName scl, I2CAddress address = I2CAddress::Address1, int hz = 400000);
+    enum class PowerMode: char {
+    	PowerMode_NORMAL		=(0X00),
+    	PowerMode_LOWPOWER		=(0X01),
+		PowerMode_SUSPEND		=(0X02)
+    };
 
-    void initialize();
+    enum class OperationMode: char {
+        /* Operation mode settings*/
+        OperationMode_CONFIG                           = 0X00,
+        OperationMode_ACCONLY                          = 0X01,
+        OperationMode_MAGONLY                          = 0X02,
+        OperationMode_GYRONLY                          = 0X03,
+        OperationMode_ACCMAG                           = 0X04,
+        OperationMode_ACCGYRO                          = 0X05,
+        OperationMode_MAGGYRO                          = 0X06,
+        OperationMode_AMG                              = 0X07,
+        OperationMode_IMUPLUS                          = 0X08,
+        OperationMode_COMPASS                          = 0X09,
+        OperationMode_M4G                              = 0X0A,
+        OperationMode_NDOF_FMC_OFF                     = 0X0B,
+        OperationMode_NDOF                             = 0X0C
+    };
 
-    char chip_id() { return chipId_; }
-    char accelerometer_revision_id() { return accelerometerRevisionId_; }
-    char magnetometer_revision_id() { return magnetometerRevisionId_; }
-    char gyroscope_revision_id() { return gyroscopeRevisionId_; }
-    short firmware_version() { return firmwareVersion_; }
-    char bootloader_version() { return bootloaderVersion_; }
+    BNO055(I2C * i2c, I2CAddress address = I2CAddress::Address1, int hz = 400000);
+
+    bool initialize(OperationMode mode = OperationMode::OperationMode_NDOF, bool UseExtCristal = false);
+    void set_mode(OperationMode mode);
+
+    char chip_id() { return _chipId; }
+    char accelerometer_revision_id() { return _accelerometerRevisionId; }
+    char magnetometer_revision_id() { return _magnetometerRevisionId; }
+    char gyroscope_revision_id() { return _gyroscopeRevisionId; }
+    short firmware_version() { return _firmwareVersion; }
+    char bootloader_version() { return _bootloaderVersion; }
 
 private:
     /** Set register value
@@ -250,7 +274,7 @@ private:
      *      O on success,
      *      non-0 on failure
      */
-    int i2c_register(RegisterAddress registerAddress, char *value);
+    int i2c_read_register(RegisterAddress registerAddress, char *value);
 
     /** Get multi-byte register value (two-bytes)
      *
@@ -261,17 +285,19 @@ private:
      *      O on success,
      *      non-0 on failure
      */
-    int i2c_register(RegisterAddress registerAddress, short *value);
+    int i2c_read_two_bytes_register(RegisterAddress registerAddress, short *value);
 
-    I2C i2c_;
-    I2CAddress i2cAddress_;
+    I2C _i2c;
+    I2CAddress _i2cAddress;
+    OperationMode _mode;
 
-    char chipId_ = 0;
-    char accelerometerRevisionId_ = 0;
-    char magnetometerRevisionId_ = 0;
-    char gyroscopeRevisionId_ = 0;
-    short firmwareVersion_ = 0; 
-    char bootloaderVersion_ = 0;
+
+    char _chipId = 0;
+    char _accelerometerRevisionId = 0;
+    char _magnetometerRevisionId = 0;
+    char _gyroscopeRevisionId = 0;
+    short _firmwareVersion = 0;
+    char _bootloaderVersion = 0;
 
 };
 
