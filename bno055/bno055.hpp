@@ -18,7 +18,7 @@
 #define BNO055_H
 
 #include "mbed.h"
-//#include "mbed-drivers/v2/I2C.hpp" // TODO Use I2C asynchronous API
+// TODO Use I2C asynchronous API ?
 
 /* Raw values of sensors offsets */
 typedef struct
