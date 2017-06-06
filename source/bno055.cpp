@@ -94,8 +94,6 @@ bool BNO055::initialize(OperationMode mode, bool UseExtCrystal)
 /** Initialize the BNO055
  *
  * @param mode Operation mode to be run by the BNO
- * @param UseExtCrystal true if it should use an external crystal to improve the clock precision
- * 		 				false if it should use the internal clock
  *
  */
 void BNO055::set_mode(OperationMode mode)
