@@ -20,6 +20,12 @@ namespace {
 #define I2C_BUFFER_SIZE_ 32
 }
 
+/** Default constructor
+ *
+ * @param i2c pointer to mbed I2C object
+ * @param hz frequency of the I2C interface. Default is 400kHz
+ *
+ */
 BNO055::BNO055(I2C * i2c, I2CAddress address, int hz):
         _i2cAddress(address), _mode(OperationMode::OperationMode_CONFIG)
 {
@@ -27,6 +33,16 @@ BNO055::BNO055(I2C * i2c, I2CAddress address, int hz):
     _i2c->frequency(hz);
 }
 
+/** Initialize the BNO055
+ *
+ * @param mode operation mode to be run by the BNO
+ * @param UseExtCrystal True if it should use a 32 kHz external crystal to improve the clock precision
+ * 		 				False if it should use the internal clock
+ *
+ * @returns
+ *      True on success,
+ *      False on failure
+ */
 bool BNO055::initialize(OperationMode mode, bool UseExtCrystal)
 {
 	char reg = 0;
@@ -75,6 +91,13 @@ bool BNO055::initialize(OperationMode mode, bool UseExtCrystal)
     return true;
 }
 
+/** Initialize the BNO055
+ *
+ * @param mode Operation mode to be run by the BNO
+ * @param UseExtCrystal true if it should use an external crystal to improve the clock precision
+ * 		 				false if it should use the internal clock
+ *
+ */
 void BNO055::set_mode(OperationMode mode)
 {
 	_mode = mode;
@@ -82,6 +105,11 @@ void BNO055::set_mode(OperationMode mode)
 	wait_ms(20);
 }
 
+/** read the accelerometer value
+ *
+ * @param accel pointer to acceleromter structure to store the read values in m/s²
+ *
+ */
 void BNO055::read_accel(bno055_accel_t* accel)
 {
 	static int16_t raw_acc[3];
@@ -92,6 +120,11 @@ void BNO055::read_accel(bno055_accel_t* accel)
 	accel->z = ((double)raw_acc[2])/100.0;
 }
 
+/** read the gyrometer value
+ *
+ * @param gyro pointer to gyrometer structure to store the read values in rad/s
+ *
+ */
 void BNO055::read_gyro(bno055_gyro_t* gyro)
 {
 	static int16_t raw_gyro[3];
@@ -102,6 +135,11 @@ void BNO055::read_gyro(bno055_gyro_t* gyro)
 	gyro->z = ((double)raw_gyro[2])/900.0;
 }
 
+/** read the magnetometer value
+ *
+ * @param mag pointer to magnetometer structure to store the read values in µT
+ *
+ */
 void BNO055::read_mag(bno055_mag_t* mag)
 {
 	static int16_t raw_mag[3];
@@ -112,6 +150,11 @@ void BNO055::read_mag(bno055_mag_t* mag)
 	mag->z = ((double)raw_mag[2])/16.0;
 }
 
+/** read the acclerometer value with gravity compensation
+ *
+ * @param accel pointer to accelerometer structure to store the read values in m/s²
+ *
+ */
 void BNO055::read_linear_accel(bno055_linear_accel_t* accel)
 {
 	static int16_t raw_acc[3];
@@ -122,6 +165,11 @@ void BNO055::read_linear_accel(bno055_linear_accel_t* accel)
 	accel->z = ((double)raw_acc[2])/100;
 }
 
+/** read the EUler angles value
+ *
+ * @param euler pointer Euler angles structure to store the read values in rad
+ *
+ */
 void BNO055::read_euler(bno055_euler_t* euler)
 {
 	static int16_t raw_eul[3];
@@ -132,6 +180,11 @@ void BNO055::read_euler(bno055_euler_t* euler)
 	euler->z = ((double)raw_eul[2])/900.0;
 }
 
+/** read the quaternion value. The output quat in normalized \TODO need confirmation
+ *
+ * @param quat pointer to quaternion structure to store the read values
+ *
+ */
 void BNO055::read_quaternion(bno055_quaternion_t* quat)
 {
 	static char data[8];
@@ -152,6 +205,14 @@ void BNO055::read_quaternion(bno055_quaternion_t* quat)
 	quat->z = ((double)raw_quat[3])/16384.0;
 }
 
+/** get the calibrations state of the sensors and the system
+ *
+ * @param sys pointer to store system calibration state. Value between 0 and 3, where 3 indicates a full calibration
+ * @param gyro pointer to storesystem calibration state. Value between 0 and 3, where 3 indicates a full calibration
+ * @param accel pointer to store system calibration state. Value between 0 and 3, where 3 indicates a full calibration
+ * @param mag pointer to store system calibration state. Value between 0 and 3, where 3 indicates a full calibration
+ *
+ */
 void BNO055::get_calibration_status(uint8_t* sys, uint8_t* gyro, uint8_t* accel, uint8_t* mag) {
 	static char cal_data;
 	i2c_read_register(RegisterAddress::CalibStat, &cal_data);
@@ -169,7 +230,11 @@ void BNO055::get_calibration_status(uint8_t* sys, uint8_t* gyro, uint8_t* accel,
 	}
 }
 
-// \TODO warning, BNO must be fully calibrated before reading offsets
+/** get the sensor offsets calculated by the fusion algorithm
+ *
+ * @param sensor_offsets pointer to bno055_offsets_t structure to store the raw sensor offsets
+ *
+ */
 void BNO055::get_sensor_offsets(bno055_offsets_t* sensor_offsets)
 {
 	static char calib_data[22];
@@ -199,6 +264,11 @@ void BNO055::get_sensor_offsets(bno055_offsets_t* sensor_offsets)
 	set_mode(last_mode);
 }
 
+/** set the sensor offsets given by the user to faster the calibration
+ *
+ * @param sensor_offsets pointer to bno055_offsets_t structure that has to be written in the BNO055 offsets registers
+ *
+ */
 void BNO055::set_sensor_offsets(const bno055_offsets_t* sensor_offsets)
 {
     OperationMode last_mode = _mode;
@@ -237,6 +307,15 @@ void BNO055::set_sensor_offsets(const bno055_offsets_t* sensor_offsets)
     set_mode(last_mode);
 }
 
+/** Set register value
+ *
+ * @param registerAddress register address
+ * @param value value to write
+ *
+ * @returns
+ *      O on success,
+ *      non-0 on failure
+ */
 int BNO055::i2c_set_register(RegisterAddress registerAddress, char value)
 {
     static char data[2];
@@ -248,6 +327,15 @@ int BNO055::i2c_set_register(RegisterAddress registerAddress, char value)
     return 0;
 }
 
+/** Get register value
+ *
+ * @param registerAddress register address
+ * @param value pointer to store read value to
+ *
+ * @returns
+ *      O on success,
+ *      non-0 on failure
+ */
 int BNO055::i2c_read_register(RegisterAddress registerAddress, char *value)
 {
     char data = static_cast<char>(registerAddress);
@@ -260,6 +348,15 @@ int BNO055::i2c_read_register(RegisterAddress registerAddress, char *value)
     return 0;
 }
 
+/** Get multi-byte register value (two-bytes)
+ *
+ * @param registerAddress register address of LSB
+ * @param value pointer to store read value to
+ *
+ * @returns
+ *      O on success,
+ *      non-0 on failure
+ */
 int BNO055::i2c_read_two_bytes_register(RegisterAddress registerAddress, short *value)
 {
     static char data[2];
@@ -275,6 +372,15 @@ int BNO055::i2c_read_two_bytes_register(RegisterAddress registerAddress, short *
     return 0;
 }
 
+/** Get multi-byte register value (3*2-bytes) that are stored in a 3 dimensions vector
+ *
+ * @param registerAddress register address of LSB
+ * @param value pointer to store read value to
+ *
+ * @returns
+ *      O on success,
+ *      non-0 on failure
+ */
 int BNO055::i2c_read_vector(RegisterAddress registerAddress, int16_t value[3])
 {
     static char data[6];

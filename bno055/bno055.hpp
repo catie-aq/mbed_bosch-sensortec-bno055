@@ -308,13 +308,17 @@ public:
     };
 
     BNO055(I2C * i2c, I2CAddress address = I2CAddress::Address1, int hz = 400000);
-    // Functions to start the BNO055 \TODO : add function to modify sensors settings (Brandwidtch, range, etc..) in non fusion mode
+
+    /* Functions to start the BNO055 \TODO : add function to modify sensors settings (Brandwidtch, range, etc..) in non fusion mode */
     bool initialize(OperationMode mode = OperationMode::OperationMode_NDOF, bool UseExtCrystal = false);
     void set_mode(OperationMode mode);
 
+    /* Functions to read non-filtered values from sensors */
     void read_accel(bno055_accel_t* accel);
     void read_gyro(bno055_gyro_t* gyro);
     void read_mag(bno055_mag_t* mag);
+
+    /* Functions to read filtered values from BNO055 */
     void read_linear_accel(bno055_linear_accel_t* accel);
     void read_euler(bno055_euler_t* euler);
     void read_quaternion(bno055_quaternion_t* quat);
@@ -331,40 +335,10 @@ public:
     char bootloader_version() { return _bootloaderVersion; }
 
 private:
-    /** Set register value
-     *
-     * @param registerAddress register address
-     * @param value value to write
-     *
-     * @returns
-     *      O on success,
-     *      non-0 on failure
-     */
+
     int i2c_set_register(RegisterAddress registerAddress, char value);
-
-    /** Get register value
-     *
-     * @param registerAddress register address
-     * @param value pointer to store read value to
-     *
-     * @returns
-     *      O on success,
-     *      non-0 on failure
-     */
     int i2c_read_register(RegisterAddress registerAddress, char *value);
-
-    /** Get multi-byte register value (two-bytes)
-     *
-     * @param registerAddress register address of LSB
-     * @param value pointer to store read value to
-     *
-     * @returns
-     *      O on success,
-     *      non-0 on failure
-     */
     int i2c_read_two_bytes_register(RegisterAddress registerAddress, short *value);
-
-    /*\TODO: doc */
     int i2c_read_vector(RegisterAddress registerAddress, int16_t value[3]);
 
     I2C* _i2c;
