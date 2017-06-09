@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "bno055/bno055.hpp"
+#include "bno055.hpp"
 
 namespace {
 #define I2C_BUFFER_SIZE_ 32
@@ -133,6 +133,21 @@ void BNO055::read_gyro(bno055_gyro_t* gyro)
 	gyro->z = ((double)raw_gyro[2])/900.0;
 }
 
+void BNO055::read_temperature(bno055_temperature_t *temp)
+{
+	static char data[1];
+
+	i2c_set_register(BNO055::RegisterAddress::TempSource, 0x00); //accelerometer temperature
+	wait_ms(1); // \TODO is it necessary ?
+	i2c_read_register(BNO055::RegisterAddress::Temp, data);
+	temp->acc = data[0];
+
+	i2c_set_register(BNO055::RegisterAddress::TempSource, 0x01); //gyrometer temperature
+	wait_ms(1); // \TODO is it necessary ?
+	i2c_read_register(BNO055::RegisterAddress::Temp, data);
+	temp->gyro = data[0];
+}
+
 /** read the magnetometer value
  *
  * @param mag pointer to magnetometer structure to store the read values in µT
@@ -163,7 +178,7 @@ void BNO055::read_linear_accel(bno055_linear_accel_t* accel)
 	accel->z = ((double)raw_acc[2])/100;
 }
 
-/** read the EUler angles value
+/** read the Euler angles value
  *
  * @param euler pointer Euler angles structure to store the read values in rad
  *
@@ -178,7 +193,7 @@ void BNO055::read_euler(bno055_euler_t* euler)
 	euler->z = ((double)raw_eul[2])/900.0;
 }
 
-/** read the quaternion value. The output quat in normalized \TODO need confirmation
+/** read the quaternion value. The output quat in normalized and unitary
  *
  * @param quat pointer to quaternion structure to store the read values
  *
@@ -203,6 +218,20 @@ void BNO055::read_quaternion(bno055_quaternion_t* quat)
 	quat->z = ((double)raw_quat[3])/16384.0;
 }
 
+/** read the gravity vector value
+ *
+ * @param gravity pointer to gravity structure to store the read values in m/s²
+ *
+ */
+void BNO055::read_gravity(bno055_gravity_t* gravity)
+{
+	static int16_t raw_grav[3];
+	i2c_read_vector(RegisterAddress::GravityData_X_Lsb, raw_grav);
+
+	gravity->x = ((double)raw_grav[0])/100;
+	gravity->y = ((double)raw_grav[1])/100;
+	gravity->z = ((double)raw_grav[2])/100;
+}
 /** get the calibrations state of the sensors and the system
  *
  * @param sys pointer to store system calibration state. Value between 0 and 3, where 3 indicates a full calibration

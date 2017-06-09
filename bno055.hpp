@@ -77,6 +77,7 @@ typedef struct
     double z;
 } bno055_euler_t;
 
+/* unitary quaternion (unitless) */
 typedef struct
 {
     double w;
@@ -85,6 +86,20 @@ typedef struct
     double z;
 } bno055_quaternion_t;
 
+/* gravity values in m/s² */
+typedef struct
+{
+    double x;
+    double y;
+    double z;
+} bno055_gravity_t;
+
+/* chip temperatures in °C */
+typedef struct
+{
+    int8_t acc;
+    int8_t gyro;
+} bno055_temperature_t;
 
 class BNO055
 {
@@ -317,11 +332,13 @@ public:
     void read_accel(bno055_accel_t* accel);
     void read_gyro(bno055_gyro_t* gyro);
     void read_mag(bno055_mag_t* mag);
+    void read_temperature(bno055_temperature_t *temp);
 
     /* Functions to read filtered values from BNO055 */
     void read_linear_accel(bno055_linear_accel_t* accel);
     void read_euler(bno055_euler_t* euler);
     void read_quaternion(bno055_quaternion_t* quat);
+    void read_gravity(bno055_gravity_t* gravity);
 
     void get_calibration_status(uint8_t* sys, uint8_t* gyro, uint8_t* accel, uint8_t* mag);
     void get_sensor_offsets(bno055_offsets_t* sensor_offsets);
