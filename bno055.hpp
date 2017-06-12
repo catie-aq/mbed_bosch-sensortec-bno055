@@ -302,7 +302,7 @@ public:
     enum class PowerMode: char {
     	PowerMode_NORMAL		=(0X00),
     	PowerMode_LOWPOWER		=(0X01),
-		PowerMode_SUSPEND		=(0X02)
+	PowerMode_SUSPEND		=(0X02)
     };
 
     enum class OperationMode: char {
