@@ -371,4 +371,4 @@ private:
 
 };
 
-#endif
+#endif // BNO055_H
