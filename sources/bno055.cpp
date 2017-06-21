@@ -135,17 +135,17 @@ void BNO055::read_gyro(bno055_gyro_t* gyro)
 
 void BNO055::read_temperature(bno055_temperature_t *temp)
 {
-	static char data[1];
+	static char data;
 
 	i2c_set_register(BNO055::RegisterAddress::TempSource, 0x00); //accelerometer temperature
 	wait_ms(1); // \TODO is it necessary ?
-	i2c_read_register(BNO055::RegisterAddress::Temp, data);
-	temp->acc = data[0];
+	i2c_read_register(BNO055::RegisterAddress::Temp, &data);
+	temp->acc = data;
 
 	i2c_set_register(BNO055::RegisterAddress::TempSource, 0x01); //gyrometer temperature
 	wait_ms(1); // \TODO is it necessary ?
-	i2c_read_register(BNO055::RegisterAddress::Temp, data);
-	temp->gyro = data[0];
+	i2c_read_register(BNO055::RegisterAddress::Temp, &data);
+	temp->gyro = data;
 }
 
 /** read the magnetometer value
