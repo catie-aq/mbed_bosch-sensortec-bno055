@@ -91,7 +91,7 @@ bool BNO055::initialize(OperationMode mode, bool UseExtCrystal)
     return true;
 }
 
-/** Initialize the BNO055
+/** Set the BNO055 operation mode
  *
  * @param mode Operation mode to be run by the BNO
  *
