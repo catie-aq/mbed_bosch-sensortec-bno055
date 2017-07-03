@@ -43,7 +43,7 @@ BNO055::BNO055(I2C * i2c, I2CAddress address, int hz):
  *      True on success,
  *      False on failure
  */
-bool BNO055::initialize(OperationMode mode, bool UseExtCrystal)
+bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
 {
 	char reg = 0;
 	printf("Initializing BNO055 ... \n");
@@ -78,7 +78,7 @@ bool BNO055::initialize(OperationMode mode, bool UseExtCrystal)
                       (0 << 0);  // Accelerometer = m/s^2
     i2c_set_register(RegisterAddress::UnitSel, unitsel);
 
-    if (UseExtCrystal) {
+    if (use_ext_crystal) {
     	printf("Using External crystal\n");
     	i2c_set_register(RegisterAddress::SysTrigger, 0X80);
     	wait_ms(10);

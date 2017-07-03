@@ -325,7 +325,7 @@ public:
     BNO055(I2C * i2c, I2CAddress address = I2CAddress::Address1, int hz = 400000);
 
     /* Functions to start the BNO055 \TODO : add function to modify sensors settings (Brandwidtch, range, etc..) in non fusion mode */
-    bool initialize(OperationMode mode = OperationMode::OperationMode_NDOF, bool UseExtCrystal = false);
+    bool initialize(OperationMode mode = OperationMode::OperationMode_NDOF, bool use_ext_crystal = false);
     void set_mode(OperationMode mode);
 
     /* Functions to read non-filtered values from sensors */
