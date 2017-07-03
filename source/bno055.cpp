@@ -65,7 +65,7 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
     i2c_read_two_bytes_register(RegisterAddress::SwRevId, &_firmwareVersion);
     i2c_read_register(RegisterAddress::BlRevId, &_bootloaderVersion);
 
-    set_mode(OperationMode::OperationMode_CONFIG);
+    set_operation_mode(OperationMode::OperationMode_CONFIG);
     wait_ms(20);
     i2c_set_register(RegisterAddress::PwrMode, static_cast<char>(PowerMode::PowerMode_NORMAL));
     wait_ms(10);
@@ -84,8 +84,8 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
     	wait_ms(10);
     }
 
-    set_mode(mode);
-	_mode = mode;
+    set_operation_mode(mode);
+    _mode = mode;
     wait_ms(20);
 
     return true;
@@ -96,11 +96,21 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
  * @param mode Operation mode to be run by the BNO
  *
  */
-void BNO055::set_mode(OperationMode mode)
+void BNO055::set_operation_mode(OperationMode mode)
 {
 	_mode = mode;
 	i2c_set_register(RegisterAddress::OprMode, static_cast<char>(mode));
 	wait_ms(20);
+}
+
+/** Set the BNO055 power mode
+ *
+ * @parma mode Power mode to be applied
+ *
+ */
+void BNO055::set_power_mode(PowerMode mode)
+{
+    i2c_set_register(RegisterAddress::PwrMode, static_cast<char>(mode));
 }
 
 /** read the accelerometer value
@@ -268,7 +278,7 @@ void BNO055::get_sensor_offsets(bno055_offsets_t* sensor_offsets)
 	static char address = static_cast<char>(RegisterAddress::AccelOffset_X_Lsb);
 	OperationMode last_mode = _mode;
 
-	set_mode(OperationMode::OperationMode_CONFIG);
+	set_operation_mode(OperationMode::OperationMode_CONFIG);
 
 	_i2c->write(static_cast<int>(_i2cAddress) << 1, &address, 1, true);
 	_i2c->read(static_cast<int>(_i2cAddress) << 1, calib_data, 22);
@@ -288,7 +298,7 @@ void BNO055::get_sensor_offsets(bno055_offsets_t* sensor_offsets)
 	sensor_offsets->accel_radius = (calib_data[19] << 8) | (calib_data[18]);
 	sensor_offsets->mag_radius = (calib_data[21] << 8) | (calib_data[20]);
 
-	set_mode(last_mode);
+	set_operation_mode(last_mode);
 }
 
 /** set the sensor offsets given by the user to faster the calibration
@@ -301,7 +311,7 @@ void BNO055::set_sensor_offsets(const bno055_offsets_t* sensor_offsets)
     OperationMode last_mode = _mode;
     char calib_data[22];
 
-    set_mode(OperationMode::OperationMode_CONFIG);
+    set_operation_mode(OperationMode::OperationMode_CONFIG);
 
     calib_data[0] = (sensor_offsets->accel_offset_x) & 0x0FF;
     calib_data[1] = (sensor_offsets->accel_offset_x >> 8) & 0x0FF;
@@ -331,7 +341,7 @@ void BNO055::set_sensor_offsets(const bno055_offsets_t* sensor_offsets)
 
     _i2c->write(static_cast<int>(_i2cAddress), calib_data, 22);
 
-    set_mode(last_mode);
+    set_operation_mode(last_mode);
 }
 
 /** Set register value

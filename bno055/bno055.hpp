@@ -326,7 +326,8 @@ public:
 
     /* Functions to start the BNO055 \TODO : add function to modify sensors settings (Brandwidtch, range, etc..) in non fusion mode */
     bool initialize(OperationMode mode = OperationMode::OperationMode_NDOF, bool use_ext_crystal = false);
-    void set_mode(OperationMode mode);
+    void set_operation_mode(OperationMode mode);
+    void set_power_mode(PowerMode mode);
 
     /* Functions to read non-filtered values from sensors */
     void read_accel(bno055_accel_t* accel);
