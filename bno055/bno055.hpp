@@ -86,6 +86,15 @@ typedef struct
     double z;
 } bno055_quaternion_t;
 
+/* raw quaternion as read in the register(unitless) */
+typedef struct
+{
+    int16_t w;
+    int16_t x;
+    int16_t y;
+    int16_t z;
+} bno055_raw_quaternion_t;
+
 /* gravity values in m/s² */
 typedef struct
 {
@@ -339,6 +348,7 @@ public:
     void read_linear_accel(bno055_linear_accel_t* accel);
     void read_euler(bno055_euler_t* euler);
     void read_quaternion(bno055_quaternion_t* quat);
+    void read_quaternion(bno055_raw_quaternion_t* quat);
     void read_gravity(bno055_gravity_t* gravity);
 
     void get_calibration_status(uint8_t* sys, uint8_t* gyro, uint8_t* accel, uint8_t* mag);

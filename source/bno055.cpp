@@ -228,6 +228,25 @@ void BNO055::read_quaternion(bno055_quaternion_t* quat)
 	quat->z = ((double)raw_quat[3])/16384.0;
 }
 
+/** read the quaternion value.
+ *
+ * @param quat pointer to quaternion structure to store the read values
+ *
+ */
+void BNO055::read_quaternion(bno055_raw_quaternion_t* quat)
+{
+	static char data[8];
+    char reg = static_cast<char>(RegisterAddress::QuaternionData_W_Lsb);
+
+    _i2c->write(static_cast<int>(_i2cAddress) << 1, &reg, 1, true);
+    _i2c->read(static_cast<int>(_i2cAddress) << 1, data, 8, false);
+
+    quat->w = (data[1] << 8) | (0xFF & data[0]);
+    quat->x = (data[3] << 8) | (0xFF & data[2]);
+    quat->y = (data[5] << 8) | (0xFF & data[4]);
+    quat->z = (data[7] << 8) | (0xFF & data[6]);
+}
+
 /** read the gravity vector value
  *
  * @param gravity pointer to gravity structure to store the read values in m/s²
