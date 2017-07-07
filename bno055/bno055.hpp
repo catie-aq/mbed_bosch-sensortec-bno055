@@ -355,6 +355,8 @@ public:
     void get_sensor_offsets(bno055_offsets_t* sensor_offsets);
     void set_sensor_offsets(const bno055_offsets_t* sensor_offsets);
 
+    void reset();
+
     char chip_id() { return _chipId; }
     char accelerometer_revision_id() { return _accelerometerRevisionId; }
     char magnetometer_revision_id() { return _magnetometerRevisionId; }

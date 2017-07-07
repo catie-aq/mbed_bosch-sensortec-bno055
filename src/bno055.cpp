@@ -47,6 +47,7 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
 {
 	char reg = 0;
 	printf("Initializing BNO055 ... \n");
+	reset();
 	i2c_read_register(RegisterAddress::ChipId, &reg);
 	if (reg != 0XA0) {
 		wait_ms(1000); //BNO055 may have not finishing to boot !
@@ -363,6 +364,11 @@ void BNO055::set_sensor_offsets(const bno055_offsets_t* sensor_offsets)
     set_operation_mode(last_mode);
 }
 
+void BNO055::reset()
+{
+	i2c_set_register(RegisterAddress::SysTrigger, 0x20);
+	wait_ms(800);
+}
 /** Set register value
  *
  * @param registerAddress register address
