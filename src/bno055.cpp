@@ -26,6 +26,7 @@ namespace sixtron {
 #define RAW_TO_METERS_PER_SECONDS	100.0
 #define RAW_TO_RADIANS			900.0
 #define RAW_TO_UNITARY_QUATERNIONS	16384.0
+#define CHIP_ID                 0xA0
 
 /** Default constructor
  *
@@ -56,10 +57,10 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
 	printf("Initializing BNO055 ... \n");
 	reset();
 	i2c_read_register(RegisterAddress::ChipId, &reg);
-	if (reg != 0XA0) {
+	if (reg != CHIP_ID) {
 		wait_ms(1000); //BNO055 may have not finishing to boot !
 		i2c_read_register(RegisterAddress::ChipId, &reg);
-		if (reg != 0XA0) {
+		if (reg != CHIP_ID) {
 			return false;
 		}
 	}
