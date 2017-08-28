@@ -19,9 +19,13 @@
 namespace sixtron {
 
 /* MACROS */
-#define	TEMP_SOURCE_ACC		0x00
-#define TEMP_SOURCE_GYR		0x01
-#define RESET_COMMAND		0x20
+#define	TEMP_SOURCE_ACC			0x00
+#define TEMP_SOURCE_GYR			0x01
+#define RESET_COMMAND			0x20
+#define RAW_TO_MICRO_TESLA		16.0
+#define RAW_TO_METERS_PER_SECONDS	100.0
+#define RAW_TO_RADIANS			900.0
+#define RAW_TO_UNITARY_QUATERNIONS	16384.0
 
 /** Default constructor
  *
@@ -127,9 +131,9 @@ void BNO055::read_accel(bno055_accel_t* accel)
 	static int16_t raw_acc[3];
 	i2c_read_vector(RegisterAddress::AccelData_X_Lsb, raw_acc);
 
-	accel->x = ((double)raw_acc[0])/100.0;
-	accel->y = ((double)raw_acc[1])/100.0;
-	accel->z = ((double)raw_acc[2])/100.0;
+	accel->x = ((double)raw_acc[0])/RAW_TO_METERS_PER_SECONDS;
+	accel->y = ((double)raw_acc[1])/RAW_TO_METERS_PER_SECONDS;
+	accel->z = ((double)raw_acc[2])/RAW_TO_METERS_PER_SECONDS;
 }
 
 /** read the gyrometer value
@@ -142,9 +146,9 @@ void BNO055::read_gyro(bno055_gyro_t* gyro)
 	static int16_t raw_gyro[3];
 	i2c_read_vector(RegisterAddress::GyroData_X_Lsb, raw_gyro);
 
-	gyro->x = ((double)raw_gyro[0])/900.0;
-	gyro->y = ((double)raw_gyro[1])/900.0;
-	gyro->z = ((double)raw_gyro[2])/900.0;
+	gyro->x = ((double)raw_gyro[0])/RAW_TO_RADIANS;
+	gyro->y = ((double)raw_gyro[1])/RAW_TO_RADIANS;
+	gyro->z = ((double)raw_gyro[2])/RAW_TO_RADIANS;
 }
 
 void BNO055::read_temperature(bno055_temperature_t *temp)
@@ -172,9 +176,9 @@ void BNO055::read_mag(bno055_mag_t* mag)
 	static int16_t raw_mag[3];
 	i2c_read_vector(RegisterAddress::MagData_X_Lsb, raw_mag);
 
-	mag->x = ((double)raw_mag[0])/16.0;
-	mag->y = ((double)raw_mag[1])/16.0;
-	mag->z = ((double)raw_mag[2])/16.0;
+	mag->x = ((double)raw_mag[0])/RAW_TO_MICRO_TESLA;
+	mag->y = ((double)raw_mag[1])/RAW_TO_MICRO_TESLA;
+	mag->z = ((double)raw_mag[2])/RAW_TO_MICRO_TESLA;
 }
 
 /** read the acclerometer value with gravity compensation
@@ -187,9 +191,9 @@ void BNO055::read_linear_accel(bno055_linear_accel_t* accel)
 	static int16_t raw_acc[3];
 	i2c_read_vector(RegisterAddress::LinearAccelData_X_Lsb, raw_acc);
 
-	accel->x = ((double)raw_acc[0])/100;
-	accel->y = ((double)raw_acc[1])/100;
-	accel->z = ((double)raw_acc[2])/100;
+	accel->x = ((double)raw_acc[0])/RAW_TO_METERS_PER_SECONDS;
+	accel->y = ((double)raw_acc[1])/RAW_TO_METERS_PER_SECONDS;
+	accel->z = ((double)raw_acc[2])/RAW_TO_METERS_PER_SECONDS;
 }
 
 /** read the Euler angles value
@@ -202,9 +206,9 @@ void BNO055::read_euler(bno055_euler_t* euler)
 	static int16_t raw_eul[3];
 	i2c_read_vector(RegisterAddress::Euler_H_Lsb, raw_eul);
 
-	euler->x = ((double)raw_eul[0])/900.0;
-	euler->y = ((double)raw_eul[1])/900.0;
-	euler->z = ((double)raw_eul[2])/900.0;
+	euler->x = ((double)raw_eul[0])/RAW_TO_RADIANS;
+	euler->y = ((double)raw_eul[1])/RAW_TO_RADIANS;
+	euler->z = ((double)raw_eul[2])/RAW_TO_RADIANS;
 }
 
 /** read the quaternion value. The output quat in normalized and unitary
@@ -226,10 +230,10 @@ void BNO055::read_quaternion(bno055_quaternion_t* quat)
     raw_quat[2] = (data[5] << 8) | (0xFF & data[4]);
     raw_quat[3] = (data[7] << 8) | (0xFF & data[6]);
 
-	quat->w = ((double)raw_quat[0])/16384.0;
-	quat->x = ((double)raw_quat[1])/16384.0;
-	quat->y = ((double)raw_quat[2])/16384.0;
-	quat->z = ((double)raw_quat[3])/16384.0;
+	quat->w = ((double)raw_quat[0])/RAW_TO_UNITARY_QUATERNIONS;
+	quat->x = ((double)raw_quat[1])/RAW_TO_UNITARY_QUATERNIONS;
+	quat->y = ((double)raw_quat[2])/RAW_TO_UNITARY_QUATERNIONS;
+	quat->z = ((double)raw_quat[3])/RAW_TO_UNITARY_QUATERNIONS;
 }
 
 /** read the quaternion value.
@@ -261,9 +265,9 @@ void BNO055::read_gravity(bno055_gravity_t* gravity)
 	static int16_t raw_grav[3];
 	i2c_read_vector(RegisterAddress::GravityData_X_Lsb, raw_grav);
 
-	gravity->x = ((double)raw_grav[0])/100;
-	gravity->y = ((double)raw_grav[1])/100;
-	gravity->z = ((double)raw_grav[2])/100;
+	gravity->x = ((double)raw_grav[0])/RAW_TO_METERS_PER_SECONDS;
+	gravity->y = ((double)raw_grav[1])/RAW_TO_METERS_PER_SECONDS;
+	gravity->z = ((double)raw_grav[2])/RAW_TO_METERS_PER_SECONDS;
 }
 /** get the calibrations state of the sensors and the system
  *
