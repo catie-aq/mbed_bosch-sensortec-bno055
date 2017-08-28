@@ -27,6 +27,7 @@ namespace sixtron {
 #define RAW_TO_RADIANS                 900.0
 #define RAW_TO_UNITARY_QUATERNIONS     16384.0
 #define CHIP_ID                        0xA0
+#define TIME_TO_RESET                  800
 
 /** Default constructor
  *
@@ -375,7 +376,7 @@ void BNO055::set_sensor_offsets(const bno055_offsets_t* sensor_offsets)
 void BNO055::reset()
 {
 	i2c_set_register(RegisterAddress::SysTrigger, RESET_COMMAND);
-	wait_ms(800);
+	wait_ms(TIME_TO_RESET);
 }
 /** Set register value
  *
