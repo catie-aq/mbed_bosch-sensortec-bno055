@@ -16,9 +16,7 @@
  */
 #include "bno055.hpp"
 
-namespace {
-#define I2C_BUFFER_SIZE_ 32
-}
+namespace sixtron {
 
 /** Default constructor
  *
@@ -459,3 +457,5 @@ int BNO055::i2c_read_vector(RegisterAddress registerAddress, int16_t value[3])
 
     return 0;
 }
+
+} // namespace sixtron

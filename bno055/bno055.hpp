@@ -20,6 +20,8 @@
 #include "mbed.h"
 // TODO Use I2C asynchronous API ?
 
+namespace sixtron {
+
 /* Raw values of sensors offsets */
 typedef struct
 {
@@ -383,5 +385,7 @@ private:
     char _bootloaderVersion = 0;
 
 };
+
+} // namespace sixtron
 
 #endif // BNO055_H
