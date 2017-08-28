@@ -19,14 +19,14 @@
 namespace sixtron {
 
 /* MACROS */
-#define	TEMP_SOURCE_ACC            0x00
-#define TEMP_SOURCE_GYR            0x01
-#define RESET_COMMAND              0x20
-#define RAW_TO_MICRO_TESLA         16.0
-#define RAW_TO_METERS_PER_SECONDS  100.0
-#define RAW_TO_RADIANS             900.0
-#define RAW_TO_UNITARY_QUATERNIONS 16384.0
-#define CHIP_ID                    0xA0
+#define	TEMP_SOURCE_ACC                0x00
+#define TEMP_SOURCE_GYR                0x01
+#define RESET_COMMAND                  0x20
+#define RAW_TO_MICRO_TESLA             16.0
+#define RAW_TO_METERS_PER_SECONDS      100.0
+#define RAW_TO_RADIANS                 900.0
+#define RAW_TO_UNITARY_QUATERNIONS     16384.0
+#define CHIP_ID                        0xA0
 
 /** Default constructor
  *
