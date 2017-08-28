@@ -18,6 +18,11 @@
 
 namespace sixtron {
 
+/* MACROS */
+#define	TEMP_SOURCE_ACC		0x00
+#define TEMP_SOURCE_GYR		0x01
+#define RESET_COMMAND		0x20
+
 /** Default constructor
  *
  * @param i2c pointer to mbed I2C object
@@ -146,12 +151,12 @@ void BNO055::read_temperature(bno055_temperature_t *temp)
 {
 	static char data;
 
-	i2c_set_register(BNO055::RegisterAddress::TempSource, 0x00); //accelerometer temperature
+	i2c_set_register(BNO055::RegisterAddress::TempSource, TEMP_SOURCE_ACC); //accelerometer temperature
 	wait_ms(1); // \TODO is it necessary ?
 	i2c_read_register(BNO055::RegisterAddress::Temp, &data);
 	temp->acc = data;
 
-	i2c_set_register(BNO055::RegisterAddress::TempSource, 0x01); //gyrometer temperature
+	i2c_set_register(BNO055::RegisterAddress::TempSource, TEMP_SOURCE_GYR); //gyrometer temperature
 	wait_ms(1); // \TODO is it necessary ?
 	i2c_read_register(BNO055::RegisterAddress::Temp, &data);
 	temp->gyro = data;
@@ -364,7 +369,7 @@ void BNO055::set_sensor_offsets(const bno055_offsets_t* sensor_offsets)
 
 void BNO055::reset()
 {
-	i2c_set_register(RegisterAddress::SysTrigger, 0x20);
+	i2c_set_register(RegisterAddress::SysTrigger, RESET_COMMAND);
 	wait_ms(800);
 }
 /** Set register value
