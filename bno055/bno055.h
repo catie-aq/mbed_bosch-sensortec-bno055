@@ -18,7 +18,6 @@
 #define BNO055_H
 
 #include "mbed.h"
-// TODO Use I2C asynchronous API ?
 
 namespace sixtron {
 
