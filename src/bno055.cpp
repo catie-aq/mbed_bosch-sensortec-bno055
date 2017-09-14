@@ -137,9 +137,9 @@ void BNO055::read_accel(bno055_accel_t* accel)
 	static int16_t raw_acc[3];
 	i2c_read_vector(RegisterAddress::AccelData_X_Lsb, raw_acc);
 
-	accel->x = ((double)raw_acc[0])/RAW_TO_METERS_PER_SECONDS;
-	accel->y = ((double)raw_acc[1])/RAW_TO_METERS_PER_SECONDS;
-	accel->z = ((double)raw_acc[2])/RAW_TO_METERS_PER_SECONDS;
+	accel->x = ((double)raw_acc[0])/RAW_TO_METERS_PER_SECOND;
+	accel->y = ((double)raw_acc[1])/RAW_TO_METERS_PER_SECOND;
+	accel->z = ((double)raw_acc[2])/RAW_TO_METERS_PER_SECOND;
 }
 
 /** read the gyrometer value
@@ -197,9 +197,9 @@ void BNO055::read_linear_accel(bno055_linear_accel_t* accel)
 	static int16_t raw_acc[3];
 	i2c_read_vector(RegisterAddress::LinearAccelData_X_Lsb, raw_acc);
 
-	accel->x = ((double)raw_acc[0])/RAW_TO_METERS_PER_SECONDS;
-	accel->y = ((double)raw_acc[1])/RAW_TO_METERS_PER_SECONDS;
-	accel->z = ((double)raw_acc[2])/RAW_TO_METERS_PER_SECONDS;
+	accel->x = ((double)raw_acc[0])/RAW_TO_METERS_PER_SECOND;
+	accel->y = ((double)raw_acc[1])/RAW_TO_METERS_PER_SECOND;
+	accel->z = ((double)raw_acc[2])/RAW_TO_METERS_PER_SECOND;
 }
 
 /** read the Euler angles value
@@ -271,9 +271,9 @@ void BNO055::read_gravity(bno055_gravity_t* gravity)
 	static int16_t raw_grav[3];
 	i2c_read_vector(RegisterAddress::GravityData_X_Lsb, raw_grav);
 
-	gravity->x = ((double)raw_grav[0])/RAW_TO_METERS_PER_SECONDS;
-	gravity->y = ((double)raw_grav[1])/RAW_TO_METERS_PER_SECONDS;
-	gravity->z = ((double)raw_grav[2])/RAW_TO_METERS_PER_SECONDS;
+	gravity->x = ((double)raw_grav[0])/RAW_TO_METERS_PER_SECOND;
+	gravity->y = ((double)raw_grav[1])/RAW_TO_METERS_PER_SECOND;
+	gravity->z = ((double)raw_grav[2])/RAW_TO_METERS_PER_SECOND;
 }
 /** get the calibrations state of the sensors and the system
  *
