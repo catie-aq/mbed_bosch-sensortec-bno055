@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "bno055.hpp"
+#include "bno055.h"
 
 namespace sixtron {
 
