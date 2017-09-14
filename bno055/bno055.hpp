@@ -20,6 +20,8 @@
 #include "mbed.h"
 // TODO Use I2C asynchronous API ?
 
+namespace sixtron {
+
 /* Raw values of sensors offsets */
 typedef struct
 {
@@ -355,6 +357,8 @@ public:
     void get_sensor_offsets(bno055_offsets_t* sensor_offsets);
     void set_sensor_offsets(const bno055_offsets_t* sensor_offsets);
 
+    void reset();
+
     char chip_id() { return _chipId; }
     char accelerometer_revision_id() { return _accelerometerRevisionId; }
     char magnetometer_revision_id() { return _magnetometerRevisionId; }
@@ -381,5 +385,7 @@ private:
     char _bootloaderVersion = 0;
 
 };
+
+} // namespace sixtron
 
 #endif // BNO055_H
