@@ -310,32 +310,32 @@ public:
     };
     
     enum class PowerMode: char {
-    	PowerMode_NORMAL		=(0X00),
-    	PowerMode_LOWPOWER		=(0X01),
-	PowerMode_SUSPEND		=(0X02)
+    	NORMAL		=(0X00),
+    	LOWPOWER	=(0X01),
+	SUSPEND		=(0X02)
     };
 
     enum class OperationMode: char {
         /* Operation mode settings*/
-        OperationMode_CONFIG                           = 0X00,
-        OperationMode_ACCONLY                          = 0X01,
-        OperationMode_MAGONLY                          = 0X02,
-        OperationMode_GYRONLY                          = 0X03,
-        OperationMode_ACCMAG                           = 0X04,
-        OperationMode_ACCGYRO                          = 0X05,
-        OperationMode_MAGGYRO                          = 0X06,
-        OperationMode_AMG                              = 0X07,
-        OperationMode_IMUPLUS                          = 0X08,
-        OperationMode_COMPASS                          = 0X09,
-        OperationMode_M4G                              = 0X0A,
-        OperationMode_NDOF_FMC_OFF                     = 0X0B,
-        OperationMode_NDOF                             = 0X0C
+        CONFIG                           = 0X00,
+        ACCONLY                          = 0X01,
+        MAGONLY                          = 0X02,
+        GYRONLY                          = 0X03,
+        ACCMAG                           = 0X04,
+        ACCGYRO                          = 0X05,
+        MAGGYRO                          = 0X06,
+        AMG                              = 0X07,
+        IMUPLUS                          = 0X08,
+        COMPASS                          = 0X09,
+        M4G                              = 0X0A,
+        NDOF_FMC_OFF                     = 0X0B,
+        NDOF                             = 0X0C
     };
 
     BNO055(I2C * i2c, I2CAddress address = I2CAddress::Address1, int hz = 400000);
 
-    /* Functions to start the BNO055 \TODO : add function to modify sensors settings (Brandwidtch, range, etc..) in non fusion mode */
-    bool initialize(OperationMode mode = OperationMode::OperationMode_NDOF, bool use_ext_crystal = false);
+    /* Functions to start the BNO055 */
+    bool initialize(OperationMode mode = OperationMode::NDOF, bool use_ext_crystal = false);
     void set_operation_mode(OperationMode mode);
     void set_power_mode(PowerMode mode);
 

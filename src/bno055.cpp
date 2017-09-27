@@ -40,7 +40,7 @@ namespace {
  *
  */
 BNO055::BNO055(I2C * i2c, I2CAddress address, int hz):
-        _i2cAddress(address), _mode(OperationMode::OperationMode_CONFIG)
+        _i2cAddress(address), _mode(OperationMode::CONFIG)
 {
 	_i2c = i2c;
     _i2c->frequency(hz);
@@ -49,7 +49,7 @@ BNO055::BNO055(I2C * i2c, I2CAddress address, int hz):
 /** Initialize the BNO055
  *
  * @param mode operation mode to be run by the BNO
- * @param UseExtCrystal True if it should use a 32 kHz external crystal to improve the clock precision
+ * @param use_ext_crystal True if it should use a 32 kHz external crystal to improve the clock precision
  * 		 				False if it should use the internal clock
  *
  * @returns
@@ -79,9 +79,9 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
     i2c_read_two_bytes_register(RegisterAddress::SwRevId, &_firmwareVersion);
     i2c_read_register(RegisterAddress::BlRevId, &_bootloaderVersion);
 
-    set_operation_mode(OperationMode::OperationMode_CONFIG);
+    set_operation_mode(OperationMode::CONFIG);
     wait_ms(20);
-    i2c_set_register(RegisterAddress::PwrMode, static_cast<char>(PowerMode::PowerMode_NORMAL));
+    i2c_set_register(RegisterAddress::PwrMode, static_cast<char>(PowerMode::NORMAL));
     wait_ms(10);
 
     /* Set the output units */
@@ -157,6 +157,11 @@ void BNO055::read_gyro(bno055_gyro_t* gyro)
 	gyro->z = ((double)raw_gyro[2])/RAW_TO_RADIANS;
 }
 
+/** read internal sensors temperatures
+ *
+ * @param temp pointer to temperature structure that store acceleromter 
+ * 	       and gyrometer temperature
+ */
 void BNO055::read_temperature(bno055_temperature_t *temp)
 {
 	static char data;
@@ -311,7 +316,7 @@ void BNO055::get_sensor_offsets(bno055_offsets_t* sensor_offsets)
 	static char address = static_cast<char>(RegisterAddress::AccelOffset_X_Lsb);
 	OperationMode last_mode = _mode;
 
-	set_operation_mode(OperationMode::OperationMode_CONFIG);
+	set_operation_mode(OperationMode::CONFIG);
 
 	_i2c->write(static_cast<int>(_i2cAddress) << 1, &address, 1, true);
 	_i2c->read(static_cast<int>(_i2cAddress) << 1, calib_data, 22);
@@ -344,7 +349,7 @@ void BNO055::set_sensor_offsets(const bno055_offsets_t* sensor_offsets)
     OperationMode last_mode = _mode;
     char calib_data[22];
 
-    set_operation_mode(OperationMode::OperationMode_CONFIG);
+    set_operation_mode(OperationMode::CONFIG);
 
     calib_data[0] = (sensor_offsets->accel_offset_x) & 0x0FF;
     calib_data[1] = (sensor_offsets->accel_offset_x >> 8) & 0x0FF;
@@ -377,6 +382,10 @@ void BNO055::set_sensor_offsets(const bno055_offsets_t* sensor_offsets)
     set_operation_mode(last_mode);
 }
 
+/** Reset the bno055. All register values goes back to default
+ * values and calibrations values are lost
+ * 
+ */
 void BNO055::reset()
 {
 	i2c_set_register(RegisterAddress::SysTrigger, RESET_COMMAND);
