@@ -275,7 +275,7 @@ void BNO055::set_operation_mode(OperationMode mode)
 
 /** Set the BNO055 power mode
  *
- * @parma mode Power mode to be applied
+ * @param mode Power mode to be applied
  *
  */
 void BNO055::set_power_mode(PowerMode mode)
