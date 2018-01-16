@@ -278,8 +278,8 @@ public:
         /* Configuration registers */
         AccelConfig             = (0x08),
         MagConfig               = (0x09),
-        GyroConfig              = (0x0A),
-        GyroModeConfig          = (0x0B),
+        GyroConfig0             = (0x0A),
+		GyroConfig1             = (0x0B),
         AccelSleepConfig        = (0x0C),
         GyroSleepConfig         = (0x0D),
         MagSleepConfig          = (0x0E),
