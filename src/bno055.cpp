@@ -102,8 +102,75 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
     _mode = mode;
     wait_ms(20);
 
+    set_accel_configuration(BNO055::Acc_sensor_config::Range_8G, BNO055::Acc_sensor_config::Bandwith_500Hz, BNO055::Acc_sensor_config::OpeMode_LowPower2);
+
     return true;
 }
+
+/*
+ *
+ * JDE
+ *
+ */
+void BNO055::set_accel_configuration(Acc_sensor_config _range, Acc_sensor_config _bandwith, Acc_sensor_config _operation_mode)
+{
+	static char reg_val = 0x00;
+	// init register
+	i2c_set_register(RegisterAddress::AccelConfig, reg_val);
+	// get user accel config
+	reg_val |=  (static_cast<char>(_range) | static_cast<char>(_bandwith) | static_cast<char>(_operation_mode));
+	//set accel conf register
+	i2c_set_register(RegisterAddress::AccelConfig, reg_val);
+}
+
+void BNO055::set_accel_range_configuration(Acc_sensor_config _range)
+{
+	static char reg = 0x00;
+	// read acc conifg register
+	i2c_read_register(RegisterAddress::AccelConfig, &reg);
+	// fix new configuration
+	reg |= (reg | static_cast<char>(_range));
+	//set new register value
+	i2c_set_register(RegisterAddress::AccelConfig, reg);
+}
+
+void BNO055::set_accel_bandwith_configuration(Acc_sensor_config _bandwith)
+{
+	static char reg = 0x00;
+	// read acc config register
+	i2c_read_register(RegisterAddress::AccelConfig, &reg);
+	// fix new configuration
+	reg |= (reg | static_cast<char>(_bandwith));
+	//set new register value
+	i2c_set_register(RegisterAddress::AccelConfig, reg);
+}
+
+void BNO055::set_accel_opeMode_configuration(Acc_sensor_config _opeMode)
+{
+	static char reg = 0x00;
+	// read acc fonig register
+	i2c_read_register(RegisterAddress::AccelConfig, &reg);
+	// fix new configuration
+	reg |= (reg | static_cast<char>(_opeMode));
+	//set new register value
+	i2c_set_register(RegisterAddress::AccelConfig, reg);
+}
+
+void BNO055::set_gyro_configuration(Gyro_sensor_config _range, Gyro_sensor_config _bandwith, Gyro_sensor_config _operation_mode)
+{
+	static char reg_val = 0x00;
+	// init register
+	i2c_set_register(RegisterAddress::GyroConfig, reg_val);
+	// get user accel config
+	reg_val |=  (static_cast<char>(_range) | static_cast<char>(_bandwith) | static_cast<char>(_operation_mode));
+	//set accel conf register
+	i2c_set_register(RegisterAddress::AccelConfig, reg_val);
+}
+/*
+ *
+ *
+ *
+ */
 
 /** Set the BNO055 operation mode
  *
