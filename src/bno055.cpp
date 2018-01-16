@@ -160,7 +160,7 @@ void BNO055::set_gyro_configuration(Gyro_sensor_config _range, Gyro_sensor_confi
 {
 	static char reg_val = 0x00;
 	// init register
-	i2c_set_register(RegisterAddress::GyroConfig, reg_val);
+	i2c_set_register(RegisterAddress::GyroConfig0, reg_val);
 	// get user accel config
 	reg_val |=  (static_cast<char>(_range) | static_cast<char>(_bandwith) | static_cast<char>(_operation_mode));
 	//set accel conf register
