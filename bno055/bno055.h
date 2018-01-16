@@ -332,12 +332,74 @@ public:
         NDOF                             = 0X0C
     };
 
+
+    // TODO : JDE
+    enum class Acc_sensor_config: uint8_t{
+		Range_2G                              = 0x00,
+		Range_4G                              = 0x01,
+		Range_8G                              = 0x02,
+		Range_16G                             = 0x03,
+		Bandwith_7Hz                          = 0x00,
+		Bandwith_15Hz                         = 0x04,
+		Bandwith_31Hz                         = 0x8,
+		Bandwith_62Hz                         = 0xC,
+		Bandwith_125Hz                        = 0x10,
+		Bandwith_250Hz                        = 0x14,
+		Bandwith_500Hz                        = 0x18,
+		Bandwith_1000Hz                       = 0x1C,
+		OpeMode_Normal                        = 0x00,
+		OpeMode_Suspend                       = 0x20,
+		OpeMode_LowPower1                     = 0x40,
+		OpeMode_Standby                       = 0x60,
+		OpeMode_LowPower2                     = 0x80,
+		OpeMode_DeepSuspend                   = 0xA0
+    };
+
+    // TODO : JDE
+	enum class Gyro_sensor_config: uint8_t{
+		Range_2000DPS                         = 0x00,
+		Range_1000DPS                         = 0x01,
+		Range_500DPS                          = 0x02,
+		Range_250DPS                          = 0x03,
+		Range_125DPS                          = 0x04,
+		Bandwith_523Hz                        = 0x00,
+		Bandwith_230Hz                        = 0x08,
+		Bandwith_116Hz                        = 0x10,
+		Bandwith_47Hz                         = 0x18,
+		Bandwith_23Hz                         = 0x20,
+		Bandwith_12Hz                         = 0x28,
+		Bandwith_64Hz                         = 0x30,
+		Bandwith_32Hz                         = 0x38,
+		OpeMode_Normal                        = 0x00,
+		OpeMode_FastPowerUp                   = 0x01,
+		OpeMode_DeepSuspend                   = 0x02
+	};
+
     BNO055(I2C * i2c, I2CAddress address = I2CAddress::Address1, int hz = 400000);
 
     /* Functions to start the BNO055 */
     bool initialize(OperationMode mode = OperationMode::NDOF, bool use_ext_crystal = false);
     void set_operation_mode(OperationMode mode);
     void set_power_mode(PowerMode mode);
+ /*
+  *
+  * JDE
+  *
+  */
+    void set_accel_configuration(Acc_sensor_config _range, Acc_sensor_config _bandwith, Acc_sensor_config _operation_mode);
+    void set_accel_range_configuration(Acc_sensor_config _range);
+    void set_accel_bandwith_configuration(Acc_sensor_config _bandwith);
+    void set_accel_opeMode_configuration(Acc_sensor_config _opeMode);
+
+    void set_gyro_configuration(Gyro_sensor_config _range, Gyro_sensor_config _bandwith, Gyro_sensor_config _operation_mode);
+    void set_gyro_range_configuration(Gyro_sensor_config _range);
+    void set_gyro_bandwith_configuration(Gyro_sensor_config _bandwith);
+    void set_gyro_opeMode_configuration(Gyro_sensor_config _opeMode);
+  /*
+   *
+   *
+   *
+   */
 
     /* Functions to read non-filtered values from sensors */
     void read_accel(bno055_accel_t* accel);
@@ -364,6 +426,11 @@ public:
     char gyroscope_revision_id() { return _gyroscopeRevisionId; }
     short firmware_version() { return _firmwareVersion; }
     char bootloader_version() { return _bootloaderVersion; }
+
+    /*
+     * JDE
+     */
+
 
 private:
 
