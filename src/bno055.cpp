@@ -126,7 +126,7 @@ void BNO055::set_accel_configuration(Acc_sensor_config _range, Acc_sensor_config
 void BNO055::set_accel_range_configuration(Acc_sensor_config _range)
 {
 	static char reg = 0x00;
-	// read acc conifg register
+	// read acc config register
 	i2c_read_register(RegisterAddress::AccelConfig, &reg);
 	// fix new configuration
 	reg |= (reg | static_cast<char>(_range));
@@ -148,7 +148,7 @@ void BNO055::set_accel_bandwith_configuration(Acc_sensor_config _bandwith)
 void BNO055::set_accel_opeMode_configuration(Acc_sensor_config _opeMode)
 {
 	static char reg = 0x00;
-	// read acc fonig register
+	// read acc config register
 	i2c_read_register(RegisterAddress::AccelConfig, &reg);
 	// fix new configuration
 	reg |= (reg | static_cast<char>(_opeMode));
@@ -161,10 +161,48 @@ void BNO055::set_gyro_configuration(Gyro_sensor_config _range, Gyro_sensor_confi
 	static char reg_val = 0x00;
 	// init register
 	i2c_set_register(RegisterAddress::GyroConfig0, reg_val);
-	// get user accel config
-	reg_val |=  (static_cast<char>(_range) | static_cast<char>(_bandwith) | static_cast<char>(_operation_mode));
-	//set accel conf register
-	i2c_set_register(RegisterAddress::AccelConfig, reg_val);
+	i2c_set_register(RegisterAddress::GyroConfig1, reg_val);
+	// get user gyro config for config0 register
+	reg_val |=  (static_cast<char>(_range) | static_cast<char>(_bandwith));
+	// set new value register for gyro_conf0 register
+	i2c_set_register(RegisterAddress::GyroConfig0, reg_val);
+	// get user gyro config for config1 register
+	reg_val |= (0x00 | static_cast<char>(_operation_mode));
+	// set new value register for config1_register
+	i2c_set_register(RegisterAddress::GyroConfig1, reg_val);
+}
+
+void BNO055::set_gyro_range_configuration(Gyro_sensor_config _range)
+{
+	static char reg = 0x00;
+	// read gyro config register
+	i2c_read_register(RegisterAddress::GyroConfig0, &reg);
+	// fix new configuration
+	reg |= (reg | static_cast<char>(_range));
+	//set new register value
+	i2c_set_register(RegisterAddress::GyroConfig0, reg);
+}
+
+void BNO055::set_gyro_bandwith_configuration(Gyro_sensor_config _bandwith)
+{
+	static char reg = 0x00;
+	// read gyro config register
+	i2c_read_register(RegisterAddress::GyroConfig0, &reg);
+	// fix new configuration
+	reg |= (reg | static_cast<char>(_bandwith));
+	//set new register value
+	i2c_set_register(RegisterAddress::GyroConfig0, reg);
+}
+
+void BNO055::set_gyro_opeMode_configuration(Gyro_sensor_config _opeMode)
+{
+	static char reg = 0x00;
+	// read gyro config register
+	i2c_read_register(RegisterAddress::GyroConfig1, &reg);
+	// fix new configuration
+	reg |= (reg | static_cast<char>(_opeMode));
+	//set new register value
+	i2c_set_register(RegisterAddress::GyroConfig1, reg);
 }
 /*
  *
