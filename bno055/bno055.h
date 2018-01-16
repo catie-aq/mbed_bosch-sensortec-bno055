@@ -392,9 +392,9 @@ public:
     void set_accel_opeMode_configuration(Acc_sensor_config _opeMode);
 
     void set_gyro_configuration(Gyro_sensor_config _range, Gyro_sensor_config _bandwith, Gyro_sensor_config _operation_mode);
-    void set_gyro_range_configuration(Gyro_sensor_config _range);
-    void set_gyro_bandwith_configuration(Gyro_sensor_config _bandwith);
-    void set_gyro_opeMode_configuration(Gyro_sensor_config _opeMode);
+	void set_gyro_range_configuration(Gyro_sensor_config _range);
+	void set_gyro_bandwith_configuration(Gyro_sensor_config _bandwith);
+	void set_gyro_opeMode_configuration(Gyro_sensor_config _opeMode);
   /*
    *
    *
