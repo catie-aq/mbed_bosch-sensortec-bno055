@@ -423,8 +423,12 @@ public:
 	void set_mag_opeMode_configuration(Mag_sensor_config _opeMode);
 	void set_mag_powerMode_configuration(Mag_sensor_config _powerMode);
 
-	/* Functions getter */
+	/* Functions get operation mode */
 	char get_operating_mode(void);
+
+	/* Function set pageID 0/1 */
+	void set_pageID_zero(void);
+	void set_pageID_one(void);
   /*
    *
    *
