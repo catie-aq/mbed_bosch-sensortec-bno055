@@ -61,6 +61,9 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
 	char reg = 0;
 	printf("Initializing BNO055 ... \n");
 	reset();
+	//to ensure in the good pageID
+	i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageZero));
+
 	i2c_read_register(RegisterAddress::ChipId, &reg);
 	if (reg != CHIP_ID) {
 		wait_ms(1000); //BNO055 may have not finishing to boot !
@@ -70,7 +73,6 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
 		}
 	}
 
-    i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageZero));
     //Updating BNO055 informations
     i2c_read_register(RegisterAddress::ChipId, &_chipId);
     i2c_read_register(RegisterAddress::AccelRevId, &_accelerometerRevisionId);
@@ -120,6 +122,14 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
 void BNO055::set_accel_configuration(Acc_sensor_config _range, Acc_sensor_config _bandwidth, Acc_sensor_config _operation_mode)
 {
 	static char reg_val = 0x00;
+	// get page register
+	i2c_read_register(RegisterAddress::PageId, &reg_val);
+	// check if pageID 1
+	if (reg_val != static_cast<char>(PageId::PageOne))
+	{
+		//go to pageID 1
+		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+	}
 	// get user accel config
 	reg_val |=  (static_cast<char>(_range) | static_cast<char>(_bandwidth) | static_cast<char>(_operation_mode));
 	//set accel conf register
@@ -129,6 +139,14 @@ void BNO055::set_accel_configuration(Acc_sensor_config _range, Acc_sensor_config
 void BNO055::set_accel_range_configuration(Acc_sensor_config _range)
 {
 	static char reg = 0x00;
+	// get page register
+	i2c_read_register(RegisterAddress::PageId, &reg);
+	// check if pageID 1
+	if (reg != static_cast<char>(PageId::PageOne))
+	{
+		//go to pageID 1
+		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+	}
 	// read acc config register
 	i2c_read_register(RegisterAddress::AccelConfig, &reg);
 	// fix new configuration
@@ -140,6 +158,14 @@ void BNO055::set_accel_range_configuration(Acc_sensor_config _range)
 void BNO055::set_accel_bandwidth_configuration(Acc_sensor_config _bandwidth)
 {
 	static char reg = 0x00;
+	// get page register
+	i2c_read_register(RegisterAddress::PageId, &reg);
+	// check if pageID 1
+	if (reg != static_cast<char>(PageId::PageOne))
+	{
+		//go to pageID 1
+		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+	}
 	// read acc config register
 	i2c_read_register(RegisterAddress::AccelConfig, &reg);
 	// fix new configuration
@@ -151,6 +177,14 @@ void BNO055::set_accel_bandwidth_configuration(Acc_sensor_config _bandwidth)
 void BNO055::set_accel_opeMode_configuration(Acc_sensor_config _opeMode)
 {
 	static char reg = 0x00;
+	// get page register
+	i2c_read_register(RegisterAddress::PageId, &reg);
+	// check if pageID 1
+	if (reg != static_cast<char>(PageId::PageOne))
+	{
+		//go to pageID 1
+		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+	}
 	// read acc config register
 	i2c_read_register(RegisterAddress::AccelConfig, &reg);
 	// fix new configuration
@@ -162,6 +196,14 @@ void BNO055::set_accel_opeMode_configuration(Acc_sensor_config _opeMode)
 void BNO055::set_gyro_configuration(Gyro_sensor_config _range, Gyro_sensor_config _bandwidth, Gyro_sensor_config _operation_mode)
 {
 	static char reg_val = 0x00;
+	// get page register
+	i2c_read_register(RegisterAddress::PageId, &reg_val);
+	// check if pageID 1
+	if (reg_val != static_cast<char>(PageId::PageOne))
+	{
+		//go to pageID 1
+		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+	}
 	// get user gyro config for config0 register
 	reg_val |=  (static_cast<char>(_range) | static_cast<char>(_bandwidth));
 	// set new value register for gyro_conf0 register
@@ -175,6 +217,14 @@ void BNO055::set_gyro_configuration(Gyro_sensor_config _range, Gyro_sensor_confi
 void BNO055::set_gyro_range_configuration(Gyro_sensor_config _range)
 {
 	static char reg = 0x00;
+	// get page register
+	i2c_read_register(RegisterAddress::PageId, &reg);
+	// check if pageID 1
+	if (reg != static_cast<char>(PageId::PageOne))
+	{
+		//go to pageID 1
+		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+	}
 	// read gyro config register
 	i2c_read_register(RegisterAddress::GyroConfig0, &reg);
 	// fix new configuration
@@ -186,6 +236,14 @@ void BNO055::set_gyro_range_configuration(Gyro_sensor_config _range)
 void BNO055::set_gyro_bandwidth_configuration(Gyro_sensor_config _bandwidth)
 {
 	static char reg = 0x00;
+	// get page register
+	i2c_read_register(RegisterAddress::PageId, &reg);
+	// check if pageID 1
+	if (reg != static_cast<char>(PageId::PageOne))
+	{
+		//go to pageID 1
+		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+	}
 	// read gyro config register
 	i2c_read_register(RegisterAddress::GyroConfig0, &reg);
 	// fix new configuration
@@ -197,6 +255,14 @@ void BNO055::set_gyro_bandwidth_configuration(Gyro_sensor_config _bandwidth)
 void BNO055::set_gyro_opeMode_configuration(Gyro_sensor_config _opeMode)
 {
 	static char reg = 0x00;
+	// get page register
+	i2c_read_register(RegisterAddress::PageId, &reg);
+	// check if pageID 1
+	if (reg != static_cast<char>(PageId::PageOne))
+	{
+		//go to pageID 1
+		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+	}
 	// read gyro config register
 	i2c_read_register(RegisterAddress::GyroConfig1, &reg);
 	// fix new configuration
@@ -208,6 +274,14 @@ void BNO055::set_gyro_opeMode_configuration(Gyro_sensor_config _opeMode)
 void BNO055::set_mag_configuration(Mag_sensor_config _dataOutputRate, Mag_sensor_config _opeMode, Mag_sensor_config _powerMode)
 {
 	static char reg_val = 0x00;
+	// get page register
+	i2c_read_register(RegisterAddress::PageId, &reg_val);
+	// check if pageID 1
+	if (reg_val != static_cast<char>(PageId::PageOne))
+	{
+		//go to pageID 1
+		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+	}
 	// get user accel config
 	reg_val |=  (static_cast<char>(_dataOutputRate) | static_cast<char>(_opeMode) | static_cast<char>(_powerMode));
 	//set accel conf register
@@ -217,6 +291,14 @@ void BNO055::set_mag_configuration(Mag_sensor_config _dataOutputRate, Mag_sensor
 void BNO055::set_mag_dataOutRate_configuration(Mag_sensor_config _dataOutputRate)
 {
 	static char reg = 0x00;
+	// get page register
+	i2c_read_register(RegisterAddress::PageId, &reg);
+	// check if pageID 1
+	if (reg != static_cast<char>(PageId::PageOne))
+	{
+		//go to pageID 1
+		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+	}
 	// read mag config register
 	i2c_read_register(RegisterAddress::MagConfig, &reg);
 	// fix new configuration
@@ -228,6 +310,14 @@ void BNO055::set_mag_dataOutRate_configuration(Mag_sensor_config _dataOutputRate
 void BNO055::set_mag_opeMode_configuration(Mag_sensor_config _opeMode)
 {
 	static char reg = 0x00;
+	// get page register
+	i2c_read_register(RegisterAddress::PageId, &reg);
+	// check if pageID 1
+	if (reg != static_cast<char>(PageId::PageOne))
+	{
+		//go to pageID 1
+		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+	}
 	// read acc config register
 	i2c_read_register(RegisterAddress::MagConfig, &reg);
 	// fix new configuration
@@ -239,6 +329,14 @@ void BNO055::set_mag_opeMode_configuration(Mag_sensor_config _opeMode)
 void BNO055::set_mag_powerMode_configuration(Mag_sensor_config _powerMode)
 {
 	static char reg = 0x00;
+	// get page register
+	i2c_read_register(RegisterAddress::PageId, &reg);
+	// check if pageID 1
+	if (reg != static_cast<char>(PageId::PageOne))
+	{
+		//go to pageID 1
+		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+	}
 	// read acc config register
 	i2c_read_register(RegisterAddress::MagConfig, &reg);
 	// fix new configuration
