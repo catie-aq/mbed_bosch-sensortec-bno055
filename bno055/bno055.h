@@ -424,11 +424,11 @@ public:
 	void set_mag_powerMode_configuration(Mag_sensor_config _powerMode);
 
 	/* Functions get operation mode */
-	char get_operating_mode(void);
+	OperationMode get_operating_mode(void);
 
-	/* Function set pageID 0/1 */
-	void set_pageID_zero(void);
-	void set_pageID_one(void);
+	/* Function set/get pageID 0/1 */
+	void set_pageID(PageId _page);
+	PageId get_current_pageID(void);
   /*
    *
    *
@@ -476,6 +476,7 @@ private:
     I2C* _i2c;
     I2CAddress _i2cAddress;
     OperationMode _mode;
+    PageId _currentPageID;
 
     char _chipId = 0;
     char _accelerometerRevisionId = 0;
@@ -483,6 +484,7 @@ private:
     char _gyroscopeRevisionId = 0;
     short _firmwareVersion = 0;
     char _bootloaderVersion = 0;
+
 
 };
 
