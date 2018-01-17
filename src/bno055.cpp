@@ -101,7 +101,6 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
     }
 
     set_operation_mode(mode);
-    _mode = mode;
     wait_ms(20);
 
     return true;
@@ -343,6 +342,11 @@ void BNO055::set_mag_powerMode_configuration(Mag_sensor_config _powerMode)
 	reg |= (reg | static_cast<char>(_powerMode));
 	//set new register value
 	i2c_set_register(RegisterAddress::MagConfig, reg);
+}
+
+char BNO055::get_operating_mode()
+{
+	return static_cast<char>(_mode);
 }
 /*
  *
