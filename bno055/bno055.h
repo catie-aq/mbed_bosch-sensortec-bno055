@@ -422,6 +422,9 @@ public:
 	void set_mag_dataOutRate_configuration(Mag_sensor_config _dataOutputRate);
 	void set_mag_opeMode_configuration(Mag_sensor_config _opeMode);
 	void set_mag_powerMode_configuration(Mag_sensor_config _powerMode);
+
+	/* Functions getter */
+	char get_operating_mode(void);
   /*
    *
    *
