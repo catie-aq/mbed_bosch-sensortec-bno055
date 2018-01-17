@@ -348,6 +348,16 @@ char BNO055::get_operating_mode()
 {
 	return static_cast<char>(_mode);
 }
+
+void BNO055::set_pageID_zero(void)
+{
+	i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageZero));
+}
+
+void BNO055::set_pageID_one(void)
+{
+	i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+}
 /*
  *
  *
