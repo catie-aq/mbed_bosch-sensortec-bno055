@@ -400,11 +400,7 @@ public:
     bool initialize(OperationMode mode = OperationMode::NDOF, bool use_ext_crystal = false);
     void set_operation_mode(OperationMode mode);
     void set_power_mode(PowerMode mode);
- /*
-  *
-  * JDE
-  *
-  */
+
     /* Functions to configure accelerometer */
     void set_accel_configuration(Acc_sensor_config _range, Acc_sensor_config _bandwidth, Acc_sensor_config _operation_mode);
     void set_accel_range_configuration(Acc_sensor_config _range);
@@ -429,11 +425,6 @@ public:
 	/* Function set/get pageID 0/1 */
 	void set_pageID(PageId _page);
 	PageId get_current_pageID(void);
-  /*
-   *
-   *
-   *
-   */
 
     /* Functions to read non-filtered values from sensors */
     void read_accel(bno055_accel_t* accel);
