@@ -40,7 +40,7 @@ namespace {
  *
  */
 BNO055::BNO055(I2C * i2c, I2CAddress address, int hz):
-        _i2cAddress(address), _mode(OperationMode::CONFIG), _currentPageID(0xff)
+        _i2cAddress(address), _mode(OperationMode::CONFIG), _currentPageID(PageId::PageZero)
 {
 	_i2c = i2c;
     _i2c->frequency(hz);
@@ -61,8 +61,6 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
 	char reg = 0;
 	printf("Initializing BNO055 ... \n");
 	reset();
-	//to ensure in the good pageID
-	set_pageID(PageId::PageZero);
 
 	i2c_read_register(RegisterAddress::ChipId, &reg);
 	if (reg != CHIP_ID) {
@@ -113,13 +111,13 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
  * @param _operation_mode : config operation mode associated in accelerometer (Normal/Suspend/LowPower1/Standby/LowPower2/DeepSuspend)
  *
  */
-void BNO055::set_accel_configuration(Acc_sensor_config _range, Acc_sensor_config _bandwidth, Acc_sensor_config _operation_mode)
+void BNO055::set_accel_configuration(AccSensorRangeConfig _range, AccSensorBWConfig _bandwidth, AccSensorOpeModeConfig _operation_mode)
 {
 	static char reg_val = 0x00;
 	// check if current page = pageID 1
-	if (this->_currentPageID != PageId::PageOne){
+	if (this->_currentPageID != PageId::PageOne) {
 		//go to pageID 1
-		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+		set_pageID(PageId::PageOne);
 	}
 	// get user accel config
 	reg_val |=  (static_cast<char>(_range) | static_cast<char>(_bandwidth) | static_cast<char>(_operation_mode));
@@ -132,13 +130,13 @@ void BNO055::set_accel_configuration(Acc_sensor_config _range, Acc_sensor_config
  * @param _range : acceleration range 2g/4g/8g/16g
  *
  */
-void BNO055::set_accel_range_configuration(Acc_sensor_config _range)
+void BNO055::set_accel_range_configuration(AccSensorRangeConfig _range)
 {
 	static char reg = 0x00;
 	// check if current page = pageID 1
-	if (this->_currentPageID != PageId::PageOne){
+	if (this->_currentPageID != PageId::PageOne) {
 		//go to pageID 1
-		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+		set_pageID(PageId::PageOne);
 	}
 	// read acc config register
 	i2c_read_register(RegisterAddress::AccelConfig, &reg);
@@ -153,13 +151,13 @@ void BNO055::set_accel_range_configuration(Acc_sensor_config _range)
  * @param _bandwidth : Low-pass filter bandwidths 7.81Hz/15.63Hz/31.25Hz/62.5Hz/125Hz/250Hz/500Hz/1000Hz
  *
  */
-void BNO055::set_accel_bandwidth_configuration(Acc_sensor_config _bandwidth)
+void BNO055::set_accel_bandwidth_configuration(AccSensorBWConfig _bandwidth)
 {
 	static char reg = 0x00;
 	// check if current page = pageID 1
-	if (this->_currentPageID != PageId::PageOne){
+	if (this->_currentPageID != PageId::PageOne) {
 		//go to pageID 1
-		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+		set_pageID(PageId::PageOne);
 	}
 	// read acc config register
 	i2c_read_register(RegisterAddress::AccelConfig, &reg);
@@ -174,13 +172,13 @@ void BNO055::set_accel_bandwidth_configuration(Acc_sensor_config _bandwidth)
  * @param _opeMode : config operation mode associated in accelerometer (Normal/Suspend/LowPower1/Standby/LowPower2/DeepSuspend)
  *
  */
-void BNO055::set_accel_opeMode_configuration(Acc_sensor_config _opeMode)
+void BNO055::set_accel_opeMode_configuration(AccSensorOpeModeConfig _opeMode)
 {
 	static char reg = 0x00;
 	// check if current page = pageID 1
-	if (this->_currentPageID != PageId::PageOne){
+	if (this->_currentPageID != PageId::PageOne) {
 		//go to pageID 1
-		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+		set_pageID(PageId::PageOne);
 	}
 	// read acc config register
 	i2c_read_register(RegisterAddress::AccelConfig, &reg);
@@ -197,13 +195,13 @@ void BNO055::set_accel_opeMode_configuration(Acc_sensor_config _opeMode)
  * @param _operation_mode : config operation mode associated in gyroscope (Normal/FastPowerUp/DeepSuspend/Suspend/AdvancedPowersave)
  *
  */
-void BNO055::set_gyro_configuration(Gyro_sensor_config _range, Gyro_sensor_config _bandwidth, Gyro_sensor_config _operation_mode)
+void BNO055::set_gyro_configuration(GyroSensorRangeConfig _range, GyroSensorBWconfig _bandwidth, GyroSensorOpeModeconfig _operation_mode)
 {
 	static char reg_val = 0x00;
 	// check if current page = pageID 1
-	if (this->_currentPageID != PageId::PageOne){
+	if (this->_currentPageID != PageId::PageOne) {
 		//go to pageID 1
-		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+		set_pageID(PageId::PageOne);
 	}
 	// get user gyro config for config0 register
 	reg_val |=  (static_cast<char>(_range) | static_cast<char>(_bandwidth));
@@ -220,13 +218,13 @@ void BNO055::set_gyro_configuration(Gyro_sensor_config _range, Gyro_sensor_confi
  * @param _range : gyroscope range 2000dps/1000dps/500dps/250dps/125dps
  *
  */
-void BNO055::set_gyro_range_configuration(Gyro_sensor_config _range)
+void BNO055::set_gyro_range_configuration(GyroSensorRangeConfig _range)
 {
 	static char reg = 0x00;
 	// check if current page = pageID 1
-	if (this->_currentPageID != PageId::PageOne){
+	if (this->_currentPageID != PageId::PageOne) {
 		//go to pageID 1
-		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+		set_pageID(PageId::PageOne);
 	}
 	// read gyro config register
 	i2c_read_register(RegisterAddress::GyroConfig0, &reg);
@@ -241,13 +239,13 @@ void BNO055::set_gyro_range_configuration(Gyro_sensor_config _range)
  * @param _bandwidth : Low-pass filter bandwidths 523Hz/230Hz/116Hz/47Hz/23Hz/12Hz/64Hz/32Hz
  *
  */
-void BNO055::set_gyro_bandwidth_configuration(Gyro_sensor_config _bandwidth)
+void BNO055::set_gyro_bandwidth_configuration(GyroSensorBWconfig _bandwidth)
 {
 	static char reg = 0x00;
 	// check if current page = pageID 1
-	if (this->_currentPageID != PageId::PageOne){
+	if (this->_currentPageID != PageId::PageOne) {
 		//go to pageID 1
-		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+		set_pageID(PageId::PageOne);
 	}
 	// read gyro config register
 	i2c_read_register(RegisterAddress::GyroConfig0, &reg);
@@ -262,13 +260,13 @@ void BNO055::set_gyro_bandwidth_configuration(Gyro_sensor_config _bandwidth)
  * @param _opeMode : config operation mode associated in gyroscope (Normal/FastPowerUp/DeepSuspend/Suspend/AdvancedPowersave)
  *
  */
-void BNO055::set_gyro_opeMode_configuration(Gyro_sensor_config _opeMode)
+void BNO055::set_gyro_opeMode_configuration(GyroSensorOpeModeconfig _opeMode)
 {
 	static char reg = 0x00;
 	// check if current page = pageID 1
-	if (this->_currentPageID != PageId::PageOne){
+	if (this->_currentPageID != PageId::PageOne) {
 		//go to pageID 1
-		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+		set_pageID(PageId::PageOne);
 	}
 	// read gyro config register
 	i2c_read_register(RegisterAddress::GyroConfig1, &reg);
@@ -285,13 +283,13 @@ void BNO055::set_gyro_opeMode_configuration(Gyro_sensor_config _opeMode)
  * @param _powerMode : Normal/Sleep/Suspend/Force
  *
  */
-void BNO055::set_mag_configuration(Mag_sensor_config _dataOutputRate, Mag_sensor_config _opeMode, Mag_sensor_config _powerMode)
+void BNO055::set_mag_configuration(MagSensorRateConfig _dataOutputRate, MagSensorOpeModeConfig _opeMode, MagSensorPowerModeConfig _powerMode)
 {
 	static char reg_val = 0x00;
 	// check if current page = pageID 1
-	if (this->_currentPageID != PageId::PageOne){
+	if (this->_currentPageID != PageId::PageOne) {
 		//go to pageID 1
-		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+		set_pageID(PageId::PageOne);
 	}
 	// get user mag config
 	reg_val |=  (static_cast<char>(_dataOutputRate) | static_cast<char>(_opeMode) | static_cast<char>(_powerMode));
@@ -304,13 +302,13 @@ void BNO055::set_mag_configuration(Mag_sensor_config _dataOutputRate, Mag_sensor
  * @param _dataOutputRate :  2Hz/6Hz/8Hz/10Hz/15Hz/20Hz/25Hz/30Hz
  *
  */
-void BNO055::set_mag_dataOutRate_configuration(Mag_sensor_config _dataOutputRate)
+void BNO055::set_mag_dataOutRate_configuration(MagSensorRateConfig _dataOutputRate)
 {
 	static char reg = 0x00;
 	// check if current page = pageID 1
-	if (this->_currentPageID != PageId::PageOne){
+	if (this->_currentPageID != PageId::PageOne) {
 		//go to pageID 1
-		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+		set_pageID(PageId::PageOne);
 	}
 	// read mag config register
 	i2c_read_register(RegisterAddress::MagConfig, &reg);
@@ -325,13 +323,13 @@ void BNO055::set_mag_dataOutRate_configuration(Mag_sensor_config _dataOutputRate
  * @param _opeMode :  LowPower/Regular/EnhancedRegular/HighAccuracy
  *
  */
-void BNO055::set_mag_opeMode_configuration(Mag_sensor_config _opeMode)
+void BNO055::set_mag_opeMode_configuration(MagSensorOpeModeConfig _opeMode)
 {
 	static char reg = 0x00;
 	// check if current page = pageID 1
-	if (this->_currentPageID != PageId::PageOne){
+	if (this->_currentPageID != PageId::PageOne) {
 		//go to pageID 1
-		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+		set_pageID(PageId::PageOne);
 	}
 	// read mag config register
 	i2c_read_register(RegisterAddress::MagConfig, &reg);
@@ -346,13 +344,13 @@ void BNO055::set_mag_opeMode_configuration(Mag_sensor_config _opeMode)
  * @param _powerMode :  Normal/Sleep/Suspend/Force
  *
  */
-void BNO055::set_mag_powerMode_configuration(Mag_sensor_config _powerMode)
+void BNO055::set_mag_powerMode_configuration(MagSensorPowerModeConfig _powerMode)
 {
 	static char reg = 0x00;
 	// check if current page = pageID 1
-	if (this->_currentPageID != PageId::PageOne){
+	if (this->_currentPageID != PageId::PageOne) {
 		//go to pageID 1
-		i2c_set_register(RegisterAddress::PageId, static_cast<char>(PageId::PageOne));
+		set_pageID(PageId::PageOne);
 	}
 	// read mag config register
 	i2c_read_register(RegisterAddress::MagConfig, &reg);
@@ -369,7 +367,7 @@ void BNO055::set_mag_powerMode_configuration(Mag_sensor_config _powerMode)
  */
 BNO055::OperationMode BNO055::get_operating_mode()
 {
-	return (this->_mode);
+	return (_mode);
 }
 
 /** Set BNO055 pageID
@@ -380,7 +378,7 @@ BNO055::OperationMode BNO055::get_operating_mode()
 void BNO055::set_pageID(PageId _page)
 {
 	i2c_set_register(RegisterAddress::PageId, static_cast<char>(_page));
-	this->_currentPageID = _page;
+	_currentPageID = _page;
 }
 
 /** Get BNO055 operating mode
@@ -390,7 +388,7 @@ void BNO055::set_pageID(PageId _page)
  */
 BNO055::PageId BNO055::get_current_pageID(void)
 {
-	return (this->_currentPageID);
+	return (_currentPageID);
 }
 
 /** Set the BNO055 operation mode
@@ -400,6 +398,11 @@ BNO055::PageId BNO055::get_current_pageID(void)
  */
 void BNO055::set_operation_mode(OperationMode mode)
 {
+	// check current pageID
+	if (this->_currentPageID != PageId::PageZero) {
+		//go to pageID 0
+		set_pageID(PageId::PageZero);
+	}
 	_mode = mode;
 	i2c_set_register(RegisterAddress::OprMode, static_cast<char>(mode));
 	wait_ms(20);
@@ -412,6 +415,11 @@ void BNO055::set_operation_mode(OperationMode mode)
  */
 void BNO055::set_power_mode(PowerMode mode)
 {
+	// check current pageID
+	if (this->_currentPageID != PageId::PageZero) {
+		//go to pageID 0
+		set_pageID(PageId::PageZero);
+	}
     i2c_set_register(RegisterAddress::PwrMode, static_cast<char>(mode));
 }
 
@@ -423,6 +431,11 @@ void BNO055::set_power_mode(PowerMode mode)
 void BNO055::read_accel(bno055_accel_t* accel)
 {
 	static int16_t raw_acc[3];
+	// check current pageID
+	if (this->_currentPageID != PageId::PageZero) {
+		//go to pageID 0
+		set_pageID(PageId::PageZero);
+	}
 	i2c_read_vector(RegisterAddress::AccelData_X_Lsb, raw_acc);
 
 	accel->x = ((double)raw_acc[0])/RAW_TO_METERS_PER_SECOND;
@@ -438,6 +451,11 @@ void BNO055::read_accel(bno055_accel_t* accel)
 void BNO055::read_gyro(bno055_gyro_t* gyro)
 {
 	static int16_t raw_gyro[3];
+	// check current pageID
+	if (this->_currentPageID != PageId::PageZero) {
+		//go to pageID 0
+		set_pageID(PageId::PageZero);
+	}
 	i2c_read_vector(RegisterAddress::GyroData_X_Lsb, raw_gyro);
 
 	gyro->x = ((double)raw_gyro[0])/RAW_TO_RADIANS;
@@ -453,6 +471,12 @@ void BNO055::read_gyro(bno055_gyro_t* gyro)
 void BNO055::read_temperature(bno055_temperature_t *temp)
 {
 	static char data;
+
+	// check current pageID
+	if (this->_currentPageID != PageId::PageZero) {
+		//go to pageID 0
+		set_pageID(PageId::PageZero);
+	}
 
 	i2c_set_register(BNO055::RegisterAddress::TempSource, TEMP_SOURCE_ACC); //accelerometer temperature
 	wait_ms(1); // \TODO is it necessary ?
@@ -473,6 +497,11 @@ void BNO055::read_temperature(bno055_temperature_t *temp)
 void BNO055::read_mag(bno055_mag_t* mag)
 {
 	static int16_t raw_mag[3];
+	// check current pageID
+	if (this->_currentPageID != PageId::PageZero) {
+		//go to pageID 0
+		set_pageID(PageId::PageZero);
+	}
 	i2c_read_vector(RegisterAddress::MagData_X_Lsb, raw_mag);
 
 	mag->x = ((double)raw_mag[0])/RAW_TO_MICRO_TESLA;
@@ -488,6 +517,11 @@ void BNO055::read_mag(bno055_mag_t* mag)
 void BNO055::read_linear_accel(bno055_linear_accel_t* accel)
 {
 	static int16_t raw_acc[3];
+	// check current pageID
+	if (this->_currentPageID != PageId::PageZero) {
+		//go to pageID 0
+		set_pageID(PageId::PageZero);
+	}
 	i2c_read_vector(RegisterAddress::LinearAccelData_X_Lsb, raw_acc);
 
 	accel->x = ((double)raw_acc[0])/RAW_TO_METERS_PER_SECOND;
@@ -503,6 +537,11 @@ void BNO055::read_linear_accel(bno055_linear_accel_t* accel)
 void BNO055::read_euler(bno055_euler_t* euler)
 {
 	static int16_t raw_eul[3];
+	// check current pageID
+	if (this->_currentPageID != PageId::PageZero) {
+		//go to pageID 0
+		set_pageID(PageId::PageZero);
+	}
 	i2c_read_vector(RegisterAddress::Euler_H_Lsb, raw_eul);
 
 	euler->x = ((double)raw_eul[0])/RAW_TO_RADIANS;
@@ -520,7 +559,11 @@ void BNO055::read_quaternion(bno055_quaternion_t* quat)
 	static char data[8];
 	static int16_t raw_quat[4];
     char reg = static_cast<char>(RegisterAddress::QuaternionData_W_Lsb);
-
+	// check current pageID
+	if (this->_currentPageID != PageId::PageZero) {
+		//go to pageID 0
+		set_pageID(PageId::PageZero);
+	}
     _i2c->write(static_cast<int>(_i2cAddress) << 1, &reg, 1, true);
     _i2c->read(static_cast<int>(_i2cAddress) << 1, data, 8, false);
 
@@ -544,7 +587,11 @@ void BNO055::read_quaternion(bno055_raw_quaternion_t* quat)
 {
 	static char data[8];
     char reg = static_cast<char>(RegisterAddress::QuaternionData_W_Lsb);
-
+	// check current pageID
+	if (this->_currentPageID != PageId::PageZero) {
+		//go to pageID 0
+		set_pageID(PageId::PageZero);
+	}
     _i2c->write(static_cast<int>(_i2cAddress) << 1, &reg, 1, true);
     _i2c->read(static_cast<int>(_i2cAddress) << 1, data, 8, false);
 
@@ -562,6 +609,11 @@ void BNO055::read_quaternion(bno055_raw_quaternion_t* quat)
 void BNO055::read_gravity(bno055_gravity_t* gravity)
 {
 	static int16_t raw_grav[3];
+	// check current pageID
+	if (this->_currentPageID != PageId::PageZero) {
+		//go to pageID 0
+		set_pageID(PageId::PageZero);
+	}
 	i2c_read_vector(RegisterAddress::GravityData_X_Lsb, raw_grav);
 
 	gravity->x = ((double)raw_grav[0])/RAW_TO_METERS_PER_SECOND;
@@ -578,6 +630,11 @@ void BNO055::read_gravity(bno055_gravity_t* gravity)
  */
 void BNO055::get_calibration_status(uint8_t* sys, uint8_t* gyro, uint8_t* accel, uint8_t* mag) {
 	static char cal_data;
+	// check current pageID
+	if (this->_currentPageID != PageId::PageZero) {
+		//go to pageID 0
+		set_pageID(PageId::PageZero);
+	}
 	i2c_read_register(RegisterAddress::CalibStat, &cal_data);
 	if (sys != NULL) {
 	*sys = (cal_data >> 6) & 0x03;
@@ -676,6 +733,11 @@ void BNO055::set_sensor_offsets(const bno055_offsets_t* sensor_offsets)
  */
 void BNO055::reset()
 {
+	// check current pageID
+	if (this->_currentPageID != PageId::PageZero) {
+		//go to pageID 0
+		set_pageID(PageId::PageZero);
+	}
 	i2c_set_register(RegisterAddress::SysTrigger, RESET_COMMAND);
 	wait_ms(TIME_TO_RESET);
 }
