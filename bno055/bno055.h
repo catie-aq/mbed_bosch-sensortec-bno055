@@ -306,7 +306,7 @@ public:
 
     enum class PageId: char {
         PageZero                = (0X00),
-        PageOne                 = (0X01)
+        PageOne                 = (0X01),
     };
     
     enum class PowerMode: char {
@@ -332,21 +332,29 @@ public:
         NDOF                             = 0X0C
     };
 
-    enum class Acc_sensor_config: uint8_t{
-    	/* Accelerometer sensor config */
+    enum class AccSensorRangeConfig: uint8_t {
+    	/* Accelerometer sensor range config */
 		Range_2G                              = 0x00,
 		Range_4G                              = 0x01,
 		Range_8G                              = 0x02,
-		Range_16G                             = 0x03,
-		bandwidth_7Hz                         = 0x00,
+		Range_16G                             = 0x03
+    };
+
+    enum class AccSensorBWConfig: uint8_t {
+    	/* Accelerometer sensor bandwidth config */
+    	bandwidth_7Hz                         = 0x00,
 		bandwidth_15Hz                        = 0x04,
 		bandwidth_31Hz                        = 0x8,
 		bandwidth_62Hz                        = 0xC,
 		bandwidth_125Hz                       = 0x10,
 		bandwidth_250Hz                       = 0x14,
 		bandwidth_500Hz                       = 0x18,
-		bandwidth_1000Hz                      = 0x1C,
-		OpeMode_Normal                        = 0x00,
+		bandwidth_1000Hz                      = 0x1C
+    };
+
+    enum class AccSensorOpeModeConfig: uint8_t {
+    	/* Accelerometer sensor Operating Mode config */
+    	OpeMode_Normal                        = 0x00,
 		OpeMode_Suspend                       = 0x20,
 		OpeMode_LowPower1                     = 0x40,
 		OpeMode_Standby                       = 0x60,
@@ -354,13 +362,17 @@ public:
 		OpeMode_DeepSuspend                   = 0xA0
     };
 
-	enum class Gyro_sensor_config: uint8_t{
-		/* Gyroscope sensor config */
+	enum class GyroSensorRangeConfig: uint8_t {
+		/* Gyroscope sensor range config */
 		Range_2000DPS                         = 0x00,
 		Range_1000DPS                         = 0x01,
 		Range_500DPS                          = 0x02,
 		Range_250DPS                          = 0x03,
-		Range_125DPS                          = 0x04,
+		Range_125DPS                          = 0x04
+	};
+
+	enum class GyroSensorBWconfig: uint8_t {
+		/* Gyroscope sensor bandwidth config */
 		bandwidth_523Hz                       = 0x00,
 		bandwidth_230Hz                       = 0x08,
 		bandwidth_116Hz                       = 0x10,
@@ -368,14 +380,18 @@ public:
 		bandwidth_23Hz                        = 0x20,
 		bandwidth_12Hz                        = 0x28,
 		bandwidth_64Hz                        = 0x30,
-		bandwidth_32Hz                        = 0x38,
+		bandwidth_32Hz                        = 0x38
+	};
+
+	enum class GyroSensorOpeModeconfig: uint8_t {
+		/* Gyroscope sensor operating mode config */
 		OpeMode_Normal                        = 0x00,
 		OpeMode_FastPowerUp                   = 0x01,
 		OpeMode_DeepSuspend                   = 0x02
 	};
 
-	enum class Mag_sensor_config: uint8_t{
-		/* Magnetometer sensor config */
+	enum class MagSensorRateConfig: uint8_t {
+		/* Magnetometer sensor Data out rate config */
 		Data_out_rate_2Hz                     = 0x00,
 		Data_out_rate_6Hz                     = 0x01,
 		Data_out_rate_8Hz                     = 0x02,
@@ -383,11 +399,19 @@ public:
 		Data_out_rate_15Hz                    = 0x04,
 		Data_out_rate_20Hz                    = 0x05,
 		Data_out_rate_25Hz                    = 0x06,
-		Data_out_rate_30Hz                    = 0x07,
+		Data_out_rate_30Hz                    = 0x07
+	};
+
+	enum class MagSensorOpeModeConfig: uint8_t {
+		/* Magnetometer sensor operating mode config */
 		OpeMode_LowPower                      = 0x00,
 		OpeMode_Regular                       = 0x08,
 		OpeMode_EnhancedRegular               = 0x10,
-		OpeMode_HighAccuracy                  = 0x18,
+		OpeMode_HighAccuracy                  = 0x18
+	};
+
+	enum class MagSensorPowerModeConfig: uint8_t {
+		/* Magnetometer sensor power mode config */
 		PowerMode_Normal                      = 0x00,
 		PowerMode_Sleep                       = 0x02,
 		PowerMode_Suspend                     = 0x04,
@@ -402,22 +426,22 @@ public:
     void set_power_mode(PowerMode mode);
 
     /* Functions to configure accelerometer */
-    void set_accel_configuration(Acc_sensor_config _range, Acc_sensor_config _bandwidth, Acc_sensor_config _operation_mode);
-    void set_accel_range_configuration(Acc_sensor_config _range);
-    void set_accel_bandwidth_configuration(Acc_sensor_config _bandwidth);
-    void set_accel_opeMode_configuration(Acc_sensor_config _opeMode);
+    void set_accel_configuration(AccSensorRangeConfig _range, AccSensorBWConfig _bandwidth, AccSensorOpeModeConfig _operation_mode);
+    void set_accel_range_configuration(AccSensorRangeConfig _range);
+    void set_accel_bandwidth_configuration(AccSensorBWConfig _bandwidth);
+    void set_accel_opeMode_configuration(AccSensorOpeModeConfig _opeMode);
 
     /* Functions to configure gyroscope */
-    void set_gyro_configuration(Gyro_sensor_config _range, Gyro_sensor_config _bandwidth, Gyro_sensor_config _operation_mode);
-	void set_gyro_range_configuration(Gyro_sensor_config _range);
-	void set_gyro_bandwidth_configuration(Gyro_sensor_config _bandwidth);
-	void set_gyro_opeMode_configuration(Gyro_sensor_config _opeMode);
+    void set_gyro_configuration(GyroSensorRangeConfig _range, GyroSensorBWconfig _bandwidth, GyroSensorOpeModeconfig _operation_mode);
+	void set_gyro_range_configuration(GyroSensorRangeConfig _range);
+	void set_gyro_bandwidth_configuration(GyroSensorBWconfig _bandwidth);
+	void set_gyro_opeMode_configuration(GyroSensorOpeModeconfig _opeMode);
 
 	/* Functions to configure magnetometer */
-    void set_mag_configuration(Mag_sensor_config _dataOutputRate, Mag_sensor_config _opeMode, Mag_sensor_config _powerMode);
-	void set_mag_dataOutRate_configuration(Mag_sensor_config _dataOutputRate);
-	void set_mag_opeMode_configuration(Mag_sensor_config _opeMode);
-	void set_mag_powerMode_configuration(Mag_sensor_config _powerMode);
+    void set_mag_configuration(MagSensorRateConfig _dataOutputRate, MagSensorOpeModeConfig _opeMode, MagSensorPowerModeConfig _powerMode);
+	void set_mag_dataOutRate_configuration(MagSensorRateConfig _dataOutputRate);
+	void set_mag_opeMode_configuration(MagSensorOpeModeConfig _opeMode);
+	void set_mag_powerMode_configuration(MagSensorPowerModeConfig _powerMode);
 
 	/* Functions get operation mode */
 	OperationMode get_operating_mode(void);
