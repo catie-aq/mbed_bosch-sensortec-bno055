@@ -278,7 +278,7 @@ public:
         AccelConfig             = (0x08),
         MagConfig               = (0x09),
         GyroConfig0             = (0x0A),
-		GyroConfig1             = (0x0B),
+        GyroConfig1             = (0x0B),
         AccelSleepConfig        = (0x0C),
         GyroSleepConfig         = (0x0D),
         MagSleepConfig          = (0x0E),
@@ -309,9 +309,9 @@ public:
     };
     
     enum class PowerMode: char {
-    	NORMAL		=(0X00),
-    	LOWPOWER	=(0X01),
-        SUSPEND		=(0X02)
+        NORMAL        =(0X00),
+        LOWPOWER      =(0X01),
+        SUSPEND       =(0X02)
     };
 
     enum class OperationMode: char {
