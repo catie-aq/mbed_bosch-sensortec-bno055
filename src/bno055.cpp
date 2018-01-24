@@ -21,7 +21,7 @@ namespace sixtron {
 namespace {
 
 /* MACROS */
-#define	TEMP_SOURCE_ACC                0x00
+#define TEMP_SOURCE_ACC                0x00
 #define TEMP_SOURCE_GYR                0x01
 #define RESET_COMMAND                  0x20
 #define RAW_TO_MICRO_TESLA             16.0
@@ -42,7 +42,7 @@ namespace {
 BNO055::BNO055(I2C * i2c, I2CAddress address, int hz):
         _i2cAddress(address), _mode(OperationMode::CONFIG), _currentPageID(PageId::PageZero)
 {
-	_i2c = i2c;
+    _i2c = i2c;
     _i2c->frequency(hz);
 }
 
@@ -50,7 +50,7 @@ BNO055::BNO055(I2C * i2c, I2CAddress address, int hz):
  *
  * @param mode operation mode to be run by the BNO
  * @param use_ext_crystal True if it should use a 32 kHz external crystal to improve the clock precision
- * 		 				False if it should use the internal clock
+ *                          False if it should use the internal clock
  *
  * @returns
  *      True on success,
@@ -106,119 +106,119 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
 
 /** Set BNO055 accelerometer configuration
  *
- * @param _range : acceleration range 2g/4g/8g/16g
- * @param _bandwidth : Low-pass filter bandwidths 7.81Hz/15.63Hz/31.25Hz/62.5Hz/125Hz/250Hz/500Hz/1000Hz
- * @param _operation_mode : config operation mode associated in accelerometer (Normal/Suspend/LowPower1/Standby/LowPower2/DeepSuspend)
+ * @param range : acceleration range 2g/4g/8g/16g
+ * @param bandwidth : Low-pass filter bandwidths 7.81Hz/15.63Hz/31.25Hz/62.5Hz/125Hz/250Hz/500Hz/1000Hz
+ * @param operation_mode : config operation mode associated in accelerometer (Normal/Suspend/LowPower1/Standby/LowPower2/DeepSuspend)
  *
  */
-void BNO055::set_accel_configuration(AccSensorRangeConfig _range, AccSensorBWConfig _bandwidth, AccSensorOpeModeConfig _operation_mode)
+void BNO055::set_accel_configuration(AccSensorRange range, AccSensorBandWidth bandwidth, AccSensorOpeMode operation_mode)
 {
     static char reg_val = 0x00;
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
-	    //go to pageID 1
-	    set_pageID(PageId::PageOne);
+        //go to pageID 1
+        set_pageID(PageId::PageOne);
     }
     // get user accel config
-    reg_val |=  (static_cast<char>(_range) | static_cast<char>(_bandwidth) | static_cast<char>(_operation_mode));
+    reg_val |=  (static_cast<char>(range) | static_cast<char>(bandwidth) | static_cast<char>(operation_mode));
     //set accel conf register
     i2c_set_register(RegisterAddress::AccelConfig, reg_val);
 }
 
 /** Set BNO055  range accelerometer configuration
  *
- * @param _range : acceleration range 2g/4g/8g/16g
+ * @param range : acceleration range 2g/4g/8g/16g
  *
  */
-void BNO055::set_accel_range_configuration(AccSensorRangeConfig _range)
+void BNO055::set_accel_range(AccSensorRange range)
 {
     static char reg = 0x00;
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
-	    //go to pageID 1
-	    set_pageID(PageId::PageOne);
+        //go to pageID 1
+        set_pageID(PageId::PageOne);
     }
     // read acc config register
     i2c_read_register(RegisterAddress::AccelConfig, &reg);
     // fix new configuration
-    reg |= (reg | static_cast<char>(_range));
+    reg |= (reg | static_cast<char>(range));
     //set new register value
     i2c_set_register(RegisterAddress::AccelConfig, reg);
 }
 
 /** Set BNO055  bandwidth accelerometer configuration
  *
- * @param _bandwidth : Low-pass filter bandwidths 7.81Hz/15.63Hz/31.25Hz/62.5Hz/125Hz/250Hz/500Hz/1000Hz
+ * @param bandwidth : Low-pass filter bandwidths 7.81Hz/15.63Hz/31.25Hz/62.5Hz/125Hz/250Hz/500Hz/1000Hz
  *
  */
-void BNO055::set_accel_bandwidth_configuration(AccSensorBWConfig _bandwidth)
+void BNO055::set_accel_bandwidth(AccSensorBandWidth bandwidth)
 {
     static char reg = 0x00;
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
-	    //go to pageID 1
-	    set_pageID(PageId::PageOne);
+        //go to pageID 1
+        set_pageID(PageId::PageOne);
     }
     // read acc config register
     i2c_read_register(RegisterAddress::AccelConfig, &reg);
     // fix new configuration
-    reg |= (reg | static_cast<char>(_bandwidth));
+    reg |= (reg | static_cast<char>(bandwidth));
     //set new register value
     i2c_set_register(RegisterAddress::AccelConfig, reg);
 }
 
 /** Set BNO055  operating mode accelerometer configuration
  *
- * @param _opeMode : config operation mode associated in accelerometer (Normal/Suspend/LowPower1/Standby/LowPower2/DeepSuspend)
+ * @param operation_mode : config operation mode associated in accelerometer (Normal/Suspend/LowPower1/Standby/LowPower2/DeepSuspend)
  *
  */
-void BNO055::set_accel_opeMode_configuration(AccSensorOpeModeConfig _opeMode)
+void BNO055::set_accel_operation_mode(AccSensorOpeMode operation_mode)
 {
     static char reg = 0x00;
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
-	    //go to pageID 1
-	    set_pageID(PageId::PageOne);
+        //go to pageID 1
+        set_pageID(PageId::PageOne);
     }
     // read acc config register
     i2c_read_register(RegisterAddress::AccelConfig, &reg);
     // fix new configuration
-    reg |= (reg | static_cast<char>(_opeMode));
+    reg |= (reg | static_cast<char>(operation_mode));
     //set new register value
     i2c_set_register(RegisterAddress::AccelConfig, reg);
 }
 
 /** Set BNO055 gyroscope configuration
  *
- * @param _range : gyroscope range 2000dps/1000dps/500dps/250dps/125dps
- * @param _bandwidth : Low-pass filter bandwidths 523Hz/230Hz/116Hz/47Hz/23Hz/12Hz/64Hz/32Hz
- * @param _operation_mode : config operation mode associated in gyroscope (Normal/FastPowerUp/DeepSuspend/Suspend/AdvancedPowersave)
+ * @param range : gyroscope range 2000dps/1000dps/500dps/250dps/125dps
+ * @param bandwidth : Low-pass filter bandwidths 523Hz/230Hz/116Hz/47Hz/23Hz/12Hz/64Hz/32Hz
+ * @param operation_mode : config operation mode associated in gyroscope (Normal/FastPowerUp/DeepSuspend/Suspend/AdvancedPowersave)
  *
  */
-void BNO055::set_gyro_configuration(GyroSensorRangeConfig _range, GyroSensorBWconfig _bandwidth, GyroSensorOpeModeconfig _operation_mode)
+void BNO055::set_gyro_configuration(GyroSensorRange range, GyroSensorBandWidth bandwidth, GyroSensorOpeMode operation_mode)
 {
     static char reg_val = 0x00;
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
-	    //go to pageID 1
-	    set_pageID(PageId::PageOne);
+        //go to pageID 1
+        set_pageID(PageId::PageOne);
     }
     // get user gyro config for config0 register
-    reg_val |=  (static_cast<char>(_range) | static_cast<char>(_bandwidth));
+    reg_val |=  (static_cast<char>(range) | static_cast<char>(bandwidth));
     // set new value register for gyro_conf0 register
     i2c_set_register(RegisterAddress::GyroConfig0, reg_val);
     // get user gyro config for config1 register
-    reg_val |= (0x00 | static_cast<char>(_operation_mode));
+    reg_val |= (0x00 | static_cast<char>(operation_mode));
     // set new value register for config1_register
     i2c_set_register(RegisterAddress::GyroConfig1, reg_val);
 }
 
 /** Set BNO055  range gyroscope configuration
  *
- * @param _range : gyroscope range 2000dps/1000dps/500dps/250dps/125dps
+ * @param range : gyroscope range 2000dps/1000dps/500dps/250dps/125dps
  *
  */
-void BNO055::set_gyro_range_configuration(GyroSensorRangeConfig _range)
+void BNO055::set_gyro_range(GyroSensorRange range)
 {
     static char reg = 0x00;
     // check if current page = pageID 1
@@ -229,17 +229,17 @@ void BNO055::set_gyro_range_configuration(GyroSensorRangeConfig _range)
     // read gyro config register
     i2c_read_register(RegisterAddress::GyroConfig0, &reg);
     // fix new configuration
-    reg |= (reg | static_cast<char>(_range));
+    reg |= (reg | static_cast<char>(range));
     //set new register value
     i2c_set_register(RegisterAddress::GyroConfig0, reg);
 }
 
 /** Set BNO055  bandwidth gyroscope configuration
  *
- * @param _bandwidth : Low-pass filter bandwidths 523Hz/230Hz/116Hz/47Hz/23Hz/12Hz/64Hz/32Hz
+ * @param bandwidth : Low-pass filter bandwidths 523Hz/230Hz/116Hz/47Hz/23Hz/12Hz/64Hz/32Hz
  *
  */
-void BNO055::set_gyro_bandwidth_configuration(GyroSensorBWconfig _bandwidth)
+void BNO055::set_gyro_bandwidth(GyroSensorBandWidth bandwidth)
 {
     static char reg = 0x00;
     // check if current page = pageID 1
@@ -250,17 +250,17 @@ void BNO055::set_gyro_bandwidth_configuration(GyroSensorBWconfig _bandwidth)
     // read gyro config register
     i2c_read_register(RegisterAddress::GyroConfig0, &reg);
     // fix new configuration
-    reg |= (reg | static_cast<char>(_bandwidth));
+    reg |= (reg | static_cast<char>(bandwidth));
     //set new register value
     i2c_set_register(RegisterAddress::GyroConfig0, reg);
 }
 
 /** Set BNO055  operating mode gyroscope configuration
  *
- * @param _opeMode : config operation mode associated in gyroscope (Normal/FastPowerUp/DeepSuspend/Suspend/AdvancedPowersave)
+ * @param operation_mode : config operation mode associated in gyroscope (Normal/FastPowerUp/DeepSuspend/Suspend/AdvancedPowersave)
  *
  */
-void BNO055::set_gyro_opeMode_configuration(GyroSensorOpeModeconfig _opeMode)
+void BNO055::set_gyro_operation_mode(GyroSensorOpeMode operation_mode)
 {
     static char reg = 0x00;
     // check if current page = pageID 1
@@ -271,19 +271,19 @@ void BNO055::set_gyro_opeMode_configuration(GyroSensorOpeModeconfig _opeMode)
     // read gyro config register
     i2c_read_register(RegisterAddress::GyroConfig1, &reg);
     // fix new configuration
-    reg |= (reg | static_cast<char>(_opeMode));
+    reg |= (reg | static_cast<char>(operation_mode));
     //set new register value
     i2c_set_register(RegisterAddress::GyroConfig1, reg);
 }
 
 /** Set BNO055 magnetometer configuration
  *
- * @param _dataOutputRate : data output rate 2Hz/6Hz/8Hz/10Hz/15Hz/20Hz/25Hz/30Hz
- * @param _opeMode :  operating mode associated in magnetometer (LowPower/Regular/EnhancedRegular/HighAccuracy)
- * @param _powerMode : Normal/Sleep/Suspend/Force
+ * @param data_output_rate : data output rate 2Hz/6Hz/8Hz/10Hz/15Hz/20Hz/25Hz/30Hz
+ * @param operation_mode :  operating mode associated in magnetometer (LowPower/Regular/EnhancedRegular/HighAccuracy)
+ * @param power_mode : Normal/Sleep/Suspend/Force
  *
  */
-void BNO055::set_mag_configuration(MagSensorRateConfig _dataOutputRate, MagSensorOpeModeConfig _opeMode, MagSensorPowerModeConfig _powerMode)
+void BNO055::set_mag_configuration(MagSensorDataOutputRate data_output_rate, MagSensorOpeMode operation_mode, MagSensorPowerMode power_mode)
 {
     static char reg_val = 0x00;
     // check if current page = pageID 1
@@ -292,17 +292,17 @@ void BNO055::set_mag_configuration(MagSensorRateConfig _dataOutputRate, MagSenso
         set_pageID(PageId::PageOne);
     }
     // get user mag config
-    reg_val |=  (static_cast<char>(_dataOutputRate) | static_cast<char>(_opeMode) | static_cast<char>(_powerMode));
+    reg_val |=  (static_cast<char>(data_output_rate) | static_cast<char>(operation_mode) | static_cast<char>(power_mode));
     //set mag conf register
     i2c_set_register(RegisterAddress::MagConfig, reg_val);
 }
 
 /** Set BNO055  data output rate magnetometer configuration
  *
- * @param _dataOutputRate :  2Hz/6Hz/8Hz/10Hz/15Hz/20Hz/25Hz/30Hz
+ * @param data_output_rate :  2Hz/6Hz/8Hz/10Hz/15Hz/20Hz/25Hz/30Hz
  *
  */
-void BNO055::set_mag_dataOutRate_configuration(MagSensorRateConfig _dataOutputRate)
+void BNO055::set_mag_data_output_rate(MagSensorDataOutputRate data_output_rate)
 {
     static char reg = 0x00;
     // check if current page = pageID 1
@@ -313,38 +313,17 @@ void BNO055::set_mag_dataOutRate_configuration(MagSensorRateConfig _dataOutputRa
     // read mag config register
     i2c_read_register(RegisterAddress::MagConfig, &reg);
     // fix new configuration
-    reg |= (reg | static_cast<char>(_dataOutputRate));
+    reg |= (reg | static_cast<char>(data_output_rate));
     //set new register value
     i2c_set_register(RegisterAddress::MagConfig, reg);
 }
 
 /** Set BNO055  operating mode magnetometer configuration
  *
- * @param _opeMode :  LowPower/Regular/EnhancedRegular/HighAccuracy
+ * @param operation_mode :  LowPower/Regular/EnhancedRegular/HighAccuracy
  *
  */
-void BNO055::set_mag_opeMode_configuration(MagSensorOpeModeConfig _opeMode)
-{
-    static char reg = 0x00;
-    // check if current page = pageID 1
-    if (_currentPageID != PageId::PageOne) {
-        //go to pageID 1
-        set_pageID(PageId::PageOne);
-	}
-    // read mag config register
-    i2c_read_register(RegisterAddress::MagConfig, &reg);
-    // fix new configuration
-    reg |= (reg | static_cast<char>(_opeMode));
-    //set new register value
-    i2c_set_register(RegisterAddress::MagConfig, reg);
-}
-
-/** Set BNO055  power mode magnetometer configuration
- *
- * @param _powerMode :  Normal/Sleep/Suspend/Force
- *
- */
-void BNO055::set_mag_powerMode_configuration(MagSensorPowerModeConfig _powerMode)
+void BNO055::set_mag_operation_mode(MagSensorOpeMode operation_mode)
 {
     static char reg = 0x00;
     // check if current page = pageID 1
@@ -355,7 +334,28 @@ void BNO055::set_mag_powerMode_configuration(MagSensorPowerModeConfig _powerMode
     // read mag config register
     i2c_read_register(RegisterAddress::MagConfig, &reg);
     // fix new configuration
-    reg |= (reg | static_cast<char>(_powerMode));
+    reg |= (reg | static_cast<char>(operation_mode));
+    //set new register value
+    i2c_set_register(RegisterAddress::MagConfig, reg);
+}
+
+/** Set BNO055  power mode magnetometer configuration
+ *
+ * @param power_mode :  Normal/Sleep/Suspend/Force
+ *
+ */
+void BNO055::set_mag_power_mode(MagSensorPowerMode power_mode)
+{
+    static char reg = 0x00;
+    // check if current page = pageID 1
+    if (_currentPageID != PageId::PageOne) {
+        //go to pageID 1
+        set_pageID(PageId::PageOne);
+    }
+    // read mag config register
+    i2c_read_register(RegisterAddress::MagConfig, &reg);
+    // fix new configuration
+    reg |= (reg | static_cast<char>(power_mode));
     //set new register value
     i2c_set_register(RegisterAddress::MagConfig, reg);
 }
@@ -466,7 +466,7 @@ void BNO055::read_gyro(bno055_gyro_t* gyro)
 /** read internal sensors temperatures
  *
  * @param temp pointer to temperature structure that store acceleromter 
- * 	       and gyrometer temperature
+ *            and gyrometer temperature
  */
 void BNO055::read_temperature(bno055_temperature_t *temp)
 {
