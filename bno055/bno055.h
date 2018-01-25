@@ -1,13 +1,13 @@
 /*
  * Copyright (c) 2016, CATIE, All Rights Reserved
  * SPDX-License-Identifier: Apache-2.0
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,8 +22,7 @@
 namespace sixtron {
 
 /* Raw values of sensors offsets */
-typedef struct
-{
+typedef struct {
     int16_t accel_offset_x;
     int16_t accel_offset_y;
     int16_t accel_offset_z;
@@ -38,48 +37,42 @@ typedef struct
 } bno055_offsets_t;
 
 /* raw accel values in m/s^2 */
-typedef struct
-{
+typedef struct {
     double x;
     double y;
     double z;
 } bno055_accel_t;
 
 /* accel values with gravity compensated in m/s^2 */
-typedef struct
-{
+typedef struct {
     double x;
     double y;
     double z;
 } bno055_linear_accel_t;
 
 /* gyro values in rad/s */
-typedef struct
-{
+typedef struct {
     double x;
     double y;
     double z;
 } bno055_gyro_t;
 
 /* mag values in uT */
-typedef struct
-{
+typedef struct {
     double x;
     double y;
     double z;
 } bno055_mag_t;
 
 /* euler values in rad */
-typedef struct
-{
+typedef struct {
     double x;
     double y;
     double z;
 } bno055_euler_t;
 
 /* unitary quaternion (unitless) */
-typedef struct
-{
+typedef struct {
     double w;
     double x;
     double y;
@@ -87,8 +80,7 @@ typedef struct
 } bno055_quaternion_t;
 
 /* raw quaternion as read in the register(unitless) */
-typedef struct
-{
+typedef struct {
     int16_t w;
     int16_t x;
     int16_t y;
@@ -96,16 +88,14 @@ typedef struct
 } bno055_raw_quaternion_t;
 
 /* gravity values in m/s² */
-typedef struct
-{
+typedef struct {
     double x;
     double y;
     double z;
 } bno055_gravity_t;
 
 /* chip temperatures in °C */
-typedef struct
-{
+typedef struct {
     int8_t acc;
     int8_t gyro;
 } bno055_temperature_t;
@@ -122,7 +112,7 @@ public:
         /* Page id register definition */
         PageId                   = (0x07),
 
-        /* 
+        /*
          * Page 0 register definition
          */
 
@@ -303,18 +293,18 @@ public:
         GyroAnyMotionSet        = (0x1F)
     };
 
-    enum class PageId: char {
+    enum class PageId : char {
         PageZero                = (0X00),
         PageOne                 = (0X01),
     };
-    
-    enum class PowerMode: char {
-        NORMAL        =(0X00),
-        LOWPOWER      =(0X01),
-        SUSPEND       =(0X02)
+
+    enum class PowerMode : char {
+        NORMAL        = (0X00),
+        LOWPOWER      = (0X01),
+        SUSPEND       = (0X02)
     };
 
-    enum class OperationMode: char {
+    enum class OperationMode : char {
         /* Operation mode settings*/
         CONFIG                           = 0X00,
         ACCONLY                          = 0X01,
@@ -331,7 +321,7 @@ public:
         NDOF                             = 0X0C
     };
 
-    enum class AccSensorRange: uint8_t {
+    enum class AccSensorRange : uint8_t {
         /* Accelerometer sensor range */
         _2G         = 0x00,
         _4G         = 0x01,
@@ -339,7 +329,7 @@ public:
         _16G        = 0x03
     };
 
-    enum class AccSensorBandWidth: uint8_t {
+    enum class AccSensorBandWidth : uint8_t {
         /* Accelerometer sensor bandwidth */
         _7Hz        = 0x00,
         _15Hz       = 0x04,
@@ -351,7 +341,7 @@ public:
         _1000Hz     = 0x1C
     };
 
-    enum class AccSensorOpeMode: uint8_t {
+    enum class AccSensorOpeMode : uint8_t {
         /* Accelerometer sensor Operating Mode */
         Normal          = 0x00,
         Suspend         = 0x20,
@@ -361,7 +351,7 @@ public:
         DeepSuspend     = 0xA0
     };
 
-    enum class GyroSensorRange: uint8_t {
+    enum class GyroSensorRange : uint8_t {
         /* Gyroscope sensor range */
         _2000DPS        = 0x00,
         _1000DPS        = 0x01,
@@ -370,7 +360,7 @@ public:
         _125DPS         = 0x04
     };
 
-    enum class GyroSensorBandWidth: uint8_t {
+    enum class GyroSensorBandWidth : uint8_t {
         /* Gyroscope sensor bandwidth */
         _523Hz          = 0x00,
         _230Hz          = 0x08,
@@ -382,14 +372,14 @@ public:
         _32Hz           = 0x38
     };
 
-    enum class GyroSensorOpeMode: uint8_t {
+    enum class GyroSensorOpeMode : uint8_t {
         /* Gyroscope sensor operating mode */
         Normal          = 0x00,
         FastPowerUp     = 0x01,
         DeepSuspend     = 0x02
     };
 
-    enum class MagSensorDataOutputRate: uint8_t {
+    enum class MagSensorDataOutputRate : uint8_t {
         /* Magnetometer sensor Data output rate */
         _2Hz            = 0x00,
         _6Hz            = 0x01,
@@ -401,7 +391,7 @@ public:
         _30Hz           = 0x07
     };
 
-    enum class MagSensorOpeMode: uint8_t {
+    enum class MagSensorOpeMode : uint8_t {
         /* Magnetometer sensor operating mode */
         LowPower            = 0x00,
         Regular             = 0x08,
@@ -409,7 +399,7 @@ public:
         HighAccuracy        = 0x18
     };
 
-    enum class MagSensorPowerMode: uint8_t {
+    enum class MagSensorPowerMode : uint8_t {
         /* Magnetometer sensor power mode */
         Normal              = 0x00,
         Sleep               = 0x02,
@@ -417,7 +407,7 @@ public:
         ForceMode           = 0x06
     };
 
-    BNO055(I2C * i2c, I2CAddress address = I2CAddress::Address1, int hz = 400000);
+    BNO055(I2C *i2c, I2CAddress address = I2CAddress::Address1, int hz = 400000);
 
     /* Functions to start the BNO055 */
     bool initialize(OperationMode mode = OperationMode::NDOF, bool use_ext_crystal = false);
@@ -437,7 +427,8 @@ public:
     void set_gyro_operation_mode(GyroSensorOpeMode operation_mode);
 
     /* Functions to configure magnetometer */
-    void set_mag_configuration(MagSensorDataOutputRate data_output_rate, MagSensorOpeMode operation_mode, MagSensorPowerMode power_mode);
+    void set_mag_configuration(MagSensorDataOutputRate data_output_rate, MagSensorOpeMode operation_mode,
+            MagSensorPowerMode power_mode);
     void set_mag_data_output_rate(MagSensorDataOutputRate data_output_rate);
     void set_mag_operation_mode(MagSensorOpeMode operation_mode);
     void set_mag_power_mode(MagSensorPowerMode power_mode);
@@ -450,30 +441,48 @@ public:
     PageId get_current_pageID(void);
 
     /* Functions to read non-filtered values from sensors */
-    void read_accel(bno055_accel_t* accel);
-    void read_gyro(bno055_gyro_t* gyro);
-    void read_mag(bno055_mag_t* mag);
+    void read_accel(bno055_accel_t *accel);
+    void read_gyro(bno055_gyro_t *gyro);
+    void read_mag(bno055_mag_t *mag);
     void read_temperature(bno055_temperature_t *temp);
 
     /* Functions to read filtered values from BNO055 */
-    void read_linear_accel(bno055_linear_accel_t* accel);
-    void read_euler(bno055_euler_t* euler);
-    void read_quaternion(bno055_quaternion_t* quat);
-    void read_quaternion(bno055_raw_quaternion_t* quat);
-    void read_gravity(bno055_gravity_t* gravity);
+    void read_linear_accel(bno055_linear_accel_t *accel);
+    void read_euler(bno055_euler_t *euler);
+    void read_quaternion(bno055_quaternion_t *quat);
+    void read_quaternion(bno055_raw_quaternion_t *quat);
+    void read_gravity(bno055_gravity_t *gravity);
 
-    void get_calibration_status(uint8_t* sys, uint8_t* gyro, uint8_t* accel, uint8_t* mag);
-    void get_sensor_offsets(bno055_offsets_t* sensor_offsets);
-    void set_sensor_offsets(const bno055_offsets_t* sensor_offsets);
+    void get_calibration_status(uint8_t *sys, uint8_t *gyro, uint8_t *accel, uint8_t *mag);
+    void get_sensor_offsets(bno055_offsets_t *sensor_offsets);
+    void set_sensor_offsets(const bno055_offsets_t *sensor_offsets);
 
     void reset();
 
-    char chip_id() { return _chipId; }
-    char accelerometer_revision_id() { return _accelerometerRevisionId; }
-    char magnetometer_revision_id() { return _magnetometerRevisionId; }
-    char gyroscope_revision_id() { return _gyroscopeRevisionId; }
-    short firmware_version() { return _firmwareVersion; }
-    char bootloader_version() { return _bootloaderVersion; }
+    char chip_id()
+    {
+        return _chipId;
+    }
+    char accelerometer_revision_id()
+    {
+        return _accelerometerRevisionId;
+    }
+    char magnetometer_revision_id()
+    {
+        return _magnetometerRevisionId;
+    }
+    char gyroscope_revision_id()
+    {
+        return _gyroscopeRevisionId;
+    }
+    short firmware_version()
+    {
+        return _firmwareVersion;
+    }
+    char bootloader_version()
+    {
+        return _bootloaderVersion;
+    }
 
 private:
 
@@ -482,7 +491,7 @@ private:
     int i2c_read_two_bytes_register(RegisterAddress registerAddress, short *value);
     int i2c_read_vector(RegisterAddress registerAddress, int16_t value[3]);
 
-    I2C* _i2c;
+    I2C *_i2c;
     I2CAddress _i2cAddress;
     OperationMode _mode;
     PageId _currentPageID;
