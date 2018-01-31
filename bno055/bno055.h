@@ -407,78 +407,301 @@ public:
         ForceMode           = 0x06
     };
 
+    /** Default constructor
+     *
+     * @param i2c pointer to mbed I2C object
+     * @param hz frequency of the I2C interface. Default is 400kHz
+     *
+     */
     BNO055(I2C *i2c, I2CAddress address = I2CAddress::Address1, int hz = 400000);
 
-    /* Functions to start the BNO055 */
+    /** Initialize the BNO055
+     *
+     * @param mode operation mode to be run by the BNO
+     * @param use_ext_crystal True if it should use a 32 kHz external crystal to improve the clock precision
+     *                        False if it should use the internal clock
+     *
+     * @returns
+     *      True on success,
+     *      False on failure
+     */
     bool initialize(OperationMode mode = OperationMode::NDOF, bool use_ext_crystal = false);
+
+    /** Set the BNO055 operation mode
+     *
+     * @param mode Operation mode to be run by the BNO
+     *
+     */
     void set_operation_mode(OperationMode mode);
+
+    /** Set the BNO055 power mode
+     *
+     * @param mode Power mode to be applied
+     *
+     */
     void set_power_mode(PowerMode mode);
 
-    /* Functions to configure accelerometer */
+    /** Set BNO055 accelerometer configuration
+     *
+     * @param range : acceleration range 2g/4g/8g/16g
+     * @param bandwidth : Low-pass filter bandwidths 7.81Hz/15.63Hz/31.25Hz/62.5Hz/125Hz/250Hz/500Hz/1000Hz
+     * @param operation_mode : config operation mode associated in accelerometer (Normal/Suspend/LowPower1/Standby/LowPower2/DeepSuspend)
+     *
+     */
     void set_accel_configuration(AccSensorRange range, AccSensorBandWidth bandwidth, AccSensorOpeMode operation_mode);
+
+    /** Set BNO055  range accelerometer configuration
+     *
+     * @param range : acceleration range 2g/4g/8g/16g
+     *
+     */
     void set_accel_range(AccSensorRange range);
+
+    /** Set BNO055  bandwidth accelerometer configuration
+     *
+     * @param bandwidth : Low-pass filter bandwidths 7.81Hz/15.63Hz/31.25Hz/62.5Hz/125Hz/250Hz/500Hz/1000Hz
+     *
+     */
     void set_accel_bandwidth(AccSensorBandWidth bandwidth);
+
+    /** Set BNO055  operating mode accelerometer configuration
+     *
+     * @param operation_mode : config operation mode associated in accelerometer (Normal/Suspend/LowPower1/Standby/LowPower2/DeepSuspend)
+     *
+     */
     void set_accel_operation_mode(AccSensorOpeMode operation_mode);
 
-    /* Functions to configure gyroscope */
+    /** Set BNO055 gyroscope configuration
+     *
+     * @param range : gyroscope range 2000dps/1000dps/500dps/250dps/125dps
+     * @param bandwidth : Low-pass filter bandwidths 523Hz/230Hz/116Hz/47Hz/23Hz/12Hz/64Hz/32Hz
+     * @param operation_mode : config operation mode associated in gyroscope (Normal/FastPowerUp/DeepSuspend/Suspend/AdvancedPowersave)
+     *
+     */
     void set_gyro_configuration(GyroSensorRange range, GyroSensorBandWidth bandwidth, GyroSensorOpeMode operation_mode);
+
+    /** Set BNO055  range gyroscope configuration
+     *
+     * @param range : gyroscope range 2000dps/1000dps/500dps/250dps/125dps
+     *
+     */
     void set_gyro_range(GyroSensorRange range);
+
+    /** Set BNO055  bandwidth gyroscope configuration
+     *
+     * @param bandwidth : Low-pass filter bandwidths 523Hz/230Hz/116Hz/47Hz/23Hz/12Hz/64Hz/32Hz
+     *
+     */
     void set_gyro_bandwidth(GyroSensorBandWidth bandwidth);
+
+    /** Set BNO055  operating mode gyroscope configuration
+     *
+     * @param operation_mode : config operation mode associated in gyroscope (Normal/FastPowerUp/DeepSuspend/Suspend/AdvancedPowersave)
+     *
+     */
     void set_gyro_operation_mode(GyroSensorOpeMode operation_mode);
 
-    /* Functions to configure magnetometer */
-    void set_mag_configuration(MagSensorDataOutputRate data_output_rate, MagSensorOpeMode operation_mode,
-            MagSensorPowerMode power_mode);
+    /** Set BNO055 magnetometer configuration
+     *
+     * @param data_output_rate : data output rate 2Hz/6Hz/8Hz/10Hz/15Hz/20Hz/25Hz/30Hz
+     * @param operation_mode :  operating mode associated in magnetometer (LowPower/Regular/EnhancedRegular/HighAccuracy)
+     * @param power_mode : Normal/Sleep/Suspend/Force
+     *
+     */
+    void set_mag_configuration(MagSensorDataOutputRate data_output_rate, MagSensorOpeMode operation_mode, MagSensorPowerMode power_mode);
+
+    /** Set BNO055  data output rate magnetometer configuration
+     *
+     * @param data_output_rate :  2Hz/6Hz/8Hz/10Hz/15Hz/20Hz/25Hz/30Hz
+     *
+     */
     void set_mag_data_output_rate(MagSensorDataOutputRate data_output_rate);
+
+    /** Set BNO055  operating mode magnetometer configuration
+     *
+     * @param operation_mode :  LowPower/Regular/EnhancedRegular/HighAccuracy
+     *
+     */
     void set_mag_operation_mode(MagSensorOpeMode operation_mode);
+
+    /** Set BNO055  power mode magnetometer configuration
+     *
+     * @param power_mode :  Normal/Sleep/Suspend/Force
+     *
+     */
     void set_mag_power_mode(MagSensorPowerMode power_mode);
 
-    /* Functions get operation mode */
+
+    /** Get BNO055 operating mode
+     *
+     * @return : current operating mode of objet
+     *
+     */
     OperationMode get_operating_mode(void);
 
-    /* Function set/get pageID 0/1 */
+
+    /** Set BNO055 page ID
+     *
+     * @param _page : the future register page to point (cf p.50 of datasheet)
+     *
+     */
     void set_pageID(PageId _page);
+
+    /** Get BNO055 page ID
+     *
+     * @return : the current page ID location
+     *
+     */
     PageId get_current_pageID(void);
 
-    /* Functions to read non-filtered values from sensors */
+    /** read the accelerometer value
+     *
+     * @param accel pointer to acceleromter structure to store the read values in m/s²
+     *
+     */
     void read_accel(bno055_accel_t *accel);
+
+    /** read the gyrometer value
+     *
+     * @param gyro pointer to gyrometer structure to store the read values in rad/s
+     *
+     */
     void read_gyro(bno055_gyro_t *gyro);
+
+    /** read the magnetometer value
+     *
+     * @param mag pointer to magnetometer structure to store the read values in µT
+     *
+     */
     void read_mag(bno055_mag_t *mag);
+
+    /** read internal sensors temperatures
+     *
+     * @param temp pointer to temperature structure that store acceleromter
+     *            and gyrometer temperature
+     */
     void read_temperature(bno055_temperature_t *temp);
 
-    /* Functions to read filtered values from BNO055 */
+    /** read the acclerometer value with gravity compensation
+     *
+     * @param accel pointer to accelerometer structure to store the read values in m/s²
+     *
+     */
     void read_linear_accel(bno055_linear_accel_t *accel);
+
+    /** read the Euler angles value
+     *
+     * @param euler pointer Euler angles structure to store the read values in rad
+     *
+     */
     void read_euler(bno055_euler_t *euler);
+
+    /** read the quaternion value. The output quat in normalized and unitary
+     *
+     * @param quat pointer to quaternion structure to store the read values
+     *
+     */
     void read_quaternion(bno055_quaternion_t *quat);
+
+    /** read the quaternion value.
+     *
+     * @param quat pointer to quaternion structure to store the read values
+     *
+     */
     void read_quaternion(bno055_raw_quaternion_t *quat);
+
+    /** read the gravity vector value
+     *
+     * @param gravity pointer to gravity structure to store the read values in m/s²
+     *
+     */
     void read_gravity(bno055_gravity_t *gravity);
 
+    /** get the calibrations state of the sensors and the system
+     *
+     * @param sys pointer to store system calibration state. Value between 0 and 3, where 3 indicates a full calibration
+     * @param gyro pointer to storesystem calibration state. Value between 0 and 3, where 3 indicates a full calibration
+     * @param accel pointer to store system calibration state. Value between 0 and 3, where 3 indicates a full calibration
+     * @param mag pointer to store system calibration state. Value between 0 and 3, where 3 indicates a full calibration
+     *
+     */
     void get_calibration_status(uint8_t *sys, uint8_t *gyro, uint8_t *accel, uint8_t *mag);
+
+    /** get the sensor offsets calculated by the fusion algorithm
+     *
+     * @param sensor_offsets pointer to bno055_offsets_t structure to store the raw sensor offsets
+     *
+     */
     void get_sensor_offsets(bno055_offsets_t *sensor_offsets);
+
+    /** set the sensor offsets given by the user to faster the calibration
+     *
+     * @param sensor_offsets pointer to bno055_offsets_t structure that has to be written in the BNO055 offsets registers
+     *
+     */
     void set_sensor_offsets(const bno055_offsets_t *sensor_offsets);
 
+    /** Reset the bno055. All register values goes back to default
+     * values and calibrations values are lost
+     *
+     */
     void reset();
 
+    /** Get the BNO055 chip ID
+     *
+     * @returns
+     *      BNO055 chip ID
+     */
     char chip_id()
     {
         return _chipId;
     }
+
+    /** Get the BNO055 accelerometer revision ID
+     *
+     * @returns
+     *      BNO055 accelerometer revision ID
+     */
     char accelerometer_revision_id()
     {
         return _accelerometerRevisionId;
     }
+
+    /** Get the BNO055 magnetometer revision ID
+     *
+     * @returns
+     *      BNO055 magnetometer revision ID
+     */
     char magnetometer_revision_id()
     {
         return _magnetometerRevisionId;
     }
+
+    /** Get the BNO055 gyroscope revision ID
+     *
+     * @returns
+     *      BNO055 gyroscope revision ID
+     */
     char gyroscope_revision_id()
     {
         return _gyroscopeRevisionId;
     }
+
+    /** Get the BNO055 firmware version
+     *
+     * @returns
+     *      BNO055 firmware version
+     */
     short firmware_version()
     {
         return _firmwareVersion;
     }
+
+    /** Get the BNO055 bootloader version
+     *
+     * @returns
+     *      BNO055 bootloader version
+     */
     char bootloader_version()
     {
         return _bootloaderVersion;
@@ -486,9 +709,48 @@ public:
 
 private:
 
+    /** Set register value
+     *
+     * @param registerAddress register address
+     * @param value value to write
+     *
+     * @returns
+     *      O on success,
+     *      non-0 on failure
+     */
     int i2c_set_register(RegisterAddress registerAddress, char value);
+
+    /** Get register value
+     *
+     * @param registerAddress register address
+     * @param value pointer to store read value to
+     *
+     * @returns
+     *      O on success,
+     *      non-0 on failure
+     */
     int i2c_read_register(RegisterAddress registerAddress, char *value);
+
+    /** Get multi-byte register value (two-bytes)
+     *
+     * @param registerAddress register address of LSB
+     * @param value pointer to store read value to
+     *
+     * @returns
+     *      O on success,
+     *      non-0 on failure
+     */
     int i2c_read_two_bytes_register(RegisterAddress registerAddress, short *value);
+
+    /** Get multi-byte register value (3*2-bytes) that are stored in a 3 dimensions vector
+     *
+     * @param registerAddress register address of LSB
+     * @param value pointer to store read value to
+     *
+     * @returns
+     *      O on success,
+     *      non-0 on failure
+     */
     int i2c_read_vector(RegisterAddress registerAddress, int16_t value[3]);
 
     I2C *_i2c;
