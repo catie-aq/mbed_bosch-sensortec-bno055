@@ -508,7 +508,8 @@ public:
      * @param power_mode : Normal/Sleep/Suspend/Force
      *
      */
-    void set_mag_configuration(MagSensorDataOutputRate data_output_rate, MagSensorOpeMode operation_mode, MagSensorPowerMode power_mode);
+    void set_mag_configuration(MagSensorDataOutputRate data_output_rate, MagSensorOpeMode operation_mode,
+            MagSensorPowerMode power_mode);
 
     /** Set BNO055  data output rate magnetometer configuration
      *
