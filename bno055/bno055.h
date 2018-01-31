@@ -100,6 +100,13 @@ typedef struct {
     int8_t gyro;
 } bno055_temperature_t;
 
+typedef struct {
+    int8_t sys;
+    int8_t acc;
+    int8_t gyro;
+    int8_t mag;
+} bno055_calibration_t;
+
 class BNO055
 {
 public:
@@ -434,55 +441,42 @@ public:
     void set_mag_power_mode(MagSensorPowerMode power_mode);
 
     /* Functions get operation mode */
-    OperationMode get_operating_mode(void);
+    OperationMode operating_mode();
 
     /* Function set/get pageID 0/1 */
     void set_pageID(PageId _page);
-    PageId get_current_pageID(void);
+    PageId pageID(void);
 
     /* Functions to read non-filtered values from sensors */
-    void read_accel(bno055_accel_t *accel);
-    void read_gyro(bno055_gyro_t *gyro);
-    void read_mag(bno055_mag_t *mag);
-    void read_temperature(bno055_temperature_t *temp);
+    bno055_accel_t accel();
+    bno055_gyro_t gyro();
+    bno055_mag_t mag();
+    bno055_temperature_t temperature();
 
     /* Functions to read filtered values from BNO055 */
-    void read_linear_accel(bno055_linear_accel_t *accel);
-    void read_euler(bno055_euler_t *euler);
-    void read_quaternion(bno055_quaternion_t *quat);
-    void read_quaternion(bno055_raw_quaternion_t *quat);
-    void read_gravity(bno055_gravity_t *gravity);
+    bno055_linear_accel_t linear_accel();
+    bno055_euler_t euler();
+    bno055_quaternion_t quaternion();
+    bno055_raw_quaternion_t raw_quaternion();
+    bno055_gravity_t gravity();
 
-    void get_calibration_status(uint8_t *sys, uint8_t *gyro, uint8_t *accel, uint8_t *mag);
-    void get_sensor_offsets(bno055_offsets_t *sensor_offsets);
+    bno055_calibration_t calibration_status();
+    bno055_offsets_t sensor_offsets();
     void set_sensor_offsets(const bno055_offsets_t *sensor_offsets);
 
     void reset();
 
-    char chip_id()
-    {
-        return _chipId;
-    }
-    char accelerometer_revision_id()
-    {
-        return _accelerometerRevisionId;
-    }
-    char magnetometer_revision_id()
-    {
-        return _magnetometerRevisionId;
-    }
-    char gyroscope_revision_id()
-    {
-        return _gyroscopeRevisionId;
-    }
-    short firmware_version()
-    {
-        return _firmwareVersion;
-    }
-    char bootloader_version()
-    {
-        return _bootloaderVersion;
-    }
+    char chip_id();
+
+    char accelerometer_revision_id();
+
+    char magnetometer_revision_id();
+
+    char gyroscope_revision_id();
+
+    short firmware_version();
+
+    char bootloader_version();
 
 private:
 
