@@ -33,12 +33,6 @@ namespace {
 
 } // namespace
 
-/** Default constructor
- *
- * @param i2c pointer to mbed I2C object
- * @param hz frequency of the I2C interface. Default is 400kHz
- *
- */
 BNO055::BNO055(I2C *i2c, I2CAddress address, int hz):
     _i2cAddress(address), _mode(OperationMode::CONFIG), _currentPageID(PageId::PageZero)
 {
@@ -46,16 +40,6 @@ BNO055::BNO055(I2C *i2c, I2CAddress address, int hz):
     _i2c->frequency(hz);
 }
 
-/** Initialize the BNO055
- *
- * @param mode operation mode to be run by the BNO
- * @param use_ext_crystal True if it should use a 32 kHz external crystal to improve the clock precision
- *                          False if it should use the internal clock
- *
- * @returns
- *      True on success,
- *      False on failure
- */
 bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
 {
     char reg = 0;
@@ -102,13 +86,6 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
     return true;
 }
 
-/** Set BNO055 accelerometer configuration
- *
- * @param range : acceleration range 2g/4g/8g/16g
- * @param bandwidth : Low-pass filter bandwidths 7.81Hz/15.63Hz/31.25Hz/62.5Hz/125Hz/250Hz/500Hz/1000Hz
- * @param operation_mode : config operation mode associated in accelerometer (Normal/Suspend/LowPower1/Standby/LowPower2/DeepSuspend)
- *
- */
 void BNO055::set_accel_configuration(AccSensorRange range, AccSensorBandWidth bandwidth,
         AccSensorOpeMode operation_mode)
 {
@@ -124,11 +101,6 @@ void BNO055::set_accel_configuration(AccSensorRange range, AccSensorBandWidth ba
     i2c_set_register(RegisterAddress::AccelConfig, reg_val);
 }
 
-/** Set BNO055  range accelerometer configuration
- *
- * @param range : acceleration range 2g/4g/8g/16g
- *
- */
 void BNO055::set_accel_range(AccSensorRange range)
 {
     char reg = 0x00;
@@ -145,11 +117,6 @@ void BNO055::set_accel_range(AccSensorRange range)
     i2c_set_register(RegisterAddress::AccelConfig, reg);
 }
 
-/** Set BNO055  bandwidth accelerometer configuration
- *
- * @param bandwidth : Low-pass filter bandwidths 7.81Hz/15.63Hz/31.25Hz/62.5Hz/125Hz/250Hz/500Hz/1000Hz
- *
- */
 void BNO055::set_accel_bandwidth(AccSensorBandWidth bandwidth)
 {
     char reg = 0x00;
@@ -166,11 +133,6 @@ void BNO055::set_accel_bandwidth(AccSensorBandWidth bandwidth)
     i2c_set_register(RegisterAddress::AccelConfig, reg);
 }
 
-/** Set BNO055  operating mode accelerometer configuration
- *
- * @param operation_mode : config operation mode associated in accelerometer (Normal/Suspend/LowPower1/Standby/LowPower2/DeepSuspend)
- *
- */
 void BNO055::set_accel_operation_mode(AccSensorOpeMode operation_mode)
 {
     char reg = 0x00;
@@ -187,13 +149,6 @@ void BNO055::set_accel_operation_mode(AccSensorOpeMode operation_mode)
     i2c_set_register(RegisterAddress::AccelConfig, reg);
 }
 
-/** Set BNO055 gyroscope configuration
- *
- * @param range : gyroscope range 2000dps/1000dps/500dps/250dps/125dps
- * @param bandwidth : Low-pass filter bandwidths 523Hz/230Hz/116Hz/47Hz/23Hz/12Hz/64Hz/32Hz
- * @param operation_mode : config operation mode associated in gyroscope (Normal/FastPowerUp/DeepSuspend/Suspend/AdvancedPowersave)
- *
- */
 void BNO055::set_gyro_configuration(GyroSensorRange range, GyroSensorBandWidth bandwidth,
         GyroSensorOpeMode operation_mode)
 {
@@ -213,11 +168,6 @@ void BNO055::set_gyro_configuration(GyroSensorRange range, GyroSensorBandWidth b
     i2c_set_register(RegisterAddress::GyroConfig1, reg_val);
 }
 
-/** Set BNO055  range gyroscope configuration
- *
- * @param range : gyroscope range 2000dps/1000dps/500dps/250dps/125dps
- *
- */
 void BNO055::set_gyro_range(GyroSensorRange range)
 {
     char reg = 0x00;
@@ -234,11 +184,6 @@ void BNO055::set_gyro_range(GyroSensorRange range)
     i2c_set_register(RegisterAddress::GyroConfig0, reg);
 }
 
-/** Set BNO055  bandwidth gyroscope configuration
- *
- * @param bandwidth : Low-pass filter bandwidths 523Hz/230Hz/116Hz/47Hz/23Hz/12Hz/64Hz/32Hz
- *
- */
 void BNO055::set_gyro_bandwidth(GyroSensorBandWidth bandwidth)
 {
     char reg = 0x00;
@@ -255,11 +200,6 @@ void BNO055::set_gyro_bandwidth(GyroSensorBandWidth bandwidth)
     i2c_set_register(RegisterAddress::GyroConfig0, reg);
 }
 
-/** Set BNO055  operating mode gyroscope configuration
- *
- * @param operation_mode : config operation mode associated in gyroscope (Normal/FastPowerUp/DeepSuspend/Suspend/AdvancedPowersave)
- *
- */
 void BNO055::set_gyro_operation_mode(GyroSensorOpeMode operation_mode)
 {
     char reg = 0x00;
@@ -276,13 +216,6 @@ void BNO055::set_gyro_operation_mode(GyroSensorOpeMode operation_mode)
     i2c_set_register(RegisterAddress::GyroConfig1, reg);
 }
 
-/** Set BNO055 magnetometer configuration
- *
- * @param data_output_rate : data output rate 2Hz/6Hz/8Hz/10Hz/15Hz/20Hz/25Hz/30Hz
- * @param operation_mode :  operating mode associated in magnetometer (LowPower/Regular/EnhancedRegular/HighAccuracy)
- * @param power_mode : Normal/Sleep/Suspend/Force
- *
- */
 void BNO055::set_mag_configuration(MagSensorDataOutputRate data_output_rate, MagSensorOpeMode operation_mode,
         MagSensorPowerMode power_mode)
 {
@@ -298,11 +231,6 @@ void BNO055::set_mag_configuration(MagSensorDataOutputRate data_output_rate, Mag
     i2c_set_register(RegisterAddress::MagConfig, reg_val);
 }
 
-/** Set BNO055  data output rate magnetometer configuration
- *
- * @param data_output_rate :  2Hz/6Hz/8Hz/10Hz/15Hz/20Hz/25Hz/30Hz
- *
- */
 void BNO055::set_mag_data_output_rate(MagSensorDataOutputRate data_output_rate)
 {
     char reg = 0x00;
@@ -319,11 +247,6 @@ void BNO055::set_mag_data_output_rate(MagSensorDataOutputRate data_output_rate)
     i2c_set_register(RegisterAddress::MagConfig, reg);
 }
 
-/** Set BNO055  operating mode magnetometer configuration
- *
- * @param operation_mode :  LowPower/Regular/EnhancedRegular/HighAccuracy
- *
- */
 void BNO055::set_mag_operation_mode(MagSensorOpeMode operation_mode)
 {
     char reg = 0x00;
@@ -340,11 +263,6 @@ void BNO055::set_mag_operation_mode(MagSensorOpeMode operation_mode)
     i2c_set_register(RegisterAddress::MagConfig, reg);
 }
 
-/** Set BNO055  power mode magnetometer configuration
- *
- * @param power_mode :  Normal/Sleep/Suspend/Force
- *
- */
 void BNO055::set_mag_power_mode(MagSensorPowerMode power_mode)
 {
     char reg = 0x00;
@@ -361,42 +279,22 @@ void BNO055::set_mag_power_mode(MagSensorPowerMode power_mode)
     i2c_set_register(RegisterAddress::MagConfig, reg);
 }
 
-/** Get BNO055 operating mode
- *
- * @return : current operating mode of objet
- *
- */
 BNO055::OperationMode BNO055::get_operating_mode()
 {
     return (_mode);
 }
 
-/** Set BNO055 pageID
- *
- * @param _page : the future register page to point (cf p.50 of datasheet)
- *
- */
 void BNO055::set_pageID(PageId _page)
 {
     i2c_set_register(RegisterAddress::PageId, static_cast<char>(_page));
     _currentPageID = _page;
 }
 
-/** Get BNO055 operating mode
- *
- * @return : the current page ID location
- *
- */
 BNO055::PageId BNO055::get_current_pageID(void)
 {
     return (_currentPageID);
 }
 
-/** Set the BNO055 operation mode
- *
- * @param mode Operation mode to be run by the BNO
- *
- */
 void BNO055::set_operation_mode(OperationMode mode)
 {
     // check current pageID
@@ -409,11 +307,6 @@ void BNO055::set_operation_mode(OperationMode mode)
     wait_ms(20);
 }
 
-/** Set the BNO055 power mode
- *
- * @param mode Power mode to be applied
- *
- */
 void BNO055::set_power_mode(PowerMode mode)
 {
     // check current pageID
@@ -424,11 +317,6 @@ void BNO055::set_power_mode(PowerMode mode)
     i2c_set_register(RegisterAddress::PwrMode, static_cast<char>(mode));
 }
 
-/** read the accelerometer value
- *
- * @param accel pointer to acceleromter structure to store the read values in m/s²
- *
- */
 void BNO055::read_accel(bno055_accel_t *accel)
 {
     static int16_t raw_acc[3];
@@ -444,11 +332,6 @@ void BNO055::read_accel(bno055_accel_t *accel)
     accel->z = ((double)raw_acc[2]) / RAW_TO_METERS_PER_SECOND;
 }
 
-/** read the gyrometer value
- *
- * @param gyro pointer to gyrometer structure to store the read values in rad/s
- *
- */
 void BNO055::read_gyro(bno055_gyro_t *gyro)
 {
     static int16_t raw_gyro[3];
@@ -464,11 +347,6 @@ void BNO055::read_gyro(bno055_gyro_t *gyro)
     gyro->z = ((double)raw_gyro[2]) / RAW_TO_RADIANS;
 }
 
-/** read internal sensors temperatures
- *
- * @param temp pointer to temperature structure that store acceleromter
- *            and gyrometer temperature
- */
 void BNO055::read_temperature(bno055_temperature_t *temp)
 {
     static char data;
@@ -490,11 +368,6 @@ void BNO055::read_temperature(bno055_temperature_t *temp)
     temp->gyro = data;
 }
 
-/** read the magnetometer value
- *
- * @param mag pointer to magnetometer structure to store the read values in µT
- *
- */
 void BNO055::read_mag(bno055_mag_t *mag)
 {
     static int16_t raw_mag[3];
@@ -510,11 +383,6 @@ void BNO055::read_mag(bno055_mag_t *mag)
     mag->z = ((double)raw_mag[2]) / RAW_TO_MICRO_TESLA;
 }
 
-/** read the acclerometer value with gravity compensation
- *
- * @param accel pointer to accelerometer structure to store the read values in m/s²
- *
- */
 void BNO055::read_linear_accel(bno055_linear_accel_t *accel)
 {
     static int16_t raw_acc[3];
@@ -530,11 +398,6 @@ void BNO055::read_linear_accel(bno055_linear_accel_t *accel)
     accel->z = ((double)raw_acc[2]) / RAW_TO_METERS_PER_SECOND;
 }
 
-/** read the Euler angles value
- *
- * @param euler pointer Euler angles structure to store the read values in rad
- *
- */
 void BNO055::read_euler(bno055_euler_t *euler)
 {
     static int16_t raw_eul[3];
@@ -550,11 +413,6 @@ void BNO055::read_euler(bno055_euler_t *euler)
     euler->z = ((double)raw_eul[2]) / RAW_TO_RADIANS;
 }
 
-/** read the quaternion value. The output quat in normalized and unitary
- *
- * @param quat pointer to quaternion structure to store the read values
- *
- */
 void BNO055::read_quaternion(bno055_quaternion_t *quat)
 {
     static char data[8];
@@ -579,11 +437,6 @@ void BNO055::read_quaternion(bno055_quaternion_t *quat)
     quat->z = ((double)raw_quat[3]) / RAW_TO_UNITARY_QUATERNIONS;
 }
 
-/** read the quaternion value.
- *
- * @param quat pointer to quaternion structure to store the read values
- *
- */
 void BNO055::read_quaternion(bno055_raw_quaternion_t *quat)
 {
     static char data[8];
@@ -602,11 +455,6 @@ void BNO055::read_quaternion(bno055_raw_quaternion_t *quat)
     quat->z = (data[7] << 8) | (0xFF & data[6]);
 }
 
-/** read the gravity vector value
- *
- * @param gravity pointer to gravity structure to store the read values in m/s²
- *
- */
 void BNO055::read_gravity(bno055_gravity_t *gravity)
 {
     static int16_t raw_grav[3];
@@ -621,14 +469,7 @@ void BNO055::read_gravity(bno055_gravity_t *gravity)
     gravity->y = ((double)raw_grav[1]) / RAW_TO_METERS_PER_SECOND;
     gravity->z = ((double)raw_grav[2]) / RAW_TO_METERS_PER_SECOND;
 }
-/** get the calibrations state of the sensors and the system
- *
- * @param sys pointer to store system calibration state. Value between 0 and 3, where 3 indicates a full calibration
- * @param gyro pointer to storesystem calibration state. Value between 0 and 3, where 3 indicates a full calibration
- * @param accel pointer to store system calibration state. Value between 0 and 3, where 3 indicates a full calibration
- * @param mag pointer to store system calibration state. Value between 0 and 3, where 3 indicates a full calibration
- *
- */
+
 void BNO055::get_calibration_status(uint8_t *sys, uint8_t *gyro, uint8_t *accel, uint8_t *mag)
 {
     static char cal_data;
@@ -652,11 +493,6 @@ void BNO055::get_calibration_status(uint8_t *sys, uint8_t *gyro, uint8_t *accel,
     }
 }
 
-/** get the sensor offsets calculated by the fusion algorithm
- *
- * @param sensor_offsets pointer to bno055_offsets_t structure to store the raw sensor offsets
- *
- */
 void BNO055::get_sensor_offsets(bno055_offsets_t *sensor_offsets)
 {
     static char calib_data[22];
@@ -686,11 +522,6 @@ void BNO055::get_sensor_offsets(bno055_offsets_t *sensor_offsets)
     set_operation_mode(last_mode);
 }
 
-/** set the sensor offsets given by the user to faster the calibration
- *
- * @param sensor_offsets pointer to bno055_offsets_t structure that has to be written in the BNO055 offsets registers
- *
- */
 void BNO055::set_sensor_offsets(const bno055_offsets_t *sensor_offsets)
 {
     OperationMode last_mode = _mode;
@@ -729,10 +560,6 @@ void BNO055::set_sensor_offsets(const bno055_offsets_t *sensor_offsets)
     set_operation_mode(last_mode);
 }
 
-/** Reset the bno055. All register values goes back to default
- * values and calibrations values are lost
- *
- */
 void BNO055::reset()
 {
     // check current pageID
@@ -745,15 +572,7 @@ void BNO055::reset()
     _mode = OperationMode::CONFIG;
     wait_ms(TIME_TO_RESET);
 }
-/** Set register value
- *
- * @param registerAddress register address
- * @param value value to write
- *
- * @returns
- *      O on success,
- *      non-0 on failure
- */
+
 int BNO055::i2c_set_register(RegisterAddress registerAddress, char value)
 {
     static char data[2];
@@ -765,15 +584,6 @@ int BNO055::i2c_set_register(RegisterAddress registerAddress, char value)
     return 0;
 }
 
-/** Get register value
- *
- * @param registerAddress register address
- * @param value pointer to store read value to
- *
- * @returns
- *      O on success,
- *      non-0 on failure
- */
 int BNO055::i2c_read_register(RegisterAddress registerAddress, char *value)
 {
     char data = static_cast<char>(registerAddress);
@@ -786,15 +596,6 @@ int BNO055::i2c_read_register(RegisterAddress registerAddress, char *value)
     return 0;
 }
 
-/** Get multi-byte register value (two-bytes)
- *
- * @param registerAddress register address of LSB
- * @param value pointer to store read value to
- *
- * @returns
- *      O on success,
- *      non-0 on failure
- */
 int BNO055::i2c_read_two_bytes_register(RegisterAddress registerAddress, short *value)
 {
     static char data[2];
@@ -810,15 +611,6 @@ int BNO055::i2c_read_two_bytes_register(RegisterAddress registerAddress, short *
     return 0;
 }
 
-/** Get multi-byte register value (3*2-bytes) that are stored in a 3 dimensions vector
- *
- * @param registerAddress register address of LSB
- * @param value pointer to store read value to
- *
- * @returns
- *      O on success,
- *      non-0 on failure
- */
 int BNO055::i2c_read_vector(RegisterAddress registerAddress, int16_t value[3])
 {
     static char data[6];
