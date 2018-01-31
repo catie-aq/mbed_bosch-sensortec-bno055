@@ -100,6 +100,13 @@ typedef struct {
     int8_t gyro;
 } bno055_temperature_t;
 
+typedef struct {
+    int8_t sys;
+    int8_t acc;
+    int8_t gyro;
+    int8_t mag;
+} bno055_calibration_t;
+
 /*!
  *  \class BNO055
  *  BNO055 IMU driver
@@ -534,14 +541,12 @@ public:
      */
     void set_mag_power_mode(MagSensorPowerMode power_mode);
 
-
     /*! Get BNO055 operating mode
      *
      * \return current operating mode of device
      *
      */
-    OperationMode get_operating_mode(void);
-
+    OperationMode operating_mode();
 
     /*! Set BNO055 page ID
      *
@@ -555,7 +560,7 @@ public:
      * \return the current page ID location
      *
      */
-    PageId get_current_pageID(void);
+     PageId pageID(void);
 
     /*! Get the accelerometer value
      *
@@ -639,12 +644,29 @@ public:
      * \param sensor_offsets pointer to bno055_offsets_t structure that has to be written in the BNO055 offsets registers
      *
      */
+
+    /* Functions to read non-filtered values from sensors */
+    bno055_accel_t accel();
+    bno055_gyro_t gyro();
+    bno055_mag_t mag();
+    bno055_temperature_t temperature();
+
+    /* Functions to read filtered values from BNO055 */
+    bno055_linear_accel_t linear_accel();
+    bno055_euler_t euler();
+    bno055_quaternion_t quaternion();
+    bno055_raw_quaternion_t raw_quaternion();
+    bno055_gravity_t gravity();
+
+    bno055_calibration_t calibration_status();
+    bno055_offsets_t sensor_offsets();
     void set_sensor_offsets(const bno055_offsets_t *sensor_offsets);
 
     /*! Reset the bno055. All register values goes back to default
      * values and calibrations values are lost
      */
     void reset();
+
 
     /*! Get the BNO055 chip ID
      *
@@ -705,6 +727,19 @@ public:
     {
         return _bootloaderVersion;
     }
+
+    char chip_id();
+
+    char accelerometer_revision_id();
+
+    char magnetometer_revision_id();
+
+    char gyroscope_revision_id();
+
+    short firmware_version();
+
+    char bootloader_version();
+
 
 private:
 
