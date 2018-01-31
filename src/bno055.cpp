@@ -368,7 +368,7 @@ void BNO055::set_mag_power_mode(MagSensorPowerMode power_mode)
  * @return : current operating mode of objet
  *
  */
-BNO055::OperationMode BNO055::get_operating_mode()
+BNO055::OperationMode BNO055::operating_mode()
 {
     return (_mode);
 }
@@ -389,7 +389,7 @@ void BNO055::set_pageID(PageId _page)
  * @return : the current page ID location
  *
  */
-BNO055::PageId BNO055::get_current_pageID(void)
+BNO055::PageId BNO055::pageID(void)
 {
     return (_currentPageID);
 }
@@ -431,19 +431,23 @@ void BNO055::set_power_mode(PowerMode mode)
  * @param accel pointer to acceleromter structure to store the read values in m/s²
  *
  */
-void BNO055::read_accel(bno055_accel_t *accel)
+bno055_accel_t BNO055::accel()
 {
     static int16_t raw_acc[3];
+    bno055_accel_t accel_val;
     // check current pageID
     if (_currentPageID != PageId::PageZero) {
         //go to pageID 0
         set_pageID(PageId::PageZero);
     }
+    // read accel data register
     i2c_read_vector(RegisterAddress::AccelData_X_Lsb, raw_acc);
-
-    accel->x = ((double)raw_acc[0]) / RAW_TO_METERS_PER_SECOND;
-    accel->y = ((double)raw_acc[1]) / RAW_TO_METERS_PER_SECOND;
-    accel->z = ((double)raw_acc[2]) / RAW_TO_METERS_PER_SECOND;
+    // formatting accel data
+    accel_val.x = ((double)raw_acc[0]) / RAW_TO_METERS_PER_SECOND;
+    accel_val.y = ((double)raw_acc[1]) / RAW_TO_METERS_PER_SECOND;
+    accel_val.z = ((double)raw_acc[2]) / RAW_TO_METERS_PER_SECOND;
+    // return accel values
+    return accel_val;
 }
 
 /** read the gyrometer value
@@ -451,19 +455,23 @@ void BNO055::read_accel(bno055_accel_t *accel)
  * @param gyro pointer to gyrometer structure to store the read values in rad/s
  *
  */
-void BNO055::read_gyro(bno055_gyro_t *gyro)
+bno055_gyro_t BNO055::gyro()
 {
     static int16_t raw_gyro[3];
+    bno055_gyro_t gyro_val;
     // check current pageID
     if (_currentPageID != PageId::PageZero) {
         //go to pageID 0
         set_pageID(PageId::PageZero);
     }
+    // read gyro data register
     i2c_read_vector(RegisterAddress::GyroData_X_Lsb, raw_gyro);
-
-    gyro->x = ((double)raw_gyro[0]) / RAW_TO_RADIANS;
-    gyro->y = ((double)raw_gyro[1]) / RAW_TO_RADIANS;
-    gyro->z = ((double)raw_gyro[2]) / RAW_TO_RADIANS;
+    // formatting gyro val
+    gyro_val.x = ((double)raw_gyro[0]) / RAW_TO_RADIANS;
+    gyro_val.y = ((double)raw_gyro[1]) / RAW_TO_RADIANS;
+    gyro_val.z = ((double)raw_gyro[2]) / RAW_TO_RADIANS;
+    // return gyro values
+    return gyro_val;
 }
 
 /** read internal sensors temperatures
@@ -471,25 +479,27 @@ void BNO055::read_gyro(bno055_gyro_t *gyro)
  * @param temp pointer to temperature structure that store acceleromter
  *            and gyrometer temperature
  */
-void BNO055::read_temperature(bno055_temperature_t *temp)
+bno055_temperature_t BNO055::temperature()
 {
     static char data;
-
+    bno055_temperature_t temp;
     // check current pageID
     if (_currentPageID != PageId::PageZero) {
         //go to pageID 0
         set_pageID(PageId::PageZero);
     }
-
+    // read temp source acc
     i2c_set_register(BNO055::RegisterAddress::TempSource, TEMP_SOURCE_ACC); //accelerometer temperature
     wait_ms(1); // \TODO is it necessary ?
     i2c_read_register(BNO055::RegisterAddress::Temp, &data);
-    temp->acc = data;
-
+    temp.acc = data;
+    // read temp source gyro
     i2c_set_register(BNO055::RegisterAddress::TempSource, TEMP_SOURCE_GYR); //gyrometer temperature
     wait_ms(1); // \TODO is it necessary ?
     i2c_read_register(BNO055::RegisterAddress::Temp, &data);
-    temp->gyro = data;
+    temp.gyro = data;
+    // return temperature values
+    return temp;
 }
 
 /** read the magnetometer value
@@ -497,19 +507,23 @@ void BNO055::read_temperature(bno055_temperature_t *temp)
  * @param mag pointer to magnetometer structure to store the read values in µT
  *
  */
-void BNO055::read_mag(bno055_mag_t *mag)
+bno055_mag_t BNO055::mag()
 {
     static int16_t raw_mag[3];
+    bno055_mag_t mag_val;
     // check current pageID
     if (_currentPageID != PageId::PageZero) {
         //go to pageID 0
         set_pageID(PageId::PageZero);
     }
+    // read mag data register
     i2c_read_vector(RegisterAddress::MagData_X_Lsb, raw_mag);
-
-    mag->x = ((double)raw_mag[0]) / RAW_TO_MICRO_TESLA;
-    mag->y = ((double)raw_mag[1]) / RAW_TO_MICRO_TESLA;
-    mag->z = ((double)raw_mag[2]) / RAW_TO_MICRO_TESLA;
+    // formatting mag data
+    mag_val.x = ((double)raw_mag[0]) / RAW_TO_MICRO_TESLA;
+    mag_val.y = ((double)raw_mag[1]) / RAW_TO_MICRO_TESLA;
+    mag_val.z = ((double)raw_mag[2]) / RAW_TO_MICRO_TESLA;
+    // return mag values
+    return mag_val;
 }
 
 /** read the acclerometer value with gravity compensation
@@ -517,19 +531,23 @@ void BNO055::read_mag(bno055_mag_t *mag)
  * @param accel pointer to accelerometer structure to store the read values in m/s²
  *
  */
-void BNO055::read_linear_accel(bno055_linear_accel_t *accel)
+bno055_linear_accel_t BNO055::linear_accel()
 {
     static int16_t raw_acc[3];
+    bno055_linear_accel_t linear_accel_val;
     // check current pageID
     if (_currentPageID != PageId::PageZero) {
         //go to pageID 0
         set_pageID(PageId::PageZero);
     }
+    // read linear accel data register
     i2c_read_vector(RegisterAddress::LinearAccelData_X_Lsb, raw_acc);
-
-    accel->x = ((double)raw_acc[0]) / RAW_TO_METERS_PER_SECOND;
-    accel->y = ((double)raw_acc[1]) / RAW_TO_METERS_PER_SECOND;
-    accel->z = ((double)raw_acc[2]) / RAW_TO_METERS_PER_SECOND;
+    // formatting linear accel data
+    linear_accel_val.x = ((double)raw_acc[0]) / RAW_TO_METERS_PER_SECOND;
+    linear_accel_val.y = ((double)raw_acc[1]) / RAW_TO_METERS_PER_SECOND;
+    linear_accel_val.z = ((double)raw_acc[2]) / RAW_TO_METERS_PER_SECOND;
+    // return linear accel values
+    return linear_accel_val;
 }
 
 /** read the Euler angles value
@@ -537,19 +555,23 @@ void BNO055::read_linear_accel(bno055_linear_accel_t *accel)
  * @param euler pointer Euler angles structure to store the read values in rad
  *
  */
-void BNO055::read_euler(bno055_euler_t *euler)
+bno055_euler_t BNO055::euler()
 {
     static int16_t raw_eul[3];
+    bno055_euler_t euler_val;
     // check current pageID
     if (_currentPageID != PageId::PageZero) {
         //go to pageID 0
         set_pageID(PageId::PageZero);
     }
+    // read euler data refister
     i2c_read_vector(RegisterAddress::Euler_H_Lsb, raw_eul);
-
-    euler->x = ((double)raw_eul[0]) / RAW_TO_RADIANS;
-    euler->y = ((double)raw_eul[1]) / RAW_TO_RADIANS;
-    euler->z = ((double)raw_eul[2]) / RAW_TO_RADIANS;
+    // formatting euler data
+    euler_val.x = ((double)raw_eul[0]) / RAW_TO_RADIANS;
+    euler_val.y = ((double)raw_eul[1]) / RAW_TO_RADIANS;
+    euler_val.z = ((double)raw_eul[2]) / RAW_TO_RADIANS;
+    // return euler data
+    return euler_val;
 }
 
 /** read the quaternion value. The output quat in normalized and unitary
@@ -557,10 +579,11 @@ void BNO055::read_euler(bno055_euler_t *euler)
  * @param quat pointer to quaternion structure to store the read values
  *
  */
-void BNO055::read_quaternion(bno055_quaternion_t *quat)
+bno055_quaternion_t BNO055::quaternion()
 {
     static char data[8];
     static int16_t raw_quat[4];
+    bno055_quaternion_t quaternion_val;
     char reg = static_cast<char>(RegisterAddress::QuaternionData_W_Lsb);
     // check current pageID
     if (_currentPageID != PageId::PageZero) {
@@ -569,16 +592,18 @@ void BNO055::read_quaternion(bno055_quaternion_t *quat)
     }
     _i2c->write(static_cast<int>(_i2cAddress) << 1, &reg, 1, true);
     _i2c->read(static_cast<int>(_i2cAddress) << 1, data, 8, false);
-
+    // formatting data
     raw_quat[0] = (data[1] << 8) | (0xFF & data[0]);
     raw_quat[1] = (data[3] << 8) | (0xFF & data[2]);
     raw_quat[2] = (data[5] << 8) | (0xFF & data[4]);
     raw_quat[3] = (data[7] << 8) | (0xFF & data[6]);
 
-    quat->w = ((double)raw_quat[0]) / RAW_TO_UNITARY_QUATERNIONS;
-    quat->x = ((double)raw_quat[1]) / RAW_TO_UNITARY_QUATERNIONS;
-    quat->y = ((double)raw_quat[2]) / RAW_TO_UNITARY_QUATERNIONS;
-    quat->z = ((double)raw_quat[3]) / RAW_TO_UNITARY_QUATERNIONS;
+    quaternion_val.w = ((double)raw_quat[0]) / RAW_TO_UNITARY_QUATERNIONS;
+    quaternion_val.x = ((double)raw_quat[1]) / RAW_TO_UNITARY_QUATERNIONS;
+    quaternion_val.y = ((double)raw_quat[2]) / RAW_TO_UNITARY_QUATERNIONS;
+    quaternion_val.z = ((double)raw_quat[3]) / RAW_TO_UNITARY_QUATERNIONS;
+
+    return quaternion_val;
 }
 
 /** read the quaternion value.
@@ -586,10 +611,11 @@ void BNO055::read_quaternion(bno055_quaternion_t *quat)
  * @param quat pointer to quaternion structure to store the read values
  *
  */
-void BNO055::read_quaternion(bno055_raw_quaternion_t *quat)
+bno055_raw_quaternion_t BNO055::raw_quaternion()
 {
     static char data[8];
     char reg = static_cast<char>(RegisterAddress::QuaternionData_W_Lsb);
+    bno055_raw_quaternion_t raw_quaternion_val;
     // check current pageID
     if (_currentPageID != PageId::PageZero) {
         //go to pageID 0
@@ -598,10 +624,12 @@ void BNO055::read_quaternion(bno055_raw_quaternion_t *quat)
     _i2c->write(static_cast<int>(_i2cAddress) << 1, &reg, 1, true);
     _i2c->read(static_cast<int>(_i2cAddress) << 1, data, 8, false);
 
-    quat->w = (data[1] << 8) | (0xFF & data[0]);
-    quat->x = (data[3] << 8) | (0xFF & data[2]);
-    quat->y = (data[5] << 8) | (0xFF & data[4]);
-    quat->z = (data[7] << 8) | (0xFF & data[6]);
+    raw_quaternion_val.w = (data[1] << 8) | (0xFF & data[0]);
+    raw_quaternion_val.x = (data[3] << 8) | (0xFF & data[2]);
+    raw_quaternion_val.y = (data[5] << 8) | (0xFF & data[4]);
+    raw_quaternion_val.z = (data[7] << 8) | (0xFF & data[6]);
+    // return raw quaternion values
+    return raw_quaternion_val;
 }
 
 /** read the gravity vector value
@@ -609,20 +637,25 @@ void BNO055::read_quaternion(bno055_raw_quaternion_t *quat)
  * @param gravity pointer to gravity structure to store the read values in m/s²
  *
  */
-void BNO055::read_gravity(bno055_gravity_t *gravity)
+bno055_gravity_t BNO055::gravity()
 {
     static int16_t raw_grav[3];
+    bno055_gravity_t gravity_val;
     // check current pageID
     if (_currentPageID != PageId::PageZero) {
         //go to pageID 0
         set_pageID(PageId::PageZero);
     }
+    // read gravity data register
     i2c_read_vector(RegisterAddress::GravityData_X_Lsb, raw_grav);
-
-    gravity->x = ((double)raw_grav[0]) / RAW_TO_METERS_PER_SECOND;
-    gravity->y = ((double)raw_grav[1]) / RAW_TO_METERS_PER_SECOND;
-    gravity->z = ((double)raw_grav[2]) / RAW_TO_METERS_PER_SECOND;
+    // formatting data
+    gravity_val.x = ((double)raw_grav[0]) / RAW_TO_METERS_PER_SECOND;
+    gravity_val.y = ((double)raw_grav[1]) / RAW_TO_METERS_PER_SECOND;
+    gravity_val.z = ((double)raw_grav[2]) / RAW_TO_METERS_PER_SECOND;
+    // return gravity values
+    return gravity_val;
 }
+
 /** get the calibrations state of the sensors and the system
  *
  * @param sys pointer to store system calibration state. Value between 0 and 3, where 3 indicates a full calibration
@@ -631,27 +664,24 @@ void BNO055::read_gravity(bno055_gravity_t *gravity)
  * @param mag pointer to store system calibration state. Value between 0 and 3, where 3 indicates a full calibration
  *
  */
-void BNO055::get_calibration_status(uint8_t *sys, uint8_t *gyro, uint8_t *accel, uint8_t *mag)
+bno055_calibration_t BNO055::calibration_status()
 {
     static char cal_data;
+    bno055_calibration_t calibration_val;
     // check current pageID
     if (_currentPageID != PageId::PageZero) {
         //go to pageID 0
         set_pageID(PageId::PageZero);
     }
+    // read calibration status register
     i2c_read_register(RegisterAddress::CalibStat, &cal_data);
-    if (sys != NULL) {
-        *sys = (cal_data >> 6) & 0x03;
-    }
-    if (gyro != NULL) {
-        *gyro = (cal_data >> 4) & 0x03;
-    }
-    if (accel != NULL) {
-        *accel = (cal_data >> 2) & 0x03;
-    }
-    if (mag != NULL) {
-        *mag = cal_data & 0x03;
-    }
+    // formatting data
+    calibration_val.sys = (cal_data >> 6) & 0x03;
+    calibration_val.gyro = (cal_data >> 4) & 0x03;
+    calibration_val.acc = (cal_data >> 2) & 0x03;
+    calibration_val.mag = cal_data & 0x03;
+    // return calibration values
+    return calibration_val;
 }
 
 /** get the sensor offsets calculated by the fusion algorithm
@@ -659,10 +689,11 @@ void BNO055::get_calibration_status(uint8_t *sys, uint8_t *gyro, uint8_t *accel,
  * @param sensor_offsets pointer to bno055_offsets_t structure to store the raw sensor offsets
  *
  */
-void BNO055::get_sensor_offsets(bno055_offsets_t *sensor_offsets)
+bno055_offsets_t BNO055::sensor_offsets()
 {
     static char calib_data[22];
     static char address = static_cast<char>(RegisterAddress::AccelOffset_X_Lsb);
+    bno055_offsets_t sensor_offset_val;
     OperationMode last_mode = _mode;
 
     set_operation_mode(OperationMode::CONFIG);
@@ -670,22 +701,24 @@ void BNO055::get_sensor_offsets(bno055_offsets_t *sensor_offsets)
     _i2c->write(static_cast<int>(_i2cAddress) << 1, &address, 1, true);
     _i2c->read(static_cast<int>(_i2cAddress) << 1, calib_data, 22);
 
-    sensor_offsets->accel_offset_x = (calib_data[1] << 8) | (calib_data[0]);
-    sensor_offsets->accel_offset_y = (calib_data[3] << 8) | (calib_data[2]);
-    sensor_offsets->accel_offset_z = (calib_data[5] << 8) | (calib_data[4]);
+    sensor_offset_val.accel_offset_x = (calib_data[1] << 8) | (calib_data[0]);
+    sensor_offset_val.accel_offset_y = (calib_data[3] << 8) | (calib_data[2]);
+    sensor_offset_val.accel_offset_z = (calib_data[5] << 8) | (calib_data[4]);
 
-    sensor_offsets->mag_offset_x = (calib_data[7] << 8) | (calib_data[6]);
-    sensor_offsets->mag_offset_y = (calib_data[9] << 8) | (calib_data[8]);
-    sensor_offsets->mag_offset_z = (calib_data[11] << 8) | (calib_data[10]);
+    sensor_offset_val.mag_offset_x = (calib_data[7] << 8) | (calib_data[6]);
+    sensor_offset_val.mag_offset_y = (calib_data[9] << 8) | (calib_data[8]);
+    sensor_offset_val.mag_offset_z = (calib_data[11] << 8) | (calib_data[10]);
 
-    sensor_offsets->gyro_offset_x = (calib_data[13] << 8) | (calib_data[12]);
-    sensor_offsets->gyro_offset_y = (calib_data[15] << 8) | (calib_data[14]);
-    sensor_offsets->gyro_offset_z = (calib_data[17] << 8) | (calib_data[16]);
+    sensor_offset_val.gyro_offset_x = (calib_data[13] << 8) | (calib_data[12]);
+    sensor_offset_val.gyro_offset_y = (calib_data[15] << 8) | (calib_data[14]);
+    sensor_offset_val.gyro_offset_z = (calib_data[17] << 8) | (calib_data[16]);
 
-    sensor_offsets->accel_radius = (calib_data[19] << 8) | (calib_data[18]);
-    sensor_offsets->mag_radius = (calib_data[21] << 8) | (calib_data[20]);
+    sensor_offset_val.accel_radius = (calib_data[19] << 8) | (calib_data[18]);
+    sensor_offset_val.mag_radius = (calib_data[21] << 8) | (calib_data[20]);
 
     set_operation_mode(last_mode);
+
+    return sensor_offset_val;
 }
 
 /** set the sensor offsets given by the user to faster the calibration
@@ -745,6 +778,37 @@ void BNO055::reset()
     i2c_set_register(RegisterAddress::SysTrigger, RESET_COMMAND);
     wait_ms(TIME_TO_RESET);
 }
+
+char BNO055::chip_id()
+{
+    return _chipId;
+}
+
+char BNO055::accelerometer_revision_id()
+{
+    return _accelerometerRevisionId;
+}
+
+char BNO055::magnetometer_revision_id()
+{
+    return _magnetometerRevisionId;
+}
+
+char BNO055::gyroscope_revision_id()
+{
+    return _gyroscopeRevisionId;
+}
+
+short BNO055::firmware_version()
+{
+    return _firmwareVersion;
+}
+
+char BNO055::bootloader_version()
+{
+    return _bootloaderVersion;
+}
+
 /** Set register value
  *
  * @param registerAddress register address
