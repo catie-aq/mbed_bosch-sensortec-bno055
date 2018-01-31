@@ -100,6 +100,10 @@ typedef struct {
     int8_t gyro;
 } bno055_temperature_t;
 
+/*!
+ *  \class BNO055
+ *  BNO055 IMU driver
+ */
 class BNO055
 {
 public:
