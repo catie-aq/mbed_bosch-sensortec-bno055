@@ -100,6 +100,7 @@ typedef struct {
     int8_t gyro;
 } bno055_temperature_t;
 
+/* calibration values */
 typedef struct {
     int8_t sys;
     int8_t acc;
