@@ -539,7 +539,7 @@ public:
 
     /** Get BNO055 operating mode
      *
-     * @return : current operating mode of objet
+     * @return : current operating mode of device
      *
      */
     OperationMode get_operating_mode(void);
@@ -547,7 +547,7 @@ public:
 
     /** Set BNO055 page ID
      *
-     * @param _page : the future register page to point (cf p.50 of datasheet)
+     * @param page : the next registers page to point
      *
      */
     void set_pageID(PageId _page);
@@ -559,82 +559,90 @@ public:
      */
     PageId get_current_pageID(void);
 
-    /** read the accelerometer value
+    /** Get the accelerometer value
      *
-     * @param accel pointer to acceleromter structure to store the read values in m/s²
+     * @returns
+     *         the accelerometer values structure in m/s²
      *
      */
     void read_accel(bno055_accel_t *accel);
 
-    /** read the gyrometer value
+    /** Get the gyrometer value
      *
-     * @param gyro pointer to gyrometer structure to store the read values in rad/s
+     * @returns
+     *         the gyro values structure in rad/s
      *
      */
     void read_gyro(bno055_gyro_t *gyro);
 
-    /** read the magnetometer value
+    /** Get the magnetometer value
      *
-     * @param mag pointer to magnetometer structure to store the read values in µT
+     * @returns
+     *         the magnetometer values structure  in µT
      *
      */
     void read_mag(bno055_mag_t *mag);
 
-    /** read internal sensors temperatures
+    /** Get internal sensors temperatures
      *
-     * @param temp pointer to temperature structure that store acceleromter
-     *            and gyrometer temperature
+     * @returns
+     *         the accelerometer and gyroscope sensor temperature
+     *
      */
     void read_temperature(bno055_temperature_t *temp);
 
-    /** read the acclerometer value with gravity compensation
+    /** Get the accelerometer value with gravity compensation
      *
-     * @param accel pointer to accelerometer structure to store the read values in m/s²
+     * @returns
+     *         the accelerometer values structure with gravity compensation in m/s²
      *
      */
     void read_linear_accel(bno055_linear_accel_t *accel);
 
-    /** read the Euler angles value
+    /** Get the Euler angles value
      *
-     * @param euler pointer Euler angles structure to store the read values in rad
+     * @returns
+     *          the Euler angles values structure in rad
      *
      */
     void read_euler(bno055_euler_t *euler);
 
-    /** read the quaternion value. The output quat in normalized and unitary
+    /** Get the quaternion value. The output quat in normalized and unitary
      *
-     * @param quat pointer to quaternion structure to store the read values
+     * @returns
+     *          the quaternion values structure
      *
      */
     void read_quaternion(bno055_quaternion_t *quat);
 
-    /** read the quaternion value.
+    /** Get the quaternion raw value.
      *
-     * @param quat pointer to quaternion structure to store the read values
+     * @returns
+     *          the quaternion raw values structure
      *
      */
     void read_quaternion(bno055_raw_quaternion_t *quat);
 
-    /** read the gravity vector value
+    /** Get the gravity vector value
      *
-     * @param gravity pointer to gravity structure to store the read values in m/s²
+     * @returns
+     *          the gravity values structure in m/s²
      *
      */
     void read_gravity(bno055_gravity_t *gravity);
 
-    /** get the calibrations state of the sensors and the system
+    /** Get the calibrations state of the sensors and the system
      *
-     * @param sys pointer to store system calibration state. Value between 0 and 3, where 3 indicates a full calibration
-     * @param gyro pointer to storesystem calibration state. Value between 0 and 3, where 3 indicates a full calibration
-     * @param accel pointer to store system calibration state. Value between 0 and 3, where 3 indicates a full calibration
-     * @param mag pointer to store system calibration state. Value between 0 and 3, where 3 indicates a full calibration
+     * @returns
+     *          the system calibration state structure of each device (sys, acc, gyro, mag). Value between 0 and 3, where 3 indicates a full calibration
      *
      */
     void get_calibration_status(uint8_t *sys, uint8_t *gyro, uint8_t *accel, uint8_t *mag);
 
-    /** get the sensor offsets calculated by the fusion algorithm
+    /** Get the sensor offsets calculated by the fusion algorithm
      *
-     * @param sensor_offsets pointer to bno055_offsets_t structure to store the raw sensor offsets
+     * @returns
+     *          the raw sensor offsets values structure
      *
      */
     void get_sensor_offsets(bno055_offsets_t *sensor_offsets);
