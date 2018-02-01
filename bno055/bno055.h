@@ -548,12 +548,13 @@ public:
      */
     OperationMode operating_mode();
 
+
     /*! Set BNO055 page ID
      *
      * \param page pointed on the the next registers page
      *
      */
-    void set_pageID(PageId _page);
+    void set_pageID(PageId page);
 
     /*! Get BNO055 page ID
      *
@@ -644,6 +645,7 @@ public:
      * \param sensor_offsets pointer to bno055_offsets_t structure that has to be written in the BNO055 offsets registers
      *
      */
+
 
     /* Functions to read non-filtered values from sensors */
     bno055_accel_t accel();
