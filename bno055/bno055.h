@@ -444,7 +444,7 @@ public:
     OperationMode operating_mode();
 
     /* Function set/get pageID 0/1 */
-    void set_pageID(PageId _page);
+    void set_pageID(PageId page);
     PageId pageID(void);
 
     /* Functions to read non-filtered values from sensors */

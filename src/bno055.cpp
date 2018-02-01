@@ -378,10 +378,10 @@ BNO055::OperationMode BNO055::operating_mode()
  * @param _page : the future register page to point (cf p.50 of datasheet)
  *
  */
-void BNO055::set_pageID(PageId _page)
+void BNO055::set_pageID(PageId page)
 {
-    i2c_set_register(RegisterAddress::PageId, static_cast<char>(_page));
-    _currentPageID = _page;
+    i2c_set_register(RegisterAddress::PageId, static_cast<char>(page));
+    _currentPageID = page;
 }
 
 /** Get BNO055 operating mode
