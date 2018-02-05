@@ -743,6 +743,8 @@ void BNO055::reset()
         set_pageID(PageId::PageZero);
     }
     i2c_set_register(RegisterAddress::SysTrigger, RESET_COMMAND);
+    // set the default mode value
+    _mode = OperationMode::CONFIG;
     wait_ms(TIME_TO_RESET);
 }
 /** Set register value
