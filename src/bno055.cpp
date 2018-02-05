@@ -59,9 +59,8 @@ BNO055::BNO055(I2C *i2c, I2CAddress address, int hz):
 bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
 {
     char reg = 0;
-    printf("Initializing BNO055 ... \n");
-    reset();
 
+    reset();
     i2c_read_register(RegisterAddress::ChipId, &reg);
     if (reg != CHIP_ID) {
         wait_ms(1000); //BNO055 may have not finishing to boot !
@@ -93,7 +92,6 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
     i2c_set_register(RegisterAddress::UnitSel, unitsel);
 
     if (use_ext_crystal) {
-        printf("Using External crystal\n");
         i2c_set_register(RegisterAddress::SysTrigger, 0X80);
         wait_ms(10);
     }
