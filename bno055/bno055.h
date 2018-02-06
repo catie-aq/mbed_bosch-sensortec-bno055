@@ -422,8 +422,7 @@ public:
     /*! Initialize the BNO055
      *
      * \param mode operation mode to be run by the BNO
-     * \param use_ext_crystal True if it should use a 32 kHz external crystal to improve the clock precision
-     *                        False if it should use the internal clock
+     * \param use_ext_crystal True if it should use a 32 kHz external crystal to improve the clock precision, False if it should use the internal clock
      *
      * \returns True on success,
      *          False on failure
