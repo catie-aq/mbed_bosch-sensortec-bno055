@@ -86,7 +86,14 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
     return true;
 }
 
-void BNO055::set_accel_configuration(AccSensorRange range, AccSensorBandWidth bandwidth,
+/** Set BNO055 accelerometer configuration
+ *
+ * @param range : acceleration range 2g/4g/8g/16g
+ * @param bandwidth : Low-pass filter bandwidths 7.81Hz/15.63Hz/31.25Hz/62.5Hz/125Hz/250Hz/500Hz/1000Hz
+ * @param operation_mode : config operation mode associated in accelerometer (Normal/Suspend/LowPower1/Standby/LowPower2/DeepSuspend)
+ *
+ */
+void BNO055::set_accelerometer_configuration(AccSensorRange range, AccSensorBandWidth bandwidth,
         AccSensorOpeMode operation_mode)
 {
     char reg_val = 0x00;
@@ -101,7 +108,12 @@ void BNO055::set_accel_configuration(AccSensorRange range, AccSensorBandWidth ba
     i2c_set_register(RegisterAddress::AccelConfig, reg_val);
 }
 
-void BNO055::set_accel_range(AccSensorRange range)
+/** Set BNO055  range accelerometer configuration
+ *
+ * @param range : acceleration range 2g/4g/8g/16g
+ *
+ */
+void BNO055::set_accelerometer_range(AccSensorRange range)
 {
     char reg = 0x00;
     // check if current page = pageID 1
@@ -117,7 +129,12 @@ void BNO055::set_accel_range(AccSensorRange range)
     i2c_set_register(RegisterAddress::AccelConfig, reg);
 }
 
-void BNO055::set_accel_bandwidth(AccSensorBandWidth bandwidth)
+/** Set BNO055  bandwidth accelerometer configuration
+ *
+ * @param bandwidth : Low-pass filter bandwidths 7.81Hz/15.63Hz/31.25Hz/62.5Hz/125Hz/250Hz/500Hz/1000Hz
+ *
+ */
+void BNO055::set_accelerometer_bandwidth(AccSensorBandWidth bandwidth)
 {
     char reg = 0x00;
     // check if current page = pageID 1
@@ -133,7 +150,12 @@ void BNO055::set_accel_bandwidth(AccSensorBandWidth bandwidth)
     i2c_set_register(RegisterAddress::AccelConfig, reg);
 }
 
-void BNO055::set_accel_operation_mode(AccSensorOpeMode operation_mode)
+/** Set BNO055  operating mode accelerometer configuration
+ *
+ * @param operation_mode : config operation mode associated in accelerometer (Normal/Suspend/LowPower1/Standby/LowPower2/DeepSuspend)
+ *
+ */
+void BNO055::set_accelerometer_operation_mode(AccSensorOpeMode operation_mode)
 {
     char reg = 0x00;
     // check if current page = pageID 1
@@ -149,7 +171,14 @@ void BNO055::set_accel_operation_mode(AccSensorOpeMode operation_mode)
     i2c_set_register(RegisterAddress::AccelConfig, reg);
 }
 
-void BNO055::set_gyro_configuration(GyroSensorRange range, GyroSensorBandWidth bandwidth,
+/** Set BNO055 gyroscope configuration
+ *
+ * @param range : gyroscope range 2000dps/1000dps/500dps/250dps/125dps
+ * @param bandwidth : Low-pass filter bandwidths 523Hz/230Hz/116Hz/47Hz/23Hz/12Hz/64Hz/32Hz
+ * @param operation_mode : config operation mode associated in gyroscope (Normal/FastPowerUp/DeepSuspend/Suspend/AdvancedPowersave)
+ *
+ */
+void BNO055::set_gyroscope_configuration(GyroSensorRange range, GyroSensorBandWidth bandwidth,
         GyroSensorOpeMode operation_mode)
 {
     char reg_val = 0x00;
@@ -168,7 +197,12 @@ void BNO055::set_gyro_configuration(GyroSensorRange range, GyroSensorBandWidth b
     i2c_set_register(RegisterAddress::GyroConfig1, reg_val);
 }
 
-void BNO055::set_gyro_range(GyroSensorRange range)
+/** Set BNO055  range gyroscope configuration
+ *
+ * @param range : gyroscope range 2000dps/1000dps/500dps/250dps/125dps
+ *
+ */
+void BNO055::set_gyroscope_range(GyroSensorRange range)
 {
     char reg = 0x00;
     // check if current page = pageID 1
@@ -184,7 +218,12 @@ void BNO055::set_gyro_range(GyroSensorRange range)
     i2c_set_register(RegisterAddress::GyroConfig0, reg);
 }
 
-void BNO055::set_gyro_bandwidth(GyroSensorBandWidth bandwidth)
+/** Set BNO055  bandwidth gyroscope configuration
+ *
+ * @param bandwidth : Low-pass filter bandwidths 523Hz/230Hz/116Hz/47Hz/23Hz/12Hz/64Hz/32Hz
+ *
+ */
+void BNO055::set_gyroscope_bandwidth(GyroSensorBandWidth bandwidth)
 {
     char reg = 0x00;
     // check if current page = pageID 1
@@ -200,7 +239,12 @@ void BNO055::set_gyro_bandwidth(GyroSensorBandWidth bandwidth)
     i2c_set_register(RegisterAddress::GyroConfig0, reg);
 }
 
-void BNO055::set_gyro_operation_mode(GyroSensorOpeMode operation_mode)
+/** Set BNO055  operating mode gyroscope configuration
+ *
+ * @param operation_mode : config operation mode associated in gyroscope (Normal/FastPowerUp/DeepSuspend/Suspend/AdvancedPowersave)
+ *
+ */
+void BNO055::set_gyroscope_operation_mode(GyroSensorOpeMode operation_mode)
 {
     char reg = 0x00;
     // check if current page = pageID 1
@@ -216,7 +260,14 @@ void BNO055::set_gyro_operation_mode(GyroSensorOpeMode operation_mode)
     i2c_set_register(RegisterAddress::GyroConfig1, reg);
 }
 
-void BNO055::set_mag_configuration(MagSensorDataOutputRate data_output_rate, MagSensorOpeMode operation_mode,
+/** Set BNO055 magnetometer configuration
+ *
+ * @param data_output_rate : data output rate 2Hz/6Hz/8Hz/10Hz/15Hz/20Hz/25Hz/30Hz
+ * @param operation_mode :  operating mode associated in magnetometer (LowPower/Regular/EnhancedRegular/HighAccuracy)
+ * @param power_mode : Normal/Sleep/Suspend/Force
+ *
+ */
+void BNO055::set_magnetometer_configuration(MagSensorDataOutputRate data_output_rate, MagSensorOpeMode operation_mode,
         MagSensorPowerMode power_mode)
 {
     char reg_val = 0x00;
@@ -231,7 +282,12 @@ void BNO055::set_mag_configuration(MagSensorDataOutputRate data_output_rate, Mag
     i2c_set_register(RegisterAddress::MagConfig, reg_val);
 }
 
-void BNO055::set_mag_data_output_rate(MagSensorDataOutputRate data_output_rate)
+/** Set BNO055  data output rate magnetometer configuration
+ *
+ * @param data_output_rate :  2Hz/6Hz/8Hz/10Hz/15Hz/20Hz/25Hz/30Hz
+ *
+ */
+void BNO055::set_magnetometer_data_output_rate(MagSensorDataOutputRate data_output_rate)
 {
     char reg = 0x00;
     // check if current page = pageID 1
@@ -247,7 +303,12 @@ void BNO055::set_mag_data_output_rate(MagSensorDataOutputRate data_output_rate)
     i2c_set_register(RegisterAddress::MagConfig, reg);
 }
 
-void BNO055::set_mag_operation_mode(MagSensorOpeMode operation_mode)
+/** Set BNO055  operating mode magnetometer configuration
+ *
+ * @param operation_mode :  LowPower/Regular/EnhancedRegular/HighAccuracy
+ *
+ */
+void BNO055::set_magnetometer_operation_mode(MagSensorOpeMode operation_mode)
 {
     char reg = 0x00;
     // check if current page = pageID 1
@@ -263,7 +324,12 @@ void BNO055::set_mag_operation_mode(MagSensorOpeMode operation_mode)
     i2c_set_register(RegisterAddress::MagConfig, reg);
 }
 
-void BNO055::set_mag_power_mode(MagSensorPowerMode power_mode)
+/** Set BNO055  power mode magnetometer configuration
+ *
+ * @param power_mode :  Normal/Sleep/Suspend/Force
+ *
+ */
+void BNO055::set_magnetometer_power_mode(MagSensorPowerMode power_mode)
 {
     char reg = 0x00;
     // check if current page = pageID 1
@@ -337,10 +403,10 @@ void BNO055::set_power_mode(PowerMode mode)
  * @param accel pointer to acceleromter structure to store the read values in m/s²
  *
  */
-bno055_accel_t BNO055::accel()
+bno055_accelerometer_t BNO055::accelerometer()
 {
     static int16_t raw_acc[3];
-    bno055_accel_t accel_val;
+    bno055_accelerometer_t accel_val;
     // check current pageID
     if (_currentPageID != PageId::PageZero) {
         //go to pageID 0
@@ -361,10 +427,10 @@ bno055_accel_t BNO055::accel()
  * @param gyro pointer to gyrometer structure to store the read values in rad/s
  *
  */
-bno055_gyro_t BNO055::gyro()
+bno055_gyroscope_t BNO055::gyroscope()
 {
     static int16_t raw_gyro[3];
-    bno055_gyro_t gyro_val;
+    bno055_gyroscope_t gyro_val;
     // check current pageID
     if (_currentPageID != PageId::PageZero) {
         //go to pageID 0
@@ -385,10 +451,10 @@ bno055_gyro_t BNO055::gyro()
  * @param temp pointer to temperature structure that store acceleromter
  *            and gyrometer temperature
  */
-bno055_temperature_t BNO055::temperature()
+bno055_temperature_sensors_t BNO055::temperature_sensors()
 {
     static char data;
-    bno055_temperature_t temp;
+    bno055_temperature_sensors_t temp;
     // check current pageID
     if (_currentPageID != PageId::PageZero) {
         //go to pageID 0
@@ -398,12 +464,12 @@ bno055_temperature_t BNO055::temperature()
     i2c_set_register(BNO055::RegisterAddress::TempSource, TEMP_SOURCE_ACC); //accelerometer temperature
     wait_ms(1); // \TODO is it necessary ?
     i2c_read_register(BNO055::RegisterAddress::Temp, &data);
-    temp.acc = data;
+    temp.accelerometer = data;
     // read temp source gyro
     i2c_set_register(BNO055::RegisterAddress::TempSource, TEMP_SOURCE_GYR); //gyrometer temperature
     wait_ms(1); // \TODO is it necessary ?
     i2c_read_register(BNO055::RegisterAddress::Temp, &data);
-    temp.gyro = data;
+    temp.gyroscope = data;
     // return temperature values
     return temp;
 }
@@ -413,10 +479,10 @@ bno055_temperature_t BNO055::temperature()
  * @param mag pointer to magnetometer structure to store the read values in µT
  *
  */
-bno055_mag_t BNO055::mag()
+bno055_magnetometer_t BNO055::magnetometer()
 {
     static int16_t raw_mag[3];
-    bno055_mag_t mag_val;
+    bno055_magnetometer_t mag_val;
     // check current pageID
     if (_currentPageID != PageId::PageZero) {
         //go to pageID 0
@@ -437,10 +503,10 @@ bno055_mag_t BNO055::mag()
  * @param accel pointer to accelerometer structure to store the read values in m/s²
  *
  */
-bno055_linear_accel_t BNO055::linear_accel()
+bno055_linear_acceleration_t BNO055::linear_acceleration()
 {
     static int16_t raw_acc[3];
-    bno055_linear_accel_t linear_accel_val;
+    bno055_linear_acceleration_t linear_accel_val;
     // check current pageID
     if (_currentPageID != PageId::PageZero) {
         //go to pageID 0
@@ -570,10 +636,10 @@ bno055_gravity_t BNO055::gravity()
  * @param mag pointer to store system calibration state. Value between 0 and 3, where 3 indicates a full calibration
  *
  */
-bno055_calibration_t BNO055::calibration_status()
+bno055_calibration_status_t BNO055::calibration_status()
 {
     static char cal_data;
-    bno055_calibration_t calibration_val;
+    bno055_calibration_status_t calibration_val;
     // check current pageID
     if (_currentPageID != PageId::PageZero) {
         //go to pageID 0
@@ -582,10 +648,10 @@ bno055_calibration_t BNO055::calibration_status()
     // read calibration status register
     i2c_read_register(RegisterAddress::CalibStat, &cal_data);
     // formatting data
-    calibration_val.sys = (cal_data >> 6) & 0x03;
-    calibration_val.gyro = (cal_data >> 4) & 0x03;
-    calibration_val.acc = (cal_data >> 2) & 0x03;
-    calibration_val.mag = cal_data & 0x03;
+    calibration_val.system = (cal_data >> 6) & 0x03;
+    calibration_val.gyroscope = (cal_data >> 4) & 0x03;
+    calibration_val.accelerometer = (cal_data >> 2) & 0x03;
+    calibration_val.magnetometer = cal_data & 0x03;
     // return calibration values
     return calibration_val;
 }
@@ -595,11 +661,11 @@ bno055_calibration_t BNO055::calibration_status()
  * @param sensor_offsets pointer to bno055_offsets_t structure to store the raw sensor offsets
  *
  */
-bno055_offsets_t BNO055::sensor_offsets()
+bno055_sensors_offsets_t BNO055::sensor_offsets()
 {
     static char calib_data[22];
     static char address = static_cast<char>(RegisterAddress::AccelOffset_X_Lsb);
-    bno055_offsets_t sensor_offset_val;
+    bno055_sensors_offsets_t sensor_offset_val;
     OperationMode last_mode = _mode;
 
     set_operation_mode(OperationMode::CONFIG);
@@ -607,58 +673,63 @@ bno055_offsets_t BNO055::sensor_offsets()
     _i2c->write(static_cast<int>(_i2cAddress) << 1, &address, 1, true);
     _i2c->read(static_cast<int>(_i2cAddress) << 1, calib_data, 22);
 
-    sensor_offset_val.accel_offset_x = (calib_data[1] << 8) | (calib_data[0]);
-    sensor_offset_val.accel_offset_y = (calib_data[3] << 8) | (calib_data[2]);
-    sensor_offset_val.accel_offset_z = (calib_data[5] << 8) | (calib_data[4]);
+    sensor_offset_val.accelerometer_offset_x = (calib_data[1] << 8) | (calib_data[0]);
+    sensor_offset_val.accelerometer_offset_y = (calib_data[3] << 8) | (calib_data[2]);
+    sensor_offset_val.accelerometer_offset_z = (calib_data[5] << 8) | (calib_data[4]);
 
-    sensor_offset_val.mag_offset_x = (calib_data[7] << 8) | (calib_data[6]);
-    sensor_offset_val.mag_offset_y = (calib_data[9] << 8) | (calib_data[8]);
-    sensor_offset_val.mag_offset_z = (calib_data[11] << 8) | (calib_data[10]);
+    sensor_offset_val.magnetometer_offset_x = (calib_data[7] << 8) | (calib_data[6]);
+    sensor_offset_val.magnetometer_offset_y = (calib_data[9] << 8) | (calib_data[8]);
+    sensor_offset_val.magnetometer_offset_z = (calib_data[11] << 8) | (calib_data[10]);
 
-    sensor_offset_val.gyro_offset_x = (calib_data[13] << 8) | (calib_data[12]);
-    sensor_offset_val.gyro_offset_y = (calib_data[15] << 8) | (calib_data[14]);
-    sensor_offset_val.gyro_offset_z = (calib_data[17] << 8) | (calib_data[16]);
+    sensor_offset_val.gyroscope_offset_x = (calib_data[13] << 8) | (calib_data[12]);
+    sensor_offset_val.gyroscope_offset_y = (calib_data[15] << 8) | (calib_data[14]);
+    sensor_offset_val.gyroscope_offset_z = (calib_data[17] << 8) | (calib_data[16]);
 
-    sensor_offset_val.accel_radius = (calib_data[19] << 8) | (calib_data[18]);
-    sensor_offset_val.mag_radius = (calib_data[21] << 8) | (calib_data[20]);
+    sensor_offset_val.accelerometer_radius = (calib_data[19] << 8) | (calib_data[18]);
+    sensor_offset_val.magnetometer_radius = (calib_data[21] << 8) | (calib_data[20]);
 
     set_operation_mode(last_mode);
 
     return sensor_offset_val;
 }
 
-void BNO055::set_sensor_offsets(const bno055_offsets_t *sensor_offsets)
+/** set the sensor offsets given by the user to faster the calibration
+ *
+ * @param sensor_offsets pointer to bno055_offsets_t structure that has to be written in the BNO055 offsets registers
+ *
+ */
+void BNO055::set_sensor_offsets(const bno055_sensors_offsets_t *sensor_offsets)
 {
     OperationMode last_mode = _mode;
     char calib_data[22];
 
     set_operation_mode(OperationMode::CONFIG);
 
-    calib_data[0] = (sensor_offsets->accel_offset_x) & 0x0FF;
-    calib_data[1] = (sensor_offsets->accel_offset_x >> 8) & 0x0FF;
-    calib_data[2] = (sensor_offsets->accel_offset_y) & 0x0FF;
-    calib_data[3] = (sensor_offsets->accel_offset_y >> 8) & 0x0FF;
-    calib_data[4] = (sensor_offsets->accel_offset_z) & 0x0FF;
-    calib_data[5] = (sensor_offsets->accel_offset_z >> 8) & 0x0FF;
+    calib_data[0] = (sensor_offsets->accelerometer_offset_x) & 0x0FF;
+    calib_data[1] = (sensor_offsets->accelerometer_offset_x >> 8) & 0x0FF;
+    calib_data[2] = (sensor_offsets->accelerometer_offset_y) & 0x0FF;
+    calib_data[3] = (sensor_offsets->accelerometer_offset_y >> 8) & 0x0FF;
+    calib_data[4] = (sensor_offsets->accelerometer_offset_z) & 0x0FF;
+    calib_data[5] = (sensor_offsets->accelerometer_offset_z >> 8) & 0x0FF;
 
-    calib_data[6] = (sensor_offsets->mag_offset_x) & 0x0FF;
-    calib_data[7] = (sensor_offsets->mag_offset_x >> 8) & 0x0FF;
-    calib_data[8] = (sensor_offsets->mag_offset_y) & 0x0FF;
-    calib_data[9] = (sensor_offsets->mag_offset_y >> 8) & 0x0FF;
-    calib_data[10] = (sensor_offsets->mag_offset_z) & 0x0FF;
-    calib_data[11] = (sensor_offsets->mag_offset_z >> 8) & 0x0FF;
+    calib_data[6] = (sensor_offsets->magnetometer_offset_x) & 0x0FF;
+    calib_data[7] = (sensor_offsets->magnetometer_offset_x >> 8) & 0x0FF;
+    calib_data[8] = (sensor_offsets->magnetometer_offset_y) & 0x0FF;
+    calib_data[9] = (sensor_offsets->magnetometer_offset_y >> 8) & 0x0FF;
+    calib_data[10] = (sensor_offsets->magnetometer_offset_z) & 0x0FF;
+    calib_data[11] = (sensor_offsets->magnetometer_offset_z >> 8) & 0x0FF;
 
-    calib_data[12] = (sensor_offsets->accel_offset_x) & 0x0FF;
-    calib_data[13] = (sensor_offsets->accel_offset_x >> 8) & 0x0FF;
-    calib_data[14] = (sensor_offsets->accel_offset_y) & 0x0FF;
-    calib_data[15] = (sensor_offsets->accel_offset_y >> 8) & 0x0FF;
-    calib_data[16] = (sensor_offsets->accel_offset_z) & 0x0FF;
-    calib_data[17] = (sensor_offsets->accel_offset_z >> 8) & 0x0FF;
+    calib_data[12] = (sensor_offsets->gyroscope_offset_x) & 0x0FF;
+    calib_data[13] = (sensor_offsets->gyroscope_offset_x >> 8) & 0x0FF;
+    calib_data[14] = (sensor_offsets->gyroscope_offset_y) & 0x0FF;
+    calib_data[15] = (sensor_offsets->gyroscope_offset_y >> 8) & 0x0FF;
+    calib_data[16] = (sensor_offsets->gyroscope_offset_z) & 0x0FF;
+    calib_data[17] = (sensor_offsets->gyroscope_offset_z >> 8) & 0x0FF;
 
-    calib_data[18] = (sensor_offsets->accel_radius) & 0x0FF;
-    calib_data[19] = (sensor_offsets->accel_radius >> 8) & 0x0FF;
-    calib_data[20] = (sensor_offsets->mag_radius) & 0x0FF;
-    calib_data[21] = (sensor_offsets->mag_radius >> 8) & 0x0FF;
+    calib_data[18] = (sensor_offsets->accelerometer_radius) & 0x0FF;
+    calib_data[19] = (sensor_offsets->accelerometer_radius >> 8) & 0x0FF;
+    calib_data[20] = (sensor_offsets->magnetometer_radius) & 0x0FF;
+    calib_data[21] = (sensor_offsets->magnetometer_radius >> 8) & 0x0FF;
 
     _i2c->write(static_cast<int>(_i2cAddress), calib_data, 22);
 
