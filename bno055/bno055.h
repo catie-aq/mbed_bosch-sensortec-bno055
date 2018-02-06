@@ -23,46 +23,46 @@ namespace sixtron {
 
 /* Raw values of sensors offsets */
 typedef struct {
-    int16_t accel_offset_x;
-    int16_t accel_offset_y;
-    int16_t accel_offset_z;
-    int16_t gyro_offset_x;
-    int16_t gyro_offset_y;
-    int16_t gyro_offset_z;
-    int16_t mag_offset_x;
-    int16_t mag_offset_y;
-    int16_t mag_offset_z;
-    int16_t accel_radius;
-    int16_t mag_radius;
-} bno055_offsets_t;
+    int16_t accelerometer_offset_x;
+    int16_t accelerometer_offset_y;
+    int16_t accelerometer_offset_z;
+    int16_t gyroscope_offset_x;
+    int16_t gyroscope_offset_y;
+    int16_t gyroscope_offset_z;
+    int16_t magnetometer_offset_x;
+    int16_t magnetometer_offset_y;
+    int16_t magnetometer_offset_z;
+    int16_t accelerometer_radius;
+    int16_t magnetometer_radius;
+} bno055_sensors_offsets_t;
 
 /* raw accel values in m/s^2 */
 typedef struct {
     double x;
     double y;
     double z;
-} bno055_accel_t;
+} bno055_accelerometer_t;
 
 /* accel values with gravity compensated in m/s^2 */
 typedef struct {
     double x;
     double y;
     double z;
-} bno055_linear_accel_t;
+} bno055_linear_acceleration_t;
 
 /* gyro values in rad/s */
 typedef struct {
     double x;
     double y;
     double z;
-} bno055_gyro_t;
+} bno055_gyroscope_t;
 
 /* mag values in uT */
 typedef struct {
     double x;
     double y;
     double z;
-} bno055_mag_t;
+} bno055_magnetometer_t;
 
 /* euler values in rad */
 typedef struct {
@@ -96,17 +96,17 @@ typedef struct {
 
 /* chip temperatures in °C */
 typedef struct {
-    int8_t acc;
-    int8_t gyro;
-} bno055_temperature_t;
+    int8_t accelerometer;
+    int8_t gyroscope;
+} bno055_temperature_sensors_t;
 
 /* calibration values */
 typedef struct {
-    int8_t sys;
-    int8_t acc;
-    int8_t gyro;
-    int8_t mag;
-} bno055_calibration_t;
+    int8_t system;
+    int8_t accelerometer;
+    int8_t gyroscope;
+    int8_t magnetometer;
+} bno055_calibration_status_t;
 
 class BNO055
 {
@@ -423,23 +423,23 @@ public:
     void set_power_mode(PowerMode mode);
 
     /* Functions to configure accelerometer */
-    void set_accel_configuration(AccSensorRange range, AccSensorBandWidth bandwidth, AccSensorOpeMode operation_mode);
-    void set_accel_range(AccSensorRange range);
-    void set_accel_bandwidth(AccSensorBandWidth bandwidth);
-    void set_accel_operation_mode(AccSensorOpeMode operation_mode);
+    void set_accelerometer_configuration(AccSensorRange range, AccSensorBandWidth bandwidth, AccSensorOpeMode operation_mode);
+    void set_accelerometer_range(AccSensorRange range);
+    void set_accelerometer_bandwidth(AccSensorBandWidth bandwidth);
+    void set_accelerometer_operation_mode(AccSensorOpeMode operation_mode);
 
     /* Functions to configure gyroscope */
-    void set_gyro_configuration(GyroSensorRange range, GyroSensorBandWidth bandwidth, GyroSensorOpeMode operation_mode);
-    void set_gyro_range(GyroSensorRange range);
-    void set_gyro_bandwidth(GyroSensorBandWidth bandwidth);
-    void set_gyro_operation_mode(GyroSensorOpeMode operation_mode);
+    void set_gyroscope_configuration(GyroSensorRange range, GyroSensorBandWidth bandwidth, GyroSensorOpeMode operation_mode);
+    void set_gyroscope_range(GyroSensorRange range);
+    void set_gyroscope_bandwidth(GyroSensorBandWidth bandwidth);
+    void set_gyroscope_operation_mode(GyroSensorOpeMode operation_mode);
 
     /* Functions to configure magnetometer */
-    void set_mag_configuration(MagSensorDataOutputRate data_output_rate, MagSensorOpeMode operation_mode,
+    void set_magnetometer_configuration(MagSensorDataOutputRate data_output_rate, MagSensorOpeMode operation_mode,
             MagSensorPowerMode power_mode);
-    void set_mag_data_output_rate(MagSensorDataOutputRate data_output_rate);
-    void set_mag_operation_mode(MagSensorOpeMode operation_mode);
-    void set_mag_power_mode(MagSensorPowerMode power_mode);
+    void set_magnetometer_data_output_rate(MagSensorDataOutputRate data_output_rate);
+    void set_magnetometer_operation_mode(MagSensorOpeMode operation_mode);
+    void set_magnetometer_power_mode(MagSensorPowerMode power_mode);
 
     /* Functions get operation mode */
     OperationMode operating_mode();
@@ -449,21 +449,21 @@ public:
     PageId pageID(void);
 
     /* Functions to read non-filtered values from sensors */
-    bno055_accel_t accel();
-    bno055_gyro_t gyro();
-    bno055_mag_t mag();
-    bno055_temperature_t temperature();
+    bno055_accelerometer_t accelerometer();
+    bno055_gyroscope_t gyroscope();
+    bno055_magnetometer_t magnetometer();
+    bno055_temperature_sensors_t temperature_sensors();
 
     /* Functions to read filtered values from BNO055 */
-    bno055_linear_accel_t linear_accel();
+    bno055_linear_acceleration_t linear_acceleration();
     bno055_euler_t euler();
     bno055_quaternion_t quaternion();
     bno055_raw_quaternion_t raw_quaternion();
     bno055_gravity_t gravity();
 
-    bno055_calibration_t calibration_status();
-    bno055_offsets_t sensor_offsets();
-    void set_sensor_offsets(const bno055_offsets_t *sensor_offsets);
+    bno055_calibration_status_t calibration_status();
+    bno055_sensors_offsets_t sensor_offsets();
+    void set_sensor_offsets(const bno055_sensors_offsets_t *sensor_offsets);
 
     void reset();
 
