@@ -414,7 +414,7 @@ public:
     /*! Default constructor
      *
      * \param i2c pointer to mbed I2C object
-     * \param hz frequency of the I2C interface. Default is 400kHz
+     * \param hz frequency of the I2C interface
      *
      */
     BNO055(I2C *i2c, I2CAddress address = I2CAddress::Address1, int hz = 400000);
