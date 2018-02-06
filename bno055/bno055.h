@@ -629,7 +629,7 @@ public:
 
     /*! Get the sensor offsets calculated by the fusion algorithm
      *
-     * \returns the raw sensor offsets values structure
+     * \return the raw sensor offsets values structure
      *
      */
     void get_sensor_offsets(bno055_offsets_t *sensor_offsets);
@@ -648,7 +648,8 @@ public:
 
     /*! Get the BNO055 chip ID
      *
-     * \returns BNO055 chip ID
+     * \return BNO055 chip ID
+     *
      */
     char chip_id()
     {
@@ -657,7 +658,8 @@ public:
 
     /*! Get the BNO055 accelerometer revision ID
      *
-     * \returns BNO055 accelerometer revision ID
+     * \return BNO055 accelerometer revision ID
+     *
      */
     char accelerometer_revision_id()
     {
@@ -666,7 +668,8 @@ public:
 
     /*! Get the BNO055 magnetometer revision ID
      *
-     * \returns BNO055 magnetometer revision ID
+     * \return BNO055 magnetometer revision ID
+     *
      */
     char magnetometer_revision_id()
     {
@@ -675,7 +678,8 @@ public:
 
     /*! Get the BNO055 gyroscope revision ID
      *
-     * \returns BNO055 gyroscope revision ID
+     * \return BNO055 gyroscope revision ID
+     *
      */
     char gyroscope_revision_id()
     {
@@ -684,7 +688,8 @@ public:
 
     /*! Get the BNO055 firmware version
      *
-     * \returns BNO055 firmware version
+     * \return BNO055 firmware version
+     *
      */
     short firmware_version()
     {
@@ -693,7 +698,8 @@ public:
 
     /*! Get the BNO055 bootloader version
      *
-     * \returns BNO055 bootloader version
+     * \return BNO055 bootloader version
+     *
      */
     char bootloader_version()
     {
