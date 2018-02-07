@@ -353,7 +353,7 @@ public:
         _1000Hz     = 0x1C
     };
 
-    enum class AccelerometerSensorOpeMode : uint8_t {
+    enum class AccelerometerSensorOperationMode : uint8_t {
         /* Accelerometer sensor Operating Mode */
         Normal          = 0x00,
         Suspend         = 0x20,
@@ -384,7 +384,7 @@ public:
         _32Hz           = 0x38
     };
 
-    enum class GyroscopeSensorOpeMode : uint8_t {
+    enum class GyroscopeSensorOperationMode : uint8_t {
         /* Gyroscope sensor operating mode */
         Normal          = 0x00,
         FastPowerUp     = 0x01,
@@ -403,7 +403,7 @@ public:
         _30Hz           = 0x07
     };
 
-    enum class MagnetometerSensorOpeMode : uint8_t {
+    enum class MagnetometerSensorOperationMode : uint8_t {
         /* Magnetometer sensor operating mode */
         LowPower            = 0x00,
         Regular             = 0x08,
@@ -542,22 +542,22 @@ public:
     void set_mag_power_mode(MagSensorPowerMode power_mode);
 
     /* Functions to configure accelerometer */
-    void set_accelerometer_configuration(AccelerometerSensorRange range, AccelerometerSensorBandWidth bandwidth, AccelerometerSensorOpeMode operation_mode);
+    void set_accelerometer_configuration(AccelerometerSensorRange range, AccelerometerSensorBandWidth bandwidth, AccelerometerSensorOperationMode operation_mode);
     void set_accelerometer_range(AccelerometerSensorRange range);
     void set_accelerometer_bandwidth(AccelerometerSensorBandWidth bandwidth);
-    void set_accelerometer_operation_mode(AccelerometerSensorOpeMode operation_mode);
+    void set_accelerometer_operation_mode(AccelerometerSensorOperationMode operation_mode);
 
     /* Functions to configure gyroscope */
-    void set_gyroscope_configuration(GyroscopeSensorRange range, GyroscopeSensorBandWidth bandwidth, GyroscopeSensorOpeMode operation_mode);
+    void set_gyroscope_configuration(GyroscopeSensorRange range, GyroscopeSensorBandWidth bandwidth, GyroscopeSensorOperationMode operation_mode);
     void set_gyroscope_range(GyroscopeSensorRange range);
     void set_gyroscope_bandwidth(GyroscopeSensorBandWidth bandwidth);
-    void set_gyroscope_operation_mode(GyroscopeSensorOpeMode operation_mode);
+    void set_gyroscope_operation_mode(GyroscopeSensorOperationMode operation_mode);
 
     /* Functions to configure magnetometer */
-    void set_magnetometer_configuration(MagnetometerSensorDataOutputRate data_output_rate, MagnetometerSensorOpeMode operation_mode,
+    void set_magnetometer_configuration(MagnetometerSensorDataOutputRate data_output_rate, MagnetometerSensorOperationMode operation_mode,
             MagnetometerSensorPowerMode power_mode);
     void set_magnetometer_data_output_rate(MagnetometerSensorDataOutputRate data_output_rate);
-    void set_magnetometer_operation_mode(MagnetometerSensorOpeMode operation_mode);
+    void set_magnetometer_operation_mode(MagnetometerSensorOperationMode operation_mode);
     void set_magnetometer_power_mode(MagnetometerSensorPowerMode power_mode);
 
     /*! Get BNO055 operating mode
