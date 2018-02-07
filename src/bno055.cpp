@@ -93,8 +93,8 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
  * @param operation_mode : config operation mode associated in accelerometer (Normal/Suspend/LowPower1/Standby/LowPower2/DeepSuspend)
  *
  */
-void BNO055::set_accelerometer_configuration(AccSensorRange range, AccSensorBandWidth bandwidth,
-        AccSensorOpeMode operation_mode)
+void BNO055::set_accelerometer_configuration(AccelerometerSensorRange range, AccelerometerSensorBandWidth bandwidth,
+        AccelerometerSensorOpeMode operation_mode)
 {
     char reg_val = 0x00;
     // check if current page = pageID 1
@@ -113,7 +113,7 @@ void BNO055::set_accelerometer_configuration(AccSensorRange range, AccSensorBand
  * @param range : acceleration range 2g/4g/8g/16g
  *
  */
-void BNO055::set_accelerometer_range(AccSensorRange range)
+void BNO055::set_accelerometer_range(AccelerometerSensorRange range)
 {
     char reg = 0x00;
     // check if current page = pageID 1
@@ -134,7 +134,7 @@ void BNO055::set_accelerometer_range(AccSensorRange range)
  * @param bandwidth : Low-pass filter bandwidths 7.81Hz/15.63Hz/31.25Hz/62.5Hz/125Hz/250Hz/500Hz/1000Hz
  *
  */
-void BNO055::set_accelerometer_bandwidth(AccSensorBandWidth bandwidth)
+void BNO055::set_accelerometer_bandwidth(AccelerometerSensorBandWidth bandwidth)
 {
     char reg = 0x00;
     // check if current page = pageID 1
@@ -155,7 +155,7 @@ void BNO055::set_accelerometer_bandwidth(AccSensorBandWidth bandwidth)
  * @param operation_mode : config operation mode associated in accelerometer (Normal/Suspend/LowPower1/Standby/LowPower2/DeepSuspend)
  *
  */
-void BNO055::set_accelerometer_operation_mode(AccSensorOpeMode operation_mode)
+void BNO055::set_accelerometer_operation_mode(AccelerometerSensorOpeMode operation_mode)
 {
     char reg = 0x00;
     // check if current page = pageID 1
@@ -178,8 +178,8 @@ void BNO055::set_accelerometer_operation_mode(AccSensorOpeMode operation_mode)
  * @param operation_mode : config operation mode associated in gyroscope (Normal/FastPowerUp/DeepSuspend/Suspend/AdvancedPowersave)
  *
  */
-void BNO055::set_gyroscope_configuration(GyroSensorRange range, GyroSensorBandWidth bandwidth,
-        GyroSensorOpeMode operation_mode)
+void BNO055::set_gyroscope_configuration(GyroscopeSensorRange range, GyroscopeSensorBandWidth bandwidth,
+        GyroscopeSensorOpeMode operation_mode)
 {
     char reg_val = 0x00;
     // check if current page = pageID 1
@@ -202,7 +202,7 @@ void BNO055::set_gyroscope_configuration(GyroSensorRange range, GyroSensorBandWi
  * @param range : gyroscope range 2000dps/1000dps/500dps/250dps/125dps
  *
  */
-void BNO055::set_gyroscope_range(GyroSensorRange range)
+void BNO055::set_gyroscope_range(GyroscopeSensorRange range)
 {
     char reg = 0x00;
     // check if current page = pageID 1
@@ -223,7 +223,7 @@ void BNO055::set_gyroscope_range(GyroSensorRange range)
  * @param bandwidth : Low-pass filter bandwidths 523Hz/230Hz/116Hz/47Hz/23Hz/12Hz/64Hz/32Hz
  *
  */
-void BNO055::set_gyroscope_bandwidth(GyroSensorBandWidth bandwidth)
+void BNO055::set_gyroscope_bandwidth(GyroscopeSensorBandWidth bandwidth)
 {
     char reg = 0x00;
     // check if current page = pageID 1
@@ -244,7 +244,7 @@ void BNO055::set_gyroscope_bandwidth(GyroSensorBandWidth bandwidth)
  * @param operation_mode : config operation mode associated in gyroscope (Normal/FastPowerUp/DeepSuspend/Suspend/AdvancedPowersave)
  *
  */
-void BNO055::set_gyroscope_operation_mode(GyroSensorOpeMode operation_mode)
+void BNO055::set_gyroscope_operation_mode(GyroscopeSensorOpeMode operation_mode)
 {
     char reg = 0x00;
     // check if current page = pageID 1
@@ -267,8 +267,8 @@ void BNO055::set_gyroscope_operation_mode(GyroSensorOpeMode operation_mode)
  * @param power_mode : Normal/Sleep/Suspend/Force
  *
  */
-void BNO055::set_magnetometer_configuration(MagSensorDataOutputRate data_output_rate, MagSensorOpeMode operation_mode,
-        MagSensorPowerMode power_mode)
+void BNO055::set_magnetometer_configuration(MagnetometerSensorDataOutputRate data_output_rate, MagnetometerSensorOpeMode operation_mode,
+        MagnetometerSensorPowerMode power_mode)
 {
     char reg_val = 0x00;
     // check if current page = pageID 1
@@ -287,7 +287,7 @@ void BNO055::set_magnetometer_configuration(MagSensorDataOutputRate data_output_
  * @param data_output_rate :  2Hz/6Hz/8Hz/10Hz/15Hz/20Hz/25Hz/30Hz
  *
  */
-void BNO055::set_magnetometer_data_output_rate(MagSensorDataOutputRate data_output_rate)
+void BNO055::set_magnetometer_data_output_rate(MagnetometerSensorDataOutputRate data_output_rate)
 {
     char reg = 0x00;
     // check if current page = pageID 1
@@ -308,7 +308,7 @@ void BNO055::set_magnetometer_data_output_rate(MagSensorDataOutputRate data_outp
  * @param operation_mode :  LowPower/Regular/EnhancedRegular/HighAccuracy
  *
  */
-void BNO055::set_magnetometer_operation_mode(MagSensorOpeMode operation_mode)
+void BNO055::set_magnetometer_operation_mode(MagnetometerSensorOpeMode operation_mode)
 {
     char reg = 0x00;
     // check if current page = pageID 1
@@ -329,7 +329,7 @@ void BNO055::set_magnetometer_operation_mode(MagSensorOpeMode operation_mode)
  * @param power_mode :  Normal/Sleep/Suspend/Force
  *
  */
-void BNO055::set_magnetometer_power_mode(MagSensorPowerMode power_mode)
+void BNO055::set_magnetometer_power_mode(MagnetometerSensorPowerMode power_mode)
 {
     char reg = 0x00;
     // check if current page = pageID 1
