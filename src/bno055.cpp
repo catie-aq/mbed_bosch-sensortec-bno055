@@ -94,7 +94,7 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
  *
  */
 void BNO055::set_accelerometer_configuration(AccelerometerSensorRange range, AccelerometerSensorBandWidth bandwidth,
-        AccelerometerSensorOpeMode operation_mode)
+        AccelerometerSensorOperationMode operation_mode)
 {
     char reg_val = 0x00;
     // check if current page = pageID 1
@@ -155,7 +155,7 @@ void BNO055::set_accelerometer_bandwidth(AccelerometerSensorBandWidth bandwidth)
  * @param operation_mode : config operation mode associated in accelerometer (Normal/Suspend/LowPower1/Standby/LowPower2/DeepSuspend)
  *
  */
-void BNO055::set_accelerometer_operation_mode(AccelerometerSensorOpeMode operation_mode)
+void BNO055::set_accelerometer_operation_mode(AccelerometerSensorOperationMode operation_mode)
 {
     char reg = 0x00;
     // check if current page = pageID 1
@@ -179,7 +179,7 @@ void BNO055::set_accelerometer_operation_mode(AccelerometerSensorOpeMode operati
  *
  */
 void BNO055::set_gyroscope_configuration(GyroscopeSensorRange range, GyroscopeSensorBandWidth bandwidth,
-        GyroscopeSensorOpeMode operation_mode)
+        GyroscopeSensorOperationMode operation_mode)
 {
     char reg_val = 0x00;
     // check if current page = pageID 1
@@ -244,7 +244,7 @@ void BNO055::set_gyroscope_bandwidth(GyroscopeSensorBandWidth bandwidth)
  * @param operation_mode : config operation mode associated in gyroscope (Normal/FastPowerUp/DeepSuspend/Suspend/AdvancedPowersave)
  *
  */
-void BNO055::set_gyroscope_operation_mode(GyroscopeSensorOpeMode operation_mode)
+void BNO055::set_gyroscope_operation_mode(GyroscopeSensorOperationMode operation_mode)
 {
     char reg = 0x00;
     // check if current page = pageID 1
@@ -267,7 +267,7 @@ void BNO055::set_gyroscope_operation_mode(GyroscopeSensorOpeMode operation_mode)
  * @param power_mode : Normal/Sleep/Suspend/Force
  *
  */
-void BNO055::set_magnetometer_configuration(MagnetometerSensorDataOutputRate data_output_rate, MagnetometerSensorOpeMode operation_mode,
+void BNO055::set_magnetometer_configuration(MagnetometerSensorDataOutputRate data_output_rate, MagnetometerSensorOperationMode operation_mode,
         MagnetometerSensorPowerMode power_mode)
 {
     char reg_val = 0x00;
@@ -308,7 +308,7 @@ void BNO055::set_magnetometer_data_output_rate(MagnetometerSensorDataOutputRate 
  * @param operation_mode :  LowPower/Regular/EnhancedRegular/HighAccuracy
  *
  */
-void BNO055::set_magnetometer_operation_mode(MagnetometerSensorOpeMode operation_mode)
+void BNO055::set_magnetometer_operation_mode(MagnetometerSensorOperationMode operation_mode)
 {
     char reg = 0x00;
     // check if current page = pageID 1
