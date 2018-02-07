@@ -458,27 +458,28 @@ public:
      * \param operation_mode associated in accelerometer (Normal/Suspend/LowPower1/Standby/LowPower2/DeepSuspend)
      *
      */
+    void set_accelerometer_configuration(AccelerometerSensorRange range, AccelerometerSensorBandWidth bandwidth, AccelerometerSensorOperationMode operation_mode);
 
     /** Set BNO055  range accelerometer configuration
      *
      * \param range acceleration 2g/4g/8g/16g
      *
      */
-    void set_accel_range(AccSensorRange range);
+    void set_accelerometer_range(AccelerometerSensorRange range);
 
     /*! Set BNO055  bandwidth accelerometer configuration
      *
      * \param bandwidth Low-pass filter 7.81Hz/15.63Hz/31.25Hz/62.5Hz/125Hz/250Hz/500Hz/1000Hz
      *
      */
-    void set_accel_bandwidth(AccSensorBandWidth bandwidth);
+    void set_accelerometer_bandwidth(AccelerometerSensorBandWidth bandwidth);
 
     /*! Set BNO055  operating mode accelerometer configuration
      *
      * \param operation_mode associated in accelerometer (Normal/Suspend/LowPower1/Standby/LowPower2/DeepSuspend)
      *
      */
-    void set_accel_operation_mode(AccSensorOpeMode operation_mode);
+    void set_accelerometer_operation_mode(AccelerometerSensorOperationMode operation_mode);
 
     /*! Set BNO055 gyroscope configuration
      *
@@ -487,28 +488,28 @@ public:
      * \param operation_mode associated in gyroscope (Normal/FastPowerUp/DeepSuspend/Suspend/AdvancedPowersave)
      *
      */
-    void set_gyro_configuration(GyroSensorRange range, GyroSensorBandWidth bandwidth, GyroSensorOpeMode operation_mode);
+    void set_gyroscope_configuration(GyroscopeSensorRange range, GyroscopeSensorBandWidth bandwidth, GyroscopeSensorOperationMode operation_mode);
 
     /*! Set BNO055  range gyroscope configuration
      *
      * \param range gyroscope 2000dps/1000dps/500dps/250dps/125dps
      *
      */
-    void set_gyro_range(GyroSensorRange range);
+    void set_gyroscope_range(GyroscopeSensorRange range);
 
     /*! Set BNO055  bandwidth gyroscope configuration
      *
      * \param bandwidth Low-pass filter 523Hz/230Hz/116Hz/47Hz/23Hz/12Hz/64Hz/32Hz
      *
      */
-    void set_gyro_bandwidth(GyroSensorBandWidth bandwidth);
+    void set_gyroscope_bandwidth(GyroscopeSensorBandWidth bandwidth);
 
     /*! Set BNO055  operating mode gyroscope configuration
      *
      * \param operation_mode associated in gyroscope (Normal/FastPowerUp/DeepSuspend/Suspend/AdvancedPowersave)
      *
      */
-    void set_gyro_operation_mode(GyroSensorOpeMode operation_mode);
+    void set_gyroscope_operation_mode(GyroscopeSensorOperationMode operation_mode);
 
     /*! Set BNO055 magnetometer configuration
      *
@@ -517,47 +518,28 @@ public:
      * \param power_mode Normal/Sleep/Suspend/Force
      *
      */
-    void set_mag_configuration(MagSensorDataOutputRate data_output_rate, MagSensorOpeMode operation_mode,
-            MagSensorPowerMode power_mode);
+    void set_magnetometer_configuration(MagnetometerSensorDataOutputRate data_output_rate, MagnetometerSensorOperationMode operation_mode,
+                MagnetometerSensorPowerMode power_mode);
 
     /*! Set BNO055  data output rate magnetometer configuration
      *
      * \param data_output_rate 2Hz/6Hz/8Hz/10Hz/15Hz/20Hz/25Hz/30Hz
      *
      */
-    void set_mag_data_output_rate(MagSensorDataOutputRate data_output_rate);
+    void set_magnetometer_data_output_rate(MagnetometerSensorDataOutputRate data_output_rate);
 
     /*! Set BNO055  operating mode magnetometer configuration
      *
      * \param operation_mode LowPower/Regular/EnhancedRegular/HighAccuracy
      *
      */
-    void set_mag_operation_mode(MagSensorOpeMode operation_mode);
+    void set_magnetometer_operation_mode(MagnetometerSensorOperationMode operation_mode);
 
     /*! Set BNO055  power_mode magnetometer configuration
      *
      * \param power mode Normal/Sleep/Suspend/Force
      *
      */
-    void set_mag_power_mode(MagSensorPowerMode power_mode);
-
-    /* Functions to configure accelerometer */
-    void set_accelerometer_configuration(AccelerometerSensorRange range, AccelerometerSensorBandWidth bandwidth, AccelerometerSensorOperationMode operation_mode);
-    void set_accelerometer_range(AccelerometerSensorRange range);
-    void set_accelerometer_bandwidth(AccelerometerSensorBandWidth bandwidth);
-    void set_accelerometer_operation_mode(AccelerometerSensorOperationMode operation_mode);
-
-    /* Functions to configure gyroscope */
-    void set_gyroscope_configuration(GyroscopeSensorRange range, GyroscopeSensorBandWidth bandwidth, GyroscopeSensorOperationMode operation_mode);
-    void set_gyroscope_range(GyroscopeSensorRange range);
-    void set_gyroscope_bandwidth(GyroscopeSensorBandWidth bandwidth);
-    void set_gyroscope_operation_mode(GyroscopeSensorOperationMode operation_mode);
-
-    /* Functions to configure magnetometer */
-    void set_magnetometer_configuration(MagnetometerSensorDataOutputRate data_output_rate, MagnetometerSensorOperationMode operation_mode,
-            MagnetometerSensorPowerMode power_mode);
-    void set_magnetometer_data_output_rate(MagnetometerSensorDataOutputRate data_output_rate);
-    void set_magnetometer_operation_mode(MagnetometerSensorOperationMode operation_mode);
     void set_magnetometer_power_mode(MagnetometerSensorPowerMode power_mode);
 
     /*! Get BNO055 operating mode
@@ -587,180 +569,131 @@ public:
      * \returns the accelerometer values structure in m/s²
      *
      */
-    void read_accel(bno055_accel_t *accel);
+     bno055_accelerometer_t accelerometer();
 
     /*! Get the gyrometer value
      *
      * \returns the gyroscope values structure in rad/s
      *
      */
-    void read_gyro(bno055_gyro_t *gyro);
+     bno055_gyroscope_t gyroscope();
 
     /*! Get the magnetometer value
      *
      * \returns the magnetometer values structure  in µT
      *
      */
-    void read_mag(bno055_mag_t *mag);
+     bno055_magnetometer_t magnetometer();
 
     /*! Get internal sensors temperatures
      *
      * \returns the accelerometer and gyroscope sensor temperature
      *
      */
-    void read_temperature(bno055_temperature_t *temp);
+     bno055_temperature_sensors_t temperature_sensors();
 
     /*! Get the accelerometer value with gravity compensation
      *
      * \returns the accelerometer values structure with gravity compensation in m/s²
      *
      */
-    void read_linear_accel(bno055_linear_accel_t *accel);
+     bno055_linear_acceleration_t linear_acceleration();
 
     /*! Get the Euler angles value
      *
      * \returns the Euler angles values structure in rad
      *
      */
-    void read_euler(bno055_euler_t *euler);
+     bno055_euler_t euler();
 
     /*! Get the quaternion value. The output quat in normalized and unitary
      *
      * \returns the quaternion values structure
      *
      */
-    void read_quaternion(bno055_quaternion_t *quat);
+     bno055_quaternion_t quaternion();
 
     /*! Get the quaternion raw value.
      *
      * \returns the quaternion raw values structure
      *
      */
-    void read_quaternion(bno055_raw_quaternion_t *quat);
+     bno055_raw_quaternion_t raw_quaternion();
 
     /*! Get the gravity vector value
      *
      * \returns the gravity values structure in m/s²
      *
      */
-    void read_gravity(bno055_gravity_t *gravity);
+     bno055_gravity_t gravity();
 
     /*! Get the calibrations state of the sensors and the system
      *
      * \returns the system calibration state structure of each device (sys, acc, gyro, mag). Value between 0 and 3, where 3 indicates a full calibration
      *
      */
-    void get_calibration_status(uint8_t *sys, uint8_t *gyro, uint8_t *accel, uint8_t *mag);
+     bno055_calibration_status_t calibration_status();
 
     /*! Get the sensor offsets calculated by the fusion algorithm
      *
      * \return the raw sensor offsets values structure
      *
      */
-    void get_sensor_offsets(bno055_offsets_t *sensor_offsets);
+     bno055_sensors_offsets_t sensor_offsets();
 
     /*! set the sensor offsets given by the user to faster the calibration
      *
      * \param sensor_offsets pointer to bno055_offsets_t structure that has to be written in the BNO055 offsets registers
      *
      */
-
-
-    /* Functions to read non-filtered values from sensors */
-    bno055_accelerometer_t accelerometer();
-    bno055_gyroscope_t gyroscope();
-    bno055_magnetometer_t magnetometer();
-    bno055_temperature_sensors_t temperature_sensors();
-
-    /* Functions to read filtered values from BNO055 */
-    bno055_linear_acceleration_t linear_acceleration();
-    bno055_euler_t euler();
-    bno055_quaternion_t quaternion();
-    bno055_raw_quaternion_t raw_quaternion();
-    bno055_gravity_t gravity();
-
-    bno055_calibration_status_t calibration_status();
-    bno055_sensors_offsets_t sensor_offsets();
-    void set_sensor_offsets(const bno055_sensors_offsets_t *sensor_offsets);
+     void set_sensor_offsets(const bno055_sensors_offsets_t *sensor_offsets);
 
     /*! Reset the bno055. All register values goes back to default
      * values and calibrations values are lost
      */
     void reset();
 
-
     /*! Get the BNO055 chip ID
      *
      * \return BNO055 chip ID
      *
      */
-    char chip_id()
-    {
-        return _chipId;
-    }
+    char chip_id();
 
     /*! Get the BNO055 accelerometer revision ID
      *
      * \return BNO055 accelerometer revision ID
      *
      */
-    char accelerometer_revision_id()
-    {
-        return _accelerometerRevisionId;
-    }
+    char accelerometer_revision_id();
 
     /*! Get the BNO055 magnetometer revision ID
      *
      * \return BNO055 magnetometer revision ID
      *
      */
-    char magnetometer_revision_id()
-    {
-        return _magnetometerRevisionId;
-    }
+    char magnetometer_revision_id();
 
     /*! Get the BNO055 gyroscope revision ID
      *
      * \return BNO055 gyroscope revision ID
      *
      */
-    char gyroscope_revision_id()
-    {
-        return _gyroscopeRevisionId;
-    }
+    char gyroscope_revision_id();
 
     /*! Get the BNO055 firmware version
      *
      * \return BNO055 firmware version
      *
      */
-    short firmware_version()
-    {
-        return _firmwareVersion;
-    }
+    short firmware_version();
 
     /*! Get the BNO055 bootloader version
      *
      * \return BNO055 bootloader version
      *
      */
-    char bootloader_version()
-    {
-        return _bootloaderVersion;
-    }
-
-    char chip_id();
-
-    char accelerometer_revision_id();
-
-    char magnetometer_revision_id();
-
-    char gyroscope_revision_id();
-
-    short firmware_version();
-
     char bootloader_version();
-
 
 private:
 
