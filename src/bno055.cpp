@@ -53,7 +53,6 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
             return false;
         }
     }
-
     //Updating BNO055 informations
     i2c_read_register(RegisterAddress::ChipId, &_chipId);
     i2c_read_register(RegisterAddress::AccelRevId, &_accelerometerRevisionId);
@@ -61,7 +60,6 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
     i2c_read_register(RegisterAddress::GyroRevId, &_gyroscopeRevisionId);
     i2c_read_two_bytes_register(RegisterAddress::SwRevId, &_firmwareVersion);
     i2c_read_register(RegisterAddress::BlRevId, &_bootloaderVersion);
-
     set_operation_mode(OperationMode::CONFIG);
     wait_ms(20);
     i2c_set_register(RegisterAddress::PwrMode, static_cast<char>(PowerMode::NORMAL));
