@@ -427,6 +427,16 @@ public:
      */
     BNO055(I2C *i2c, I2CAddress address = I2CAddress::Address1, int hz = 400000);
 
+    /*! Constructor
+             *
+             * \param i2c pointer to mbed I2C object
+             * \param hz frequency of the I2C interface
+             * \param interrupt_pin interrupt pin name
+             *
+             */
+    BNO055(I2C *i2c, PinName interrupt_pin, I2CAddress address = I2CAddress::Address1, int hz = 400000);
+
+
     /*! Initialize the BNO055
      *
      * \param mode operation mode to be run by the BNO
@@ -741,6 +751,7 @@ private:
     int i2c_read_vector(RegisterAddress registerAddress, int16_t value[3]);
 
     I2C *_i2c;
+    InterruptIn _interrupt_pin;
     I2CAddress _i2cAddress;
     OperationMode _mode;
     PageId _currentPageID;
