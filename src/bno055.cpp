@@ -34,11 +34,20 @@ namespace {
 } // namespace
 
 BNO055::BNO055(I2C *i2c, I2CAddress address, int hz):
-    _i2cAddress(address), _mode(OperationMode::CONFIG), _currentPageID(PageId::PageZero)
+    _i2cAddress(address), _interrupt_pin(PinName(NC)), _mode(OperationMode::CONFIG), _currentPageID(PageId::PageZero)
 {
     _i2c = i2c;
     _i2c->frequency(hz);
 }
+
+BNO055::BNO055(I2C *i2c, PinName interrupt_pin, I2CAddress address, int hz):
+    _i2cAddress(address), _interrupt_pin(interrupt_pin), _mode(OperationMode::CONFIG), _currentPageID(PageId::PageZero)
+{
+    _i2c = i2c;
+    _i2c->frequency(hz);
+    _interrupt_pin.mode(OpenDrain);
+}
+
 
 bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
 {
