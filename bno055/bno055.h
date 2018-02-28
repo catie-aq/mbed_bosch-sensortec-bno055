@@ -419,7 +419,7 @@ public:
         ForceMode           = 0x06
     };
 
-    enum class AccelerationInterrutpMode : uint8_t {
+    enum class AccelerationInterruptMode : uint8_t {
         /* Acceleration interrupt mode */
         NoMotionAndHighG    = 0xA0,
         NoMotion            = 0x80,

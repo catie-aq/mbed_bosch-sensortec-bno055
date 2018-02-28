@@ -457,7 +457,7 @@ void BNO055::enable_acceleration_highG_interrupt(AccelerationInterruptAxisMap ma
 
     // enable interrupt
     i2c_read_register(RegisterAddress::Int, &reg);
-    i2c_set_register(RegisterAddress::Int, (reg | static_cast<char>(AccelerationInterrutpMode::HighG)));
+    i2c_set_register(RegisterAddress::Int, (reg | static_cast<char>(AccelerationInterruptMode::HighG)));
 
     // return to the last mode used
     if (save_mode != _mode) {
@@ -503,7 +503,7 @@ void BNO055::enable_acceleration_noMotion_interrupt(AccelerationInterruptAxisMap
 
     // enable interrupt
     i2c_read_register(RegisterAddress::Int, &reg);
-    i2c_set_register(RegisterAddress::Int, (reg | static_cast<char>(AccelerationInterrutpMode::NoMotion)));
+    i2c_set_register(RegisterAddress::Int, (reg | static_cast<char>(AccelerationInterruptMode::NoMotion)));
 
     // return to the last mode used
     if (save_mode != _mode) {
@@ -548,7 +548,7 @@ void BNO055::enable_acceleration_anyMotion_interrupt(AccelerationInterruptAxisMa
 
     // enable interrupt
     i2c_read_register(RegisterAddress::Int, &reg);
-    i2c_set_register(RegisterAddress::Int, (reg | static_cast<char>(AccelerationInterrutpMode::AnyMotion)));
+    i2c_set_register(RegisterAddress::Int, (reg | static_cast<char>(AccelerationInterruptMode::AnyMotion)));
 
     // return to the last mode used
     if (save_mode != _mode) {
