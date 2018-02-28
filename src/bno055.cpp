@@ -557,66 +557,6 @@ void BNO055::enable_acceleration_anyMotion_interrupt(AccelerationInterruptAxisMa
     }
 }
 
-
-
-void BNO055::set_acceleration_interrupt(AccelerationInterrutpMode accelaration_int_mode, AccelerationInterrutpPinMask mask, uint8_t acceleration_threshold, uint8_t int_duration)
-{
-    char reg = 0xff;
-
-    // save last mode used
-    OperationMode save_mode = _mode;
-
-    // check if operation mode = CONFIG
-    if (_mode != OperationMode::CONFIG) {
-       set_operation_mode(OperationMode::CONFIG);
-       wait_ms(50);
-    }
-
-    // check if current page = pageID 1
-    if (_currentPageID != PageId::PageOne) {
-        //go to pageID 1
-        set_pageID(PageId::PageOne);
-    }
-
-    switch(accelaration_int_mode) {
-        case  (AccelerationInterrutpMode::AnyMotion):
-                i2c_set_register(RegisterAddress::AccelIntrSettings, 0x1F);
-                // set threshold Any Motion
-                i2c_set_register(RegisterAddress::AccelAnyMotionThres, acceleration_threshold);
-                break;
-
-        case  (AccelerationInterrutpMode::NoMotion):
-                i2c_set_register(RegisterAddress::AccelIntrSettings, 0x1F);
-                // set threshold No Motion
-                i2c_set_register(RegisterAddress::AccelNoMotionThres, acceleration_threshold);
-                // get register value of ACC_NM_SET
-                i2c_read_register(RegisterAddress::AccelNoMotionSet, &reg);
-                // set new value of no motion duration
-                i2c_set_register(RegisterAddress::AccelNoMotionThres, (reg | int_duration));
-                break;
-
-        case  (AccelerationInterrutpMode::HighG):
-                // set ACC_INT_settings register : enable all axis of interrupt
-                i2c_set_register(RegisterAddress::AccelIntrSettings, 0xE3);
-                // set threshold High G
-                i2c_set_register(RegisterAddress::AccelHighGThres, acceleration_threshold);
-                // set High G duration : [int_duration + 1] * 2 ms
-                i2c_set_register(RegisterAddress::AccelHighGDurn, int_duration);
-                break;
-    }
-    // set mask int on the pin
-    i2c_set_register(RegisterAddress::IntMask, static_cast<char>(mask));
-    // enable interrupt
-    i2c_set_register(RegisterAddress::Int, static_cast<char>(accelaration_int_mode));
-
-    // return to the last mode used
-    if (save_mode != _mode) {
-        set_operation_mode(save_mode);
-        wait_ms(20);
-    }
-}
-
-
 uint8_t BNO055::acceleration_interrupt()
 {
     char reg = 0x00;
