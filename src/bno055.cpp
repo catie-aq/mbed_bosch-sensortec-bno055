@@ -33,19 +33,18 @@ namespace {
 
 } // namespace
 
-BNO055::BNO055(I2C *i2c, I2CAddress address, int hz):
-    _i2cAddress(address), _interrupt_pin(PinName(NC)), _mode(OperationMode::CONFIG), _currentPageID(PageId::PageZero)
-{
-    _i2c = i2c;
-    _i2c->frequency(hz);
-}
-
 BNO055::BNO055(I2C *i2c, PinName interrupt_pin, I2CAddress address, int hz):
     _i2cAddress(address), _interrupt_pin(interrupt_pin), _mode(OperationMode::CONFIG), _currentPageID(PageId::PageZero)
 {
     _i2c = i2c;
     _i2c->frequency(hz);
-    _interrupt_pin.mode(OpenDrain);
+}
+
+BNO055::BNO055(I2C *i2c, I2CAddress address, int hz):
+    _i2cAddress(address), _interrupt_pin(PinName(NC)), _mode(OperationMode::CONFIG), _currentPageID(PageId::PageZero)
+{
+    _i2c = i2c;
+    _i2c->frequency(hz);
 }
 
 
@@ -88,7 +87,8 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
     }
 
     set_operation_mode(mode);
-    wait_ms(20);
+    // let's time to bno055 initialize
+    wait_ms(500);
 
     return true;
 }
@@ -420,6 +420,314 @@ void BNO055::set_magnetometer_power_mode(MagnetometerSensorPowerMode power_mode)
     }
 }
 
+void BNO055::enable_acceleration_highG_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold, uint8_t interrupt_duration, bool enable_mask_interrupt_pin)
+{
+    char reg = 0xff;
+    // save last mode used
+    OperationMode save_mode = _mode;
+
+    // check if operation mode = CONFIG
+    if (_mode != OperationMode::CONFIG) {
+        set_operation_mode(OperationMode::CONFIG);
+        wait_ms(50);
+    }
+
+    // check if current page = pageID 1
+    if (_currentPageID != PageId::PageOne) {
+        //go to pageID 1
+        set_pageID(PageId::PageOne);
+    }
+
+    // get ACC_INT_SETTINGS register
+    i2c_read_register(RegisterAddress::AccelIntrSettings, &reg);
+    // set ACC_INT_settings register : map enable axis of interrupt
+    i2c_set_register(RegisterAddress::AccelIntrSettings, (reg | (static_cast<char>(map_axis) << 5)));
+    // set threshold High G
+    i2c_set_register(RegisterAddress::AccelHighGThres, acceleration_threshold);
+    // set High G duration : [int_duration + 1] * 2 ms
+    i2c_set_register(RegisterAddress::AccelHighGDurn, interrupt_duration);
+
+    // set mask int on the pin
+    i2c_read_register(RegisterAddress::IntMask, &reg);
+    if (enable_mask_interrupt_pin) {
+        i2c_set_register(RegisterAddress::IntMask, (reg | static_cast<char>(AccelerationInterrutpPinMask::HighGPinMask)));
+    } else {
+        i2c_set_register(RegisterAddress::IntMask, (reg & (~static_cast<char>(AccelerationInterrutpPinMask::HighGPinMask))));
+    }
+
+    // enable interrupt
+    i2c_read_register(RegisterAddress::Int, &reg);
+    i2c_set_register(RegisterAddress::Int, (reg | static_cast<char>(AccelerationInterrutpMode::HighG)));
+
+    // return to the last mode used
+    if (save_mode != _mode) {
+        set_operation_mode(save_mode);
+        wait_ms(20);
+    }
+
+}
+
+void BNO055::enable_acceleration_noMotion_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold, uint8_t interrupt_duration, bool enable_mask_interrupt_pin)
+{
+    char reg = 0xff;
+    // save last mode used
+    OperationMode save_mode = _mode;
+
+    // check if operation mode = CONFIG
+    if (_mode != OperationMode::CONFIG) {
+      set_operation_mode(OperationMode::CONFIG);
+      wait_ms(50);
+    }
+
+    // check if current page = pageID 1
+    if (_currentPageID != PageId::PageOne) {
+       //go to pageID 1
+       set_pageID(PageId::PageOne);
+    }
+
+    // get ACC_INT_SETTINGS register
+    i2c_read_register(RegisterAddress::AccelIntrSettings, &reg);
+    // get ACC INT SETTINGS register value
+    i2c_set_register(RegisterAddress::AccelIntrSettings, (reg | (static_cast<char>(map_axis) << 2)));
+    // set threshold No Motion
+    i2c_set_register(RegisterAddress::AccelNoMotionThres, acceleration_threshold);
+    // get register value of ACC_NM_SET
+    i2c_read_register(RegisterAddress::AccelNoMotionSet, &reg);
+    // set new value of no motion duration
+    i2c_set_register(RegisterAddress::AccelNoMotionThres, (reg | static_cast<char>(interrupt_duration)));
+
+    // set mask int on the pin
+    if (enable_mask_interrupt_pin) {
+        i2c_set_register(RegisterAddress::IntMask, static_cast<char>(AccelerationInterrutpPinMask::NoMotionPinMask));
+    }
+
+    // enable interrupt
+    i2c_read_register(RegisterAddress::Int, &reg);
+    i2c_set_register(RegisterAddress::Int, (reg | static_cast<char>(AccelerationInterrutpMode::NoMotion)));
+
+    // return to the last mode used
+    if (save_mode != _mode) {
+        set_operation_mode(save_mode);
+        wait_ms(20);
+    }
+}
+
+void BNO055::enable_acceleration_anyMotion_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold, uint8_t interrupt_duration, bool enable_mask_interrupt_pin)
+{
+    char reg = 0xff;
+    // save last mode used
+    OperationMode save_mode = _mode;
+
+    // check if operation mode = CONFIG
+    if (_mode != OperationMode::CONFIG) {
+      set_operation_mode(OperationMode::CONFIG);
+      wait_ms(50);
+    }
+
+    // check if current page = pageID 1
+    if (_currentPageID != PageId::PageOne) {
+       //go to pageID 1
+       set_pageID(PageId::PageOne);
+    }
+
+    // get ACC_INT_SETTINGS register
+    i2c_read_register(RegisterAddress::AccelIntrSettings, &reg);
+    // set ACC INT SETTINGS register value
+    i2c_set_register(RegisterAddress::AccelIntrSettings, (reg | (static_cast<char>(map_axis) << 2)));
+    // get ACC_INT_SETTINGS register
+    i2c_read_register(RegisterAddress::AccelIntrSettings, &reg);
+    // set ACC INT SETTINGS register value
+    i2c_set_register(RegisterAddress::AccelIntrSettings, (reg | (interrupt_duration & 0x03)));
+    // set threshold Any Motion
+    i2c_set_register(RegisterAddress::AccelAnyMotionThres, acceleration_threshold);
+
+    // set mask int on the pin
+    if (enable_mask_interrupt_pin) {
+        i2c_set_register(RegisterAddress::IntMask, static_cast<char>(AccelerationInterrutpPinMask::AnyMotionPinMask));
+    }
+
+    // enable interrupt
+    i2c_read_register(RegisterAddress::Int, &reg);
+    i2c_set_register(RegisterAddress::Int, (reg | static_cast<char>(AccelerationInterrutpMode::AnyMotion)));
+
+    // return to the last mode used
+    if (save_mode != _mode) {
+        set_operation_mode(save_mode);
+        wait_ms(20);
+    }
+}
+
+
+
+void BNO055::set_acceleration_interrupt(AccelerationInterrutpMode accelaration_int_mode, AccelerationInterrutpPinMask mask, uint8_t acceleration_threshold, uint8_t int_duration)
+{
+    char reg = 0xff;
+
+    // save last mode used
+    OperationMode save_mode = _mode;
+
+    // check if operation mode = CONFIG
+    if (_mode != OperationMode::CONFIG) {
+       set_operation_mode(OperationMode::CONFIG);
+       wait_ms(50);
+    }
+
+    // check if current page = pageID 1
+    if (_currentPageID != PageId::PageOne) {
+        //go to pageID 1
+        set_pageID(PageId::PageOne);
+    }
+
+    switch(accelaration_int_mode) {
+        case  (AccelerationInterrutpMode::AnyMotion):
+                i2c_set_register(RegisterAddress::AccelIntrSettings, 0x1F);
+                // set threshold Any Motion
+                i2c_set_register(RegisterAddress::AccelAnyMotionThres, acceleration_threshold);
+                break;
+
+        case  (AccelerationInterrutpMode::NoMotion):
+                i2c_set_register(RegisterAddress::AccelIntrSettings, 0x1F);
+                // set threshold No Motion
+                i2c_set_register(RegisterAddress::AccelNoMotionThres, acceleration_threshold);
+                // get register value of ACC_NM_SET
+                i2c_read_register(RegisterAddress::AccelNoMotionSet, &reg);
+                // set new value of no motion duration
+                i2c_set_register(RegisterAddress::AccelNoMotionThres, (reg | int_duration));
+                break;
+
+        case  (AccelerationInterrutpMode::HighG):
+                // set ACC_INT_settings register : enable all axis of interrupt
+                i2c_set_register(RegisterAddress::AccelIntrSettings, 0xE3);
+                // set threshold High G
+                i2c_set_register(RegisterAddress::AccelHighGThres, acceleration_threshold);
+                // set High G duration : [int_duration + 1] * 2 ms
+                i2c_set_register(RegisterAddress::AccelHighGDurn, int_duration);
+                break;
+    }
+    // set mask int on the pin
+    i2c_set_register(RegisterAddress::IntMask, static_cast<char>(mask));
+    // enable interrupt
+    i2c_set_register(RegisterAddress::Int, static_cast<char>(accelaration_int_mode));
+
+    // return to the last mode used
+    if (save_mode != _mode) {
+        set_operation_mode(save_mode);
+        wait_ms(20);
+    }
+}
+
+
+uint8_t BNO055::acceleration_interrupt()
+{
+    char reg = 0x00;
+
+    // check if current page = pageID 0
+    if (_currentPageID != PageId::PageZero) {
+        //go to pageID 0
+        set_pageID(PageId::PageZero);
+    }
+    //read status int register
+    i2c_read_register(RegisterAddress::IntrStat, &reg);
+
+    return reg;
+}
+
+void BNO055::clear_interrupt_flag()
+{
+    char reg = 0xff;
+
+    // check if current page = pageID 0
+    if (_currentPageID != PageId::PageZero) {
+        //go to pageID 0
+        set_pageID(PageId::PageZero);
+    }
+    //read register
+    i2c_read_register(RegisterAddress::SysTrigger, &reg);
+    // clear reset_int bit of sys_trigger register
+    i2c_set_register(RegisterAddress::SysTrigger, (reg | 0x40));
+    //read register
+    i2c_read_register(RegisterAddress::SysTrigger, &reg);
+
+
+}
+
+uint8_t BNO055::system_status()
+{
+    char reg = 0xff;
+
+    // check if current page = pageID 0
+    if (_currentPageID != PageId::PageZero) {
+        //go to pageID 0
+        set_pageID(PageId::PageZero);
+    }
+    //read status int register
+    i2c_read_register(RegisterAddress::SysStat, &reg);
+
+    return reg;
+}
+
+uint8_t BNO055::system_error()
+{
+    char reg = 0xff;
+
+    // check if current page = pageID 0
+    if (_currentPageID != PageId::PageZero) {
+        //go to pageID 0
+        set_pageID(PageId::PageZero);
+    }
+    //read status int register
+    i2c_read_register(RegisterAddress::SysErr, &reg);
+
+    return reg;
+}
+
+void BNO055::debug_int_register()
+{
+    char reg = 0x00;
+    // check if current page = pageID 1
+    if (_currentPageID != PageId::PageOne) {
+        //go to pageID 1
+        set_pageID(PageId::PageOne);
+        wait_ms(20);
+    }
+
+    // set ACC_INT_settings register : enable all axis of highG int
+   i2c_read_register(RegisterAddress::AccelIntrSettings, &reg);
+   printf("Accel Int settings = 0x%.2x\n\r", reg);
+   wait_ms(20);
+
+   // set threshold High G
+   i2c_read_register(RegisterAddress::AccelHighGThres, &reg);
+   printf("Accel HighG Threshold = 0x%.2x\n\r", reg);
+   wait_ms(20);
+
+   // set High G duration
+   i2c_read_register(RegisterAddress::AccelHighGDurn, &reg);
+   printf("Accel HighG Duration = 0x%.2x\n\r", reg);
+   wait_ms(20);
+
+   // set mask int on the pin
+   i2c_read_register(RegisterAddress::IntMask, &reg);
+   printf("Int mask = 0x%.2x\n\r", reg);
+   wait_ms(20);
+
+   // enbale High_g interrupt
+   i2c_read_register(RegisterAddress::Int, &reg);
+   printf("Int enable = 0x%.2x\n\r", reg);
+   wait_ms(20);
+}
+
+void BNO055::acceleration_interrupt_callback(Callback<void()> func)
+{
+    if (func) {
+        _interrupt_pin.rise(func);
+        _interrupt_pin.enable_irq();
+    } else {
+        _interrupt_pin.rise(NULL);
+        _interrupt_pin.disable_irq();
+    }
+}
+
 BNO055::OperationMode BNO055::operating_mode()
 {
     return (_mode);
@@ -744,7 +1052,7 @@ void BNO055::set_sensor_offsets(const bno055_sensors_offsets_t *sensor_offsets)
 
 void BNO055::reset()
 {
-    //go to pageID 0
+    //force to go to pageID 0
     set_pageID(PageId::PageZero);
 
     i2c_set_register(RegisterAddress::SysTrigger, RESET_COMMAND);
