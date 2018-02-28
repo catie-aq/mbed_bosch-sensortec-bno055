@@ -419,6 +419,34 @@ public:
         ForceMode           = 0x06
     };
 
+    enum class AccelerationInterrutpMode : uint8_t {
+        /* Acceleration interrupt mode */
+        NoMotionAndHighG    = 0xA0,
+        NoMotion            = 0x80,
+        AnyMotion           = 0x40,
+        HighG               = 0x20
+    };
+
+    enum class AccelerationInterruptAxisMap : uint8_t {
+        /* Acceleration interrupt mapping axis */
+        X                   = 0x01,
+        Y                   = 0x02,
+        Z                   = 0x04,
+        XY                  = 0x03,
+        XZ                  = 0x05,
+        YZ                  = 0x06,
+        XYZ                 = 0x07
+
+    };
+
+    enum class AccelerationInterrutpPinMask : uint8_t {
+        /* Acceleration interrupt settings */
+        NoMotionPinMask        = 0x80,
+        AnyMotionPinMask       = 0x40,
+        HighGPinMask           = 0x20,
+        NoPinMask              = 0x00
+    };
+
     /*! Default constructor
      *
      * \param i2c pointer to mbed I2C object
@@ -428,12 +456,12 @@ public:
     BNO055(I2C *i2c, I2CAddress address = I2CAddress::Address1, int hz = 400000);
 
     /*! Constructor
-             *
-             * \param i2c pointer to mbed I2C object
-             * \param hz frequency of the I2C interface
-             * \param interrupt_pin interrupt pin name
-             *
-             */
+     *
+     * \param i2c pointer to mbed I2C object
+     * \param hz frequency of the I2C interface
+     * \param interrupt_pin interrupt pin name
+     *
+     */
     BNO055(I2C *i2c, PinName interrupt_pin, I2CAddress address = I2CAddress::Address1, int hz = 400000);
 
 
@@ -708,6 +736,79 @@ public:
      */
     char bootloader_version();
 
+    /*! Set BNO055 accelerometer interrupt configuration
+     *
+     * \param acceleration_int_mode type of acceleration interrupt (High-G NoMotion or AnyMotion)
+     * \param mask define the mask on the hardware interrupt pin
+     * \param acceleration_threshold configure the interrupt threshold  in accord with current range configured (percentage of current range)
+     * \param int_duration duration of interrupt level
+     *
+     */
+    void set_acceleration_interrupt(AccelerationInterrutpMode accelaration_int_mode, AccelerationInterrutpPinMask mask, uint8_t acceleration_threshold, uint8_t int_duration);
+
+    /*! Set
+     *
+     * \param
+     * \param
+     * \param
+     *
+     */
+    void enable_acceleration_highG_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold, uint8_t interrupt_duration, bool enable_mask_interrupt_pin = false);
+
+    /*! Set
+     *
+     * \param
+     * \param
+     * \param
+     *
+     */
+    void enable_acceleration_noMotion_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold, uint8_t interrupt_duration, bool enable_mask_interrupt_pin);
+
+    /*! Set
+     *
+     * \param
+     * \param
+     * \param
+     *
+     */
+    void enable_acceleration_anyMotion_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold, uint8_t interrupt_duration, bool enable_mask_interrupt_pin);
+
+
+    /*! Set BNO055 acceleration interrupt callback
+     *
+     * \param func A pointer to a void function, or 0 to set as none
+     *
+     */
+    void acceleration_interrupt_callback(Callback<void()> func);
+
+    /*! BNO055 acceleration interrupt
+     *
+     * \return the register value of interrupt status
+     *
+     */
+    uint8_t acceleration_interrupt();
+
+    /*! BNO055 clear interrupt flag
+     *
+     */
+    void clear_interrupt_flag();
+
+    /*! BNO055 system status
+     *
+     * \return the status of system (see p.68 of datasheet)
+     *
+     */
+    uint8_t system_status();
+
+    /*! BNO055 system error
+     *
+     * \return the error of system (see p.69 of datasheet)
+     *
+     */
+    uint8_t system_error();
+
+    void debug_int_register();
+
 private:
 
     /*! Set register value
@@ -751,10 +852,10 @@ private:
     int i2c_read_vector(RegisterAddress registerAddress, int16_t value[3]);
 
     I2C *_i2c;
-    InterruptIn _interrupt_pin;
     I2CAddress _i2cAddress;
     OperationMode _mode;
     PageId _currentPageID;
+    InterruptIn _interrupt_pin;
 
     char _chipId = 0;
     char _accelerometerRevisionId = 0;
