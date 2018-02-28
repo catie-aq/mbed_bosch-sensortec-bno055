@@ -736,42 +736,36 @@ public:
      */
     char bootloader_version();
 
-    /*! Set BNO055 accelerometer interrupt configuration
-     *
-     * \param acceleration_int_mode type of acceleration interrupt (High-G NoMotion or AnyMotion)
-     * \param mask define the mask on the hardware interrupt pin
-     * \param acceleration_threshold configure the interrupt threshold  in accord with current range configured (percentage of current range)
-     * \param int_duration duration of interrupt level
-     *
-     */
-    void set_acceleration_interrupt(AccelerationInterrutpMode accelaration_int_mode, AccelerationInterrutpPinMask mask, uint8_t acceleration_threshold, uint8_t int_duration);
 
-    /*! Set
+    /*! Set BNO055 : Enable High-G acceleration interrupt
      *
-     * \param
-     * \param
-     * \param
+     * \param map_axis the axis mapping to interrupt will be available
+     * \param acceleratgion_threshold configure the interrupt threshold in accord with current range configured (percentage of current range)
+     * \param interrupt_duration duration of interrupt level
+     * \param enable_mask_interrupt_pin the mask to define if the interrupt pin is map to interrupt event, false to set as none
      *
      */
     void enable_acceleration_highG_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold, uint8_t interrupt_duration, bool enable_mask_interrupt_pin = false);
 
-    /*! Set
+    /*! Set BNO055 : Enable No-Motion acceleration interrupt
      *
-     * \param
-     * \param
-     * \param
+     * \param map_axis the axis mapping to interrupt will be available
+     * \param acceleratgion_threshold configure the interrupt threshold in accord with current range configured (percentage of current range)
+     * \param interrupt_duration duration of interrupt level
+     * \param enable_mask_interrupt_pin the mask to define if the interrupt pin is map to interrupt event, false to set as none
      *
      */
-    void enable_acceleration_noMotion_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold, uint8_t interrupt_duration, bool enable_mask_interrupt_pin);
+    void enable_acceleration_noMotion_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold, uint8_t interrupt_duration, bool enable_mask_interrupt_pin =  false);
 
-    /*! Set
+    /*! Set BNO055 : Enable Any-Motion acceleration interrupt
      *
-     * \param
-     * \param
-     * \param
+     * \param map_axis the axis mapping to interrupt will be available
+     * \param acceleratgion_threshold configure the interrupt threshold in accord with current range configured (percentage of current range)
+     * \param interrupt_duration duration of interrupt level
+     * \param enable_mask_interrupt_pin the mask to define if the interrupt pin is map to interrupt event, false to set as none
      *
      */
-    void enable_acceleration_anyMotion_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold, uint8_t interrupt_duration, bool enable_mask_interrupt_pin);
+    void enable_acceleration_anyMotion_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold, uint8_t interrupt_duration, bool enable_mask_interrupt_pin = false);
 
 
     /*! Set BNO055 acceleration interrupt callback
