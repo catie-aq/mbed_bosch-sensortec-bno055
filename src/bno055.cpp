@@ -88,6 +88,14 @@ void BNO055::set_accelerometer_configuration(AccelerometerSensorRange range, Acc
         AccelerometerSensorOperationMode operation_mode)
 {
     char reg_val = 0x00;
+    // save last mode used
+    OperationMode save_mode = _mode;
+
+    // check if operation mode = CONFIG
+    if (_mode != OperationMode::CONFIG) {
+        set_operation_mode(OperationMode::CONFIG);
+        wait_ms(50);
+    }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
         //go to pageID 1
@@ -97,11 +105,25 @@ void BNO055::set_accelerometer_configuration(AccelerometerSensorRange range, Acc
     reg_val |= (static_cast<char>(range) | static_cast<char>(bandwidth) | static_cast<char>(operation_mode));
     //set accel conf register
     i2c_set_register(RegisterAddress::AccelConfig, reg_val);
+
+    // return to the last mode used
+    if (save_mode != _mode) {
+        set_operation_mode(save_mode);
+        wait_ms(20);
+    }
 }
 
 void BNO055::set_accelerometer_range(AccelerometerSensorRange range)
 {
-    char reg = 0x00;
+    char reg = 0x03;
+    // save last mode used
+    OperationMode save_mode = _mode;
+
+    // check if operation mode = CONFIG
+    if (_mode != OperationMode::CONFIG) {
+        set_operation_mode(OperationMode::CONFIG);
+        wait_ms(50);
+    }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
         //go to pageID 1
@@ -109,15 +131,28 @@ void BNO055::set_accelerometer_range(AccelerometerSensorRange range)
     }
     // read acc config register
     i2c_read_register(RegisterAddress::AccelConfig, &reg);
-    // fix new configuration
-    reg |= static_cast<char>(range);
+    // fix new configuration : clear concerned bits and affect the new value
+    reg = ((reg & 0xFC) | static_cast<char>(range));
     //set new register value
     i2c_set_register(RegisterAddress::AccelConfig, reg);
+    // return to the last mode used
+    if (save_mode != _mode) {
+        set_operation_mode(save_mode);
+        wait_ms(20);
+    }
 }
 
 void BNO055::set_accelerometer_bandwidth(AccelerometerSensorBandWidth bandwidth)
 {
     char reg = 0x00;
+    // save last mode used
+    OperationMode save_mode = _mode;
+
+    // check if operation mode = CONFIG
+    if (_mode != OperationMode::CONFIG) {
+        set_operation_mode(OperationMode::CONFIG);
+        wait_ms(50);
+    }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
         //go to pageID 1
@@ -125,15 +160,28 @@ void BNO055::set_accelerometer_bandwidth(AccelerometerSensorBandWidth bandwidth)
     }
     // read acc config register
     i2c_read_register(RegisterAddress::AccelConfig, &reg);
-    // fix new configuration
-    reg |= static_cast<char>(bandwidth);
+    // fix new configuration : clear concerned bits and affect the new value
+    reg = ((reg & 0xE3) | static_cast<char>(bandwidth));
     //set new register value
     i2c_set_register(RegisterAddress::AccelConfig, reg);
+    // return to the last mode used
+    if (save_mode != _mode) {
+        set_operation_mode(save_mode);
+        wait_ms(20);
+    }
 }
 
 void BNO055::set_accelerometer_operation_mode(AccelerometerSensorOperationMode operation_mode)
 {
     char reg = 0x00;
+    // save last mode used
+    OperationMode save_mode = _mode;
+
+    // check if operation mode = CONFIG
+    if (_mode != OperationMode::CONFIG) {
+        set_operation_mode(OperationMode::CONFIG);
+        wait_ms(50);
+    }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
         //go to pageID 1
@@ -141,16 +189,29 @@ void BNO055::set_accelerometer_operation_mode(AccelerometerSensorOperationMode o
     }
     // read acc config register
     i2c_read_register(RegisterAddress::AccelConfig, &reg);
-    // fix new configuration
-    reg |= static_cast<char>(operation_mode);
+    // fix new configuration : clear concerned bits and affect the new value
+    reg = ((reg & 0x1F) | static_cast<char>(operation_mode));
     //set new register value
     i2c_set_register(RegisterAddress::AccelConfig, reg);
+    // return to the last mode used
+    if (save_mode != _mode) {
+        set_operation_mode(save_mode);
+        wait_ms(20);
+    }
 }
 
 void BNO055::set_gyroscope_configuration(GyroscopeSensorRange range, GyroscopeSensorBandWidth bandwidth,
         GyroscopeSensorOperationMode operation_mode)
 {
     char reg_val = 0x00;
+    // save last mode used
+    OperationMode save_mode = _mode;
+
+    // check if operation mode = CONFIG
+    if (_mode != OperationMode::CONFIG) {
+        set_operation_mode(OperationMode::CONFIG);
+        wait_ms(50);
+    }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
         //go to pageID 1
@@ -164,11 +225,24 @@ void BNO055::set_gyroscope_configuration(GyroscopeSensorRange range, GyroscopeSe
     reg_val |= (0x00 | static_cast<char>(operation_mode));
     // set new value register for config1_register
     i2c_set_register(RegisterAddress::GyroConfig1, reg_val);
+    // return to the last mode used
+    if (save_mode != _mode) {
+        set_operation_mode(save_mode);
+        wait_ms(20);
+    }
 }
 
 void BNO055::set_gyroscope_range(GyroscopeSensorRange range)
 {
     char reg = 0x00;
+    // save last mode used
+    OperationMode save_mode = _mode;
+
+    // check if operation mode = CONFIG
+    if (_mode != OperationMode::CONFIG) {
+        set_operation_mode(OperationMode::CONFIG);
+        wait_ms(50);
+    }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
         //go to pageID 1
@@ -176,15 +250,28 @@ void BNO055::set_gyroscope_range(GyroscopeSensorRange range)
     }
     // read gyro config register
     i2c_read_register(RegisterAddress::GyroConfig0, &reg);
-    // fix new configuration
-    reg |= static_cast<char>(range);
+    // fix new configuration : clear concerned bits and affect the new value
+    reg = ((reg & 0xF8) | static_cast<char>(range));
     //set new register value
     i2c_set_register(RegisterAddress::GyroConfig0, reg);
+    // return to the last mode used
+    if (save_mode != _mode) {
+        set_operation_mode(save_mode);
+        wait_ms(20);
+    }
 }
 
 void BNO055::set_gyroscope_bandwidth(GyroscopeSensorBandWidth bandwidth)
 {
     char reg = 0x00;
+    // save last mode used
+    OperationMode save_mode = _mode;
+
+    // check if operation mode = CONFIG
+    if (_mode != OperationMode::CONFIG) {
+        set_operation_mode(OperationMode::CONFIG);
+        wait_ms(50);
+    }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
         //go to pageID 1
@@ -192,15 +279,28 @@ void BNO055::set_gyroscope_bandwidth(GyroscopeSensorBandWidth bandwidth)
     }
     // read gyro config register
     i2c_read_register(RegisterAddress::GyroConfig0, &reg);
-    // fix new configuration
-    reg |= static_cast<char>(bandwidth);
+    // fix new configuration : clear concerned bits and affect the new value
+    reg = ((reg & 0xC7) | static_cast<char>(bandwidth));
     //set new register value
     i2c_set_register(RegisterAddress::GyroConfig0, reg);
+    // return to the last mode used
+    if (save_mode != _mode) {
+        set_operation_mode(save_mode);
+        wait_ms(20);
+    }
 }
 
 void BNO055::set_gyroscope_operation_mode(GyroscopeSensorOperationMode operation_mode)
 {
     char reg = 0x00;
+    // save last mode used
+    OperationMode save_mode = _mode;
+
+    // check if operation mode = CONFIG
+    if (_mode != OperationMode::CONFIG) {
+        set_operation_mode(OperationMode::CONFIG);
+        wait_ms(50);
+    }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
         //go to pageID 1
@@ -208,16 +308,29 @@ void BNO055::set_gyroscope_operation_mode(GyroscopeSensorOperationMode operation
     }
     // read gyro config register
     i2c_read_register(RegisterAddress::GyroConfig1, &reg);
-    // fix new configuration
-    reg |= static_cast<char>(operation_mode);
+    // fix new configuration : clear concerned bits and affect the new value
+    reg = ((reg & 0xF8) | static_cast<char>(operation_mode));
     //set new register value
     i2c_set_register(RegisterAddress::GyroConfig1, reg);
+    // return to the last mode used
+    if (save_mode != _mode) {
+        set_operation_mode(save_mode);
+        wait_ms(20);
+    }
 }
 
 void BNO055::set_magnetometer_configuration(MagnetometerSensorDataOutputRate data_output_rate, MagnetometerSensorOperationMode operation_mode,
         MagnetometerSensorPowerMode power_mode)
 {
     char reg_val = 0x00;
+    // save last mode used
+    OperationMode save_mode = _mode;
+
+    // check if operation mode = CONFIG
+    if (_mode != OperationMode::CONFIG) {
+        set_operation_mode(OperationMode::CONFIG);
+        wait_ms(50);
+    }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
         //go to pageID 1
@@ -227,11 +340,24 @@ void BNO055::set_magnetometer_configuration(MagnetometerSensorDataOutputRate dat
     reg_val |= (static_cast<char>(data_output_rate) | static_cast<char>(operation_mode) | static_cast<char>(power_mode));
     //set mag conf register
     i2c_set_register(RegisterAddress::MagConfig, reg_val);
+    // return to the last mode used
+    if (save_mode != _mode) {
+        set_operation_mode(save_mode);
+        wait_ms(20);
+    }
 }
 
 void BNO055::set_magnetometer_data_output_rate(MagnetometerSensorDataOutputRate data_output_rate)
 {
     char reg = 0x00;
+    // save last mode used
+    OperationMode save_mode = _mode;
+
+    // check if operation mode = CONFIG
+    if (_mode != OperationMode::CONFIG) {
+        set_operation_mode(OperationMode::CONFIG);
+        wait_ms(50);
+    }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
         //go to pageID 1
@@ -239,15 +365,28 @@ void BNO055::set_magnetometer_data_output_rate(MagnetometerSensorDataOutputRate 
     }
     // read mag config register
     i2c_read_register(RegisterAddress::MagConfig, &reg);
-    // fix new configuration
-    reg |= static_cast<char>(data_output_rate);
+    // fix new configuration : clear concerned bits and affect the new value
+    reg = ((reg & 0xF8) | static_cast<char>(data_output_rate));
     //set new register value
     i2c_set_register(RegisterAddress::MagConfig, reg);
+    // return to the last mode used
+    if (save_mode != _mode) {
+        set_operation_mode(save_mode);
+        wait_ms(20);
+    }
 }
 
 void BNO055::set_magnetometer_operation_mode(MagnetometerSensorOperationMode operation_mode)
 {
     char reg = 0x00;
+    // save last mode used
+    OperationMode save_mode = _mode;
+
+    // check if operation mode = CONFIG
+    if (_mode != OperationMode::CONFIG) {
+        set_operation_mode(OperationMode::CONFIG);
+        wait_ms(50);
+    }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
         //go to pageID 1
@@ -255,15 +394,28 @@ void BNO055::set_magnetometer_operation_mode(MagnetometerSensorOperationMode ope
     }
     // read mag config register
     i2c_read_register(RegisterAddress::MagConfig, &reg);
-    // fix new configuration
-    reg |= static_cast<char>(operation_mode);
+    // fix new configuration : clear concerned bits and affect the new value
+    reg = ((reg & 0xE7) | static_cast<char>(operation_mode));
     //set new register value
     i2c_set_register(RegisterAddress::MagConfig, reg);
+    // return to the last mode used
+    if (save_mode != _mode) {
+        set_operation_mode(save_mode);
+        wait_ms(20);
+    }
 }
 
 void BNO055::set_magnetometer_power_mode(MagnetometerSensorPowerMode power_mode)
 {
     char reg = 0x00;
+    // save last mode used
+    OperationMode save_mode = _mode;
+
+    // check if operation mode = CONFIG
+    if (_mode != OperationMode::CONFIG) {
+        set_operation_mode(OperationMode::CONFIG);
+        wait_ms(50);
+    }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
         //go to pageID 1
@@ -271,10 +423,15 @@ void BNO055::set_magnetometer_power_mode(MagnetometerSensorPowerMode power_mode)
     }
     // read mag config register
     i2c_read_register(RegisterAddress::MagConfig, &reg);
-    // fix new configuration
-    reg |= static_cast<char>(power_mode);
+    // fix new configuration : clear concerned bits and affect the new value
+    reg = ((reg & 0x9F) | static_cast<char>(power_mode));
     //set new register value
     i2c_set_register(RegisterAddress::MagConfig, reg);
+    // return to the last mode used
+    if (save_mode != _mode) {
+        set_operation_mode(save_mode);
+        wait_ms(20);
+    }
 }
 
 BNO055::OperationMode BNO055::operating_mode()
