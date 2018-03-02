@@ -88,7 +88,7 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
 
     set_operation_mode(mode);
     // let's time to bno055 initialize
-    wait_ms(500);
+    wait_ms(750);
 
     return true;
 }
@@ -557,6 +557,46 @@ void BNO055::enable_acceleration_anyMotion_interrupt(AccelerationInterruptAxisMa
     }
 }
 
+void BNO055::disable_acceleration_interrupt(AccelerationInterruptMode acceleration_interrupt_mode)
+{
+    char reg = 0xff;
+
+    // save last mode used
+    OperationMode save_mode = _mode;
+
+    // check if operation mode = CONFIG
+    if (_mode != OperationMode::CONFIG) {
+        set_operation_mode(OperationMode::CONFIG);
+        wait_ms(50);
+    }
+
+    // check if current page = pageID 1
+    if (_currentPageID != PageId::PageOne) {
+       //go to pageID 1
+       set_pageID(PageId::PageOne);
+    }
+
+    i2c_read_register(RegisterAddress::Int, &reg);
+
+    switch(acceleration_interrupt_mode) {
+        case AccelerationInterruptMode::HighG :
+            i2c_set_register(RegisterAddress::Int, (reg & (~static_cast<char>(AccelerationInterruptMode::HighG))));
+            break;
+        case AccelerationInterruptMode::AnyMotion :
+            i2c_set_register(RegisterAddress::Int, (reg & (~static_cast<char>(AccelerationInterruptMode::AnyMotion))));
+            break;
+        case AccelerationInterruptMode::NoMotion :
+            i2c_set_register(RegisterAddress::Int, (reg & (~static_cast<char>(AccelerationInterruptMode::NoMotion))));
+            break;
+    }
+
+    // return to the last mode used
+    if (save_mode != _mode) {
+       set_operation_mode(save_mode);
+       wait_ms(20);
+    }
+}
+
 uint8_t BNO055::acceleration_interrupt()
 {
     char reg = 0x00;
@@ -633,7 +673,7 @@ void BNO055::debug_int_register()
 
     // set ACC_INT_settings register : enable all axis of highG int
    i2c_read_register(RegisterAddress::AccelIntrSettings, &reg);
-   printf("Accel Int settings = 0x%.2x\n\r", reg);
+   printf("\n\rAccel Int settings = 0x%.2x\n\r", reg);
    wait_ms(20);
 
    // set threshold High G
@@ -653,7 +693,7 @@ void BNO055::debug_int_register()
 
    // enbale High_g interrupt
    i2c_read_register(RegisterAddress::Int, &reg);
-   printf("Int enable = 0x%.2x\n\r", reg);
+   printf("Int enable = 0x%.2x\n\r\n\r", reg);
    wait_ms(20);
 }
 
@@ -994,7 +1034,7 @@ void BNO055::reset()
 {
     //force to go to pageID 0
     set_pageID(PageId::PageZero);
-
+    // set reset command
     i2c_set_register(RegisterAddress::SysTrigger, RESET_COMMAND);
     // after a reset, CONFIG is the default mode value
     _mode = OperationMode::CONFIG;
@@ -1039,6 +1079,7 @@ int BNO055::i2c_set_register(RegisterAddress registerAddress, char value)
     if (_i2c->write(static_cast<int>(_i2cAddress) << 1, data, 2, false) != 0) {
         return -1;
     }
+    wait_ms(1);
     return 0;
 }
 
@@ -1051,6 +1092,7 @@ int BNO055::i2c_read_register(RegisterAddress registerAddress, char *value)
     if (_i2c->read(static_cast<int>(_i2cAddress) << 1, value, 1, false) != 0) {
         return -2;
     }
+    wait_ms(1);
     return 0;
 }
 
