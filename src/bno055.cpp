@@ -94,7 +94,6 @@ void BNO055::set_accelerometer_configuration(AccelerometerSensorRange range, Acc
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
         set_operation_mode(OperationMode::CONFIG);
-        wait_ms(50);
     }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
@@ -109,7 +108,6 @@ void BNO055::set_accelerometer_configuration(AccelerometerSensorRange range, Acc
     // return to the last mode used
     if (current_mode != _mode) {
         set_operation_mode(current_mode);
-        wait_ms(20);
     }
 }
 
@@ -122,7 +120,6 @@ void BNO055::set_accelerometer_range(AccelerometerSensorRange range)
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
         set_operation_mode(OperationMode::CONFIG);
-        wait_ms(50);
     }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
@@ -138,7 +135,6 @@ void BNO055::set_accelerometer_range(AccelerometerSensorRange range)
     // return to the last mode used
     if (current_mode != _mode) {
         set_operation_mode(current_mode);
-        wait_ms(20);
     }
 }
 
@@ -151,7 +147,6 @@ void BNO055::set_accelerometer_bandwidth(AccelerometerSensorBandWidth bandwidth)
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
         set_operation_mode(OperationMode::CONFIG);
-        wait_ms(50);
     }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
@@ -167,7 +162,6 @@ void BNO055::set_accelerometer_bandwidth(AccelerometerSensorBandWidth bandwidth)
     // return to the last mode used
     if (current_mode != _mode) {
         set_operation_mode(current_mode);
-        wait_ms(20);
     }
 }
 
@@ -180,7 +174,6 @@ void BNO055::set_accelerometer_operation_mode(AccelerometerSensorOperationMode o
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
         set_operation_mode(OperationMode::CONFIG);
-        wait_ms(50);
     }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
@@ -196,7 +189,6 @@ void BNO055::set_accelerometer_operation_mode(AccelerometerSensorOperationMode o
     // return to the last mode used
     if (current_mode != _mode) {
         set_operation_mode(current_mode);
-        wait_ms(20);
     }
 }
 
@@ -210,7 +202,6 @@ void BNO055::set_gyroscope_configuration(GyroscopeSensorRange range, GyroscopeSe
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
         set_operation_mode(OperationMode::CONFIG);
-        wait_ms(50);
     }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
@@ -228,7 +219,6 @@ void BNO055::set_gyroscope_configuration(GyroscopeSensorRange range, GyroscopeSe
     // return to the last mode used
     if (current_mode != _mode) {
         set_operation_mode(current_mode);
-        wait_ms(20);
     }
 }
 
@@ -241,7 +231,6 @@ void BNO055::set_gyroscope_range(GyroscopeSensorRange range)
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
         set_operation_mode(OperationMode::CONFIG);
-        wait_ms(50);
     }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
@@ -257,7 +246,6 @@ void BNO055::set_gyroscope_range(GyroscopeSensorRange range)
     // return to the last mode used
     if (current_mode != _mode) {
         set_operation_mode(current_mode);
-        wait_ms(20);
     }
 }
 
@@ -270,7 +258,6 @@ void BNO055::set_gyroscope_bandwidth(GyroscopeSensorBandWidth bandwidth)
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
         set_operation_mode(OperationMode::CONFIG);
-        wait_ms(50);
     }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
@@ -286,7 +273,6 @@ void BNO055::set_gyroscope_bandwidth(GyroscopeSensorBandWidth bandwidth)
     // return to the last mode used
     if (current_mode != _mode) {
         set_operation_mode(current_mode);
-        wait_ms(20);
     }
 }
 
@@ -299,7 +285,6 @@ void BNO055::set_gyroscope_operation_mode(GyroscopeSensorOperationMode operation
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
         set_operation_mode(OperationMode::CONFIG);
-        wait_ms(50);
     }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
@@ -315,7 +300,6 @@ void BNO055::set_gyroscope_operation_mode(GyroscopeSensorOperationMode operation
     // return to the last mode used
     if (current_mode != _mode) {
         set_operation_mode(current_mode);
-        wait_ms(20);
     }
 }
 
@@ -329,7 +313,6 @@ void BNO055::set_magnetometer_configuration(MagnetometerSensorDataOutputRate dat
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
         set_operation_mode(OperationMode::CONFIG);
-        wait_ms(50);
     }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
@@ -343,7 +326,6 @@ void BNO055::set_magnetometer_configuration(MagnetometerSensorDataOutputRate dat
     // return to the last mode used
     if (current_mode != _mode) {
         set_operation_mode(current_mode);
-        wait_ms(20);
     }
 }
 
@@ -356,7 +338,6 @@ void BNO055::set_magnetometer_data_output_rate(MagnetometerSensorDataOutputRate 
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
         set_operation_mode(OperationMode::CONFIG);
-        wait_ms(50);
     }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
@@ -372,7 +353,6 @@ void BNO055::set_magnetometer_data_output_rate(MagnetometerSensorDataOutputRate 
     // return to the last mode used
     if (current_mode != _mode) {
         set_operation_mode(current_mode);
-        wait_ms(20);
     }
 }
 
@@ -385,7 +365,6 @@ void BNO055::set_magnetometer_operation_mode(MagnetometerSensorOperationMode ope
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
         set_operation_mode(OperationMode::CONFIG);
-        wait_ms(50);
     }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
@@ -401,7 +380,6 @@ void BNO055::set_magnetometer_operation_mode(MagnetometerSensorOperationMode ope
     // return to the last mode used
     if (current_mode != _mode) {
         set_operation_mode(current_mode);
-        wait_ms(20);
     }
 }
 
@@ -414,7 +392,6 @@ void BNO055::set_magnetometer_power_mode(MagnetometerSensorPowerMode power_mode)
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
         set_operation_mode(OperationMode::CONFIG);
-        wait_ms(50);
     }
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
@@ -430,7 +407,6 @@ void BNO055::set_magnetometer_power_mode(MagnetometerSensorPowerMode power_mode)
     // return to the last mode used
     if (current_mode != _mode) {
         set_operation_mode(current_mode);
-        wait_ms(20);
     }
 }
 
