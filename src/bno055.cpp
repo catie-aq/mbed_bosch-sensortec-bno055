@@ -89,7 +89,7 @@ void BNO055::set_accelerometer_configuration(AccelerometerSensorRange range, Acc
 {
     char reg_val = 0x00;
     // save last mode used
-    OperationMode save_mode = _mode;
+    OperationMode current_mode = _mode;
 
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
@@ -107,17 +107,17 @@ void BNO055::set_accelerometer_configuration(AccelerometerSensorRange range, Acc
     i2c_set_register(RegisterAddress::AccelConfig, reg_val);
 
     // return to the last mode used
-    if (save_mode != _mode) {
-        set_operation_mode(save_mode);
+    if (current_mode != _mode) {
+        set_operation_mode(current_mode);
         wait_ms(20);
     }
 }
 
 void BNO055::set_accelerometer_range(AccelerometerSensorRange range)
 {
-    char reg = 0x03;
+    char reg = 0x00;
     // save last mode used
-    OperationMode save_mode = _mode;
+    OperationMode current_mode = _mode;
 
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
@@ -136,8 +136,8 @@ void BNO055::set_accelerometer_range(AccelerometerSensorRange range)
     //set new register value
     i2c_set_register(RegisterAddress::AccelConfig, reg);
     // return to the last mode used
-    if (save_mode != _mode) {
-        set_operation_mode(save_mode);
+    if (current_mode != _mode) {
+        set_operation_mode(current_mode);
         wait_ms(20);
     }
 }
@@ -146,7 +146,7 @@ void BNO055::set_accelerometer_bandwidth(AccelerometerSensorBandWidth bandwidth)
 {
     char reg = 0x00;
     // save last mode used
-    OperationMode save_mode = _mode;
+    OperationMode current_mode = _mode;
 
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
@@ -165,8 +165,8 @@ void BNO055::set_accelerometer_bandwidth(AccelerometerSensorBandWidth bandwidth)
     //set new register value
     i2c_set_register(RegisterAddress::AccelConfig, reg);
     // return to the last mode used
-    if (save_mode != _mode) {
-        set_operation_mode(save_mode);
+    if (current_mode != _mode) {
+        set_operation_mode(current_mode);
         wait_ms(20);
     }
 }
@@ -175,7 +175,7 @@ void BNO055::set_accelerometer_operation_mode(AccelerometerSensorOperationMode o
 {
     char reg = 0x00;
     // save last mode used
-    OperationMode save_mode = _mode;
+    OperationMode current_mode = _mode;
 
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
@@ -194,8 +194,8 @@ void BNO055::set_accelerometer_operation_mode(AccelerometerSensorOperationMode o
     //set new register value
     i2c_set_register(RegisterAddress::AccelConfig, reg);
     // return to the last mode used
-    if (save_mode != _mode) {
-        set_operation_mode(save_mode);
+    if (current_mode != _mode) {
+        set_operation_mode(current_mode);
         wait_ms(20);
     }
 }
@@ -205,7 +205,7 @@ void BNO055::set_gyroscope_configuration(GyroscopeSensorRange range, GyroscopeSe
 {
     char reg_val = 0x00;
     // save last mode used
-    OperationMode save_mode = _mode;
+    OperationMode current_mode = _mode;
 
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
@@ -226,8 +226,8 @@ void BNO055::set_gyroscope_configuration(GyroscopeSensorRange range, GyroscopeSe
     // set new value register for config1_register
     i2c_set_register(RegisterAddress::GyroConfig1, reg_val);
     // return to the last mode used
-    if (save_mode != _mode) {
-        set_operation_mode(save_mode);
+    if (current_mode != _mode) {
+        set_operation_mode(current_mode);
         wait_ms(20);
     }
 }
@@ -236,7 +236,7 @@ void BNO055::set_gyroscope_range(GyroscopeSensorRange range)
 {
     char reg = 0x00;
     // save last mode used
-    OperationMode save_mode = _mode;
+    OperationMode current_mode = _mode;
 
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
@@ -255,8 +255,8 @@ void BNO055::set_gyroscope_range(GyroscopeSensorRange range)
     //set new register value
     i2c_set_register(RegisterAddress::GyroConfig0, reg);
     // return to the last mode used
-    if (save_mode != _mode) {
-        set_operation_mode(save_mode);
+    if (current_mode != _mode) {
+        set_operation_mode(current_mode);
         wait_ms(20);
     }
 }
@@ -265,7 +265,7 @@ void BNO055::set_gyroscope_bandwidth(GyroscopeSensorBandWidth bandwidth)
 {
     char reg = 0x00;
     // save last mode used
-    OperationMode save_mode = _mode;
+    OperationMode current_mode = _mode;
 
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
@@ -284,8 +284,8 @@ void BNO055::set_gyroscope_bandwidth(GyroscopeSensorBandWidth bandwidth)
     //set new register value
     i2c_set_register(RegisterAddress::GyroConfig0, reg);
     // return to the last mode used
-    if (save_mode != _mode) {
-        set_operation_mode(save_mode);
+    if (current_mode != _mode) {
+        set_operation_mode(current_mode);
         wait_ms(20);
     }
 }
@@ -294,7 +294,7 @@ void BNO055::set_gyroscope_operation_mode(GyroscopeSensorOperationMode operation
 {
     char reg = 0x00;
     // save last mode used
-    OperationMode save_mode = _mode;
+    OperationMode current_mode = _mode;
 
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
@@ -313,8 +313,8 @@ void BNO055::set_gyroscope_operation_mode(GyroscopeSensorOperationMode operation
     //set new register value
     i2c_set_register(RegisterAddress::GyroConfig1, reg);
     // return to the last mode used
-    if (save_mode != _mode) {
-        set_operation_mode(save_mode);
+    if (current_mode != _mode) {
+        set_operation_mode(current_mode);
         wait_ms(20);
     }
 }
@@ -324,7 +324,7 @@ void BNO055::set_magnetometer_configuration(MagnetometerSensorDataOutputRate dat
 {
     char reg_val = 0x00;
     // save last mode used
-    OperationMode save_mode = _mode;
+    OperationMode current_mode = _mode;
 
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
@@ -341,8 +341,8 @@ void BNO055::set_magnetometer_configuration(MagnetometerSensorDataOutputRate dat
     //set mag conf register
     i2c_set_register(RegisterAddress::MagConfig, reg_val);
     // return to the last mode used
-    if (save_mode != _mode) {
-        set_operation_mode(save_mode);
+    if (current_mode != _mode) {
+        set_operation_mode(current_mode);
         wait_ms(20);
     }
 }
@@ -351,7 +351,7 @@ void BNO055::set_magnetometer_data_output_rate(MagnetometerSensorDataOutputRate 
 {
     char reg = 0x00;
     // save last mode used
-    OperationMode save_mode = _mode;
+    OperationMode current_mode = _mode;
 
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
@@ -370,8 +370,8 @@ void BNO055::set_magnetometer_data_output_rate(MagnetometerSensorDataOutputRate 
     //set new register value
     i2c_set_register(RegisterAddress::MagConfig, reg);
     // return to the last mode used
-    if (save_mode != _mode) {
-        set_operation_mode(save_mode);
+    if (current_mode != _mode) {
+        set_operation_mode(current_mode);
         wait_ms(20);
     }
 }
@@ -380,7 +380,7 @@ void BNO055::set_magnetometer_operation_mode(MagnetometerSensorOperationMode ope
 {
     char reg = 0x00;
     // save last mode used
-    OperationMode save_mode = _mode;
+    OperationMode current_mode = _mode;
 
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
@@ -399,8 +399,8 @@ void BNO055::set_magnetometer_operation_mode(MagnetometerSensorOperationMode ope
     //set new register value
     i2c_set_register(RegisterAddress::MagConfig, reg);
     // return to the last mode used
-    if (save_mode != _mode) {
-        set_operation_mode(save_mode);
+    if (current_mode != _mode) {
+        set_operation_mode(current_mode);
         wait_ms(20);
     }
 }
@@ -409,7 +409,7 @@ void BNO055::set_magnetometer_power_mode(MagnetometerSensorPowerMode power_mode)
 {
     char reg = 0x00;
     // save last mode used
-    OperationMode save_mode = _mode;
+    OperationMode current_mode = _mode;
 
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
@@ -428,8 +428,8 @@ void BNO055::set_magnetometer_power_mode(MagnetometerSensorPowerMode power_mode)
     //set new register value
     i2c_set_register(RegisterAddress::MagConfig, reg);
     // return to the last mode used
-    if (save_mode != _mode) {
-        set_operation_mode(save_mode);
+    if (current_mode != _mode) {
+        set_operation_mode(current_mode);
         wait_ms(20);
     }
 }
