@@ -421,7 +421,6 @@ public:
 
     enum class AccelerationInterruptMode : uint8_t {
         /* Acceleration interrupt mode */
-        NoMotionAndHighG    = 0xA0,
         NoMotion            = 0x80,
         AnyMotion           = 0x40,
         HighG               = 0x20
@@ -767,6 +766,12 @@ public:
      */
     void enable_acceleration_anyMotion_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold, uint8_t interrupt_duration, bool enable_mask_interrupt_pin = false);
 
+    /*! Set BNO055 : Enable Any-Motion acceleration interrupt
+     *
+     * \param acceleration_interrupt_mode the type of acceleration mode
+     *
+     */
+    void disable_acceleration_interrupt(AccelerationInterruptMode acceleration_interrupt_mode);
 
     /*! Set BNO055 acceleration interrupt callback
      *
