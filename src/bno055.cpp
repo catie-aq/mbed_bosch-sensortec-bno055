@@ -420,7 +420,8 @@ void BNO055::set_magnetometer_power_mode(MagnetometerSensorPowerMode power_mode)
     }
 }
 
-void BNO055::enable_acceleration_highG_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold, uint8_t interrupt_duration, bool enable_mask_interrupt_pin)
+void BNO055::enable_acceleration_highG_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold,
+        uint8_t interrupt_duration, bool enable_mask_interrupt_pin)
 {
     char reg = 0xff;
     // save last mode used
@@ -465,7 +466,8 @@ void BNO055::enable_acceleration_highG_interrupt(AccelerationInterruptAxisMap ma
 
 }
 
-void BNO055::enable_acceleration_noMotion_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold, uint8_t interrupt_duration, bool enable_mask_interrupt_pin)
+void BNO055::enable_acceleration_noMotion_interrupt(AccelerationInterruptAxisMap map_axis,
+        uint8_t acceleration_threshold, uint8_t interrupt_duration, bool enable_mask_interrupt_pin)
 {
     char reg = 0xff;
     // save last mode used
@@ -473,13 +475,13 @@ void BNO055::enable_acceleration_noMotion_interrupt(AccelerationInterruptAxisMap
 
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
-      set_operation_mode(OperationMode::CONFIG);
+        set_operation_mode(OperationMode::CONFIG);
     }
 
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
-       //go to pageID 1
-       set_pageID(PageId::PageOne);
+        //go to pageID 1
+        set_pageID(PageId::PageOne);
     }
 
     // get ACC_INT_SETTINGS register
@@ -508,7 +510,8 @@ void BNO055::enable_acceleration_noMotion_interrupt(AccelerationInterruptAxisMap
     }
 }
 
-void BNO055::enable_acceleration_anyMotion_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold, uint8_t interrupt_duration, bool enable_mask_interrupt_pin)
+void BNO055::enable_acceleration_anyMotion_interrupt(AccelerationInterruptAxisMap map_axis,
+        uint8_t acceleration_threshold, uint8_t interrupt_duration, bool enable_mask_interrupt_pin)
 {
     char reg = 0xff;
     // save last mode used
@@ -516,13 +519,13 @@ void BNO055::enable_acceleration_anyMotion_interrupt(AccelerationInterruptAxisMa
 
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
-      set_operation_mode(OperationMode::CONFIG);
+        set_operation_mode(OperationMode::CONFIG);
     }
 
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
-       //go to pageID 1
-       set_pageID(PageId::PageOne);
+        //go to pageID 1
+        set_pageID(PageId::PageOne);
     }
 
     // get ACC_INT_SETTINGS register
@@ -565,13 +568,13 @@ void BNO055::disable_acceleration_interrupt(AccelerationInterruptMode accelerati
 
     // check if current page = pageID 1
     if (_currentPageID != PageId::PageOne) {
-       //go to pageID 1
-       set_pageID(PageId::PageOne);
+        //go to pageID 1
+        set_pageID(PageId::PageOne);
     }
 
     i2c_read_register(RegisterAddress::Int, &reg);
 
-    switch(acceleration_interrupt_mode) {
+    switch (acceleration_interrupt_mode) {
         case AccelerationInterruptMode::HighG :
             i2c_set_register(RegisterAddress::Int, (reg & (~static_cast<char>(AccelerationInterruptMode::HighG))));
             break;
@@ -585,7 +588,7 @@ void BNO055::disable_acceleration_interrupt(AccelerationInterruptMode accelerati
 
     // return to the last mode used
     if (current_mode != _mode) {
-       set_operation_mode(current_mode);
+        set_operation_mode(current_mode);
     }
 }
 
