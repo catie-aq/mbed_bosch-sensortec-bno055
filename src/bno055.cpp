@@ -427,7 +427,7 @@ void BNO055::enable_acceleration_highG_interrupt(AccelerationInterruptAxisMap ma
 {
     char reg = 0xff;
     // save last mode used
-    OperationMode save_mode = _mode;
+    OperationMode current_mode = _mode;
 
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
@@ -462,8 +462,8 @@ void BNO055::enable_acceleration_highG_interrupt(AccelerationInterruptAxisMap ma
     i2c_set_register(RegisterAddress::Int, (reg | static_cast<char>(AccelerationInterruptMode::HighG)));
 
     // return to the last mode used
-    if (save_mode != _mode) {
-        set_operation_mode(save_mode);
+    if (current_mode != _mode) {
+        set_operation_mode(current_mode);
     }
 
 }
@@ -472,7 +472,7 @@ void BNO055::enable_acceleration_noMotion_interrupt(AccelerationInterruptAxisMap
 {
     char reg = 0xff;
     // save last mode used
-    OperationMode save_mode = _mode;
+    OperationMode current_mode = _mode;
 
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
@@ -506,8 +506,8 @@ void BNO055::enable_acceleration_noMotion_interrupt(AccelerationInterruptAxisMap
     i2c_set_register(RegisterAddress::Int, (reg | static_cast<char>(AccelerationInterruptMode::NoMotion)));
 
     // return to the last mode used
-    if (save_mode != _mode) {
-        set_operation_mode(save_mode);
+    if (current_mode != _mode) {
+        set_operation_mode(current_mode);
     }
 }
 
@@ -515,7 +515,7 @@ void BNO055::enable_acceleration_anyMotion_interrupt(AccelerationInterruptAxisMa
 {
     char reg = 0xff;
     // save last mode used
-    OperationMode save_mode = _mode;
+    OperationMode current_mode = _mode;
 
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
@@ -549,8 +549,8 @@ void BNO055::enable_acceleration_anyMotion_interrupt(AccelerationInterruptAxisMa
     i2c_set_register(RegisterAddress::Int, (reg | static_cast<char>(AccelerationInterruptMode::AnyMotion)));
 
     // return to the last mode used
-    if (save_mode != _mode) {
-        set_operation_mode(save_mode);
+    if (current_mode != _mode) {
+        set_operation_mode(current_mode);
     }
 }
 
@@ -559,7 +559,7 @@ void BNO055::disable_acceleration_interrupt(AccelerationInterruptMode accelerati
     char reg = 0xff;
 
     // save last mode used
-    OperationMode save_mode = _mode;
+    OperationMode current_mode = _mode;
 
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
@@ -587,8 +587,8 @@ void BNO055::disable_acceleration_interrupt(AccelerationInterruptMode accelerati
     }
 
     // return to the last mode used
-    if (save_mode != _mode) {
-       set_operation_mode(save_mode);
+    if (current_mode != _mode) {
+       set_operation_mode(current_mode);
     }
 }
 
