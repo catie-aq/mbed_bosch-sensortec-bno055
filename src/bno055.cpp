@@ -137,13 +137,10 @@ void BNO055::set_accelerometer_range(AccelerometerSensorRange range)
     }
     // read acc config register
     i2c_read_register(RegisterAddress::AccelConfig, &reg);
-    printf("\n\rAccel config value = 0x%.2x", reg);
     // fix new configuration : clear concerned bits and affect the new value
     reg = ((reg & 0xFC) | static_cast<char>(range));
     //set new register value
     i2c_set_register(RegisterAddress::AccelConfig, reg);
-    i2c_read_register(RegisterAddress::AccelConfig, &reg);
-    printf("\n\rAccel config value = 0x%.2x", reg);
     // return to the last mode used
     if (current_mode != _mode) {
         set_operation_mode(current_mode);
@@ -1041,7 +1038,6 @@ int BNO055::i2c_set_register(RegisterAddress registerAddress, char value)
     if (_i2c->write(static_cast<int>(_i2cAddress) << 1, data, 2, false) != 0) {
         return -1;
     }
-    wait_ms(1);
     return 0;
 }
 
@@ -1054,7 +1050,6 @@ int BNO055::i2c_read_register(RegisterAddress registerAddress, char *value)
     if (_i2c->read(static_cast<int>(_i2cAddress) << 1, value, 1, false) != 0) {
         return -2;
     }
-    wait_ms(1);
     return 0;
 }
 
