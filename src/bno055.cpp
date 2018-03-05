@@ -303,7 +303,8 @@ void BNO055::set_gyroscope_operation_mode(GyroscopeSensorOperationMode operation
     }
 }
 
-void BNO055::set_magnetometer_configuration(MagnetometerSensorDataOutputRate data_output_rate, MagnetometerSensorOperationMode operation_mode,
+void BNO055::set_magnetometer_configuration(MagnetometerSensorDataOutputRate data_output_rate,
+        MagnetometerSensorOperationMode operation_mode,
         MagnetometerSensorPowerMode power_mode)
 {
     char reg_val = 0x00;

@@ -458,7 +458,8 @@ public:
      * \param operation_mode associated in accelerometer (Normal/Suspend/LowPower1/Standby/LowPower2/DeepSuspend)
      *
      */
-    void set_accelerometer_configuration(AccelerometerSensorRange range, AccelerometerSensorBandWidth bandwidth, AccelerometerSensorOperationMode operation_mode);
+    void set_accelerometer_configuration(AccelerometerSensorRange range, AccelerometerSensorBandWidth bandwidth,
+            AccelerometerSensorOperationMode operation_mode);
 
     /** Set BNO055  range accelerometer configuration
      *
@@ -488,7 +489,8 @@ public:
      * \param operation_mode associated in gyroscope (Normal/FastPowerUp/DeepSuspend/Suspend/AdvancedPowersave)
      *
      */
-    void set_gyroscope_configuration(GyroscopeSensorRange range, GyroscopeSensorBandWidth bandwidth, GyroscopeSensorOperationMode operation_mode);
+    void set_gyroscope_configuration(GyroscopeSensorRange range, GyroscopeSensorBandWidth bandwidth,
+            GyroscopeSensorOperationMode operation_mode);
 
     /*! Set BNO055  range gyroscope configuration
      *
@@ -518,8 +520,9 @@ public:
      * \param power_mode Normal/Sleep/Suspend/Force
      *
      */
-    void set_magnetometer_configuration(MagnetometerSensorDataOutputRate data_output_rate, MagnetometerSensorOperationMode operation_mode,
-                MagnetometerSensorPowerMode power_mode);
+    void set_magnetometer_configuration(MagnetometerSensorDataOutputRate data_output_rate,
+            MagnetometerSensorOperationMode operation_mode,
+            MagnetometerSensorPowerMode power_mode);
 
     /*! Set BNO055  data output rate magnetometer configuration
      *
@@ -562,91 +565,91 @@ public:
      * \return the current page ID location
      *
      */
-     PageId pageID(void);
+    PageId pageID(void);
 
     /*! Get the accelerometer value
      *
      * \returns the accelerometer values structure in m/s²
      *
      */
-     bno055_accelerometer_t accelerometer();
+    bno055_accelerometer_t accelerometer();
 
     /*! Get the gyrometer value
      *
      * \returns the gyroscope values structure in rad/s
      *
      */
-     bno055_gyroscope_t gyroscope();
+    bno055_gyroscope_t gyroscope();
 
     /*! Get the magnetometer value
      *
      * \returns the magnetometer values structure  in µT
      *
      */
-     bno055_magnetometer_t magnetometer();
+    bno055_magnetometer_t magnetometer();
 
     /*! Get internal sensors temperatures
      *
      * \returns the accelerometer and gyroscope sensor temperature
      *
      */
-     bno055_temperature_sensors_t temperature_sensors();
+    bno055_temperature_sensors_t temperature_sensors();
 
     /*! Get the accelerometer value with gravity compensation
      *
      * \returns the accelerometer values structure with gravity compensation in m/s²
      *
      */
-     bno055_linear_acceleration_t linear_acceleration();
+    bno055_linear_acceleration_t linear_acceleration();
 
     /*! Get the Euler angles value
      *
      * \returns the Euler angles values structure in rad
      *
      */
-     bno055_euler_t euler();
+    bno055_euler_t euler();
 
     /*! Get the quaternion value. The output quat in normalized and unitary
      *
      * \returns the quaternion values structure
      *
      */
-     bno055_quaternion_t quaternion();
+    bno055_quaternion_t quaternion();
 
     /*! Get the quaternion raw value.
      *
      * \returns the quaternion raw values structure
      *
      */
-     bno055_raw_quaternion_t raw_quaternion();
+    bno055_raw_quaternion_t raw_quaternion();
 
     /*! Get the gravity vector value
      *
      * \returns the gravity values structure in m/s²
      *
      */
-     bno055_gravity_t gravity();
+    bno055_gravity_t gravity();
 
     /*! Get the calibrations state of the sensors and the system
      *
      * \returns the system calibration state structure of each device (sys, acc, gyro, mag). Value between 0 and 3, where 3 indicates a full calibration
      *
      */
-     bno055_calibration_status_t calibration_status();
+    bno055_calibration_status_t calibration_status();
 
     /*! Get the sensor offsets calculated by the fusion algorithm
      *
      * \return the raw sensor offsets values structure
      *
      */
-     bno055_sensors_offsets_t sensor_offsets();
+    bno055_sensors_offsets_t sensor_offsets();
 
     /*! set the sensor offsets given by the user to faster the calibration
      *
      * \param sensor_offsets pointer to bno055_offsets_t structure that has to be written in the BNO055 offsets registers
      *
      */
-     void set_sensor_offsets(const bno055_sensors_offsets_t *sensor_offsets);
+    void set_sensor_offsets(const bno055_sensors_offsets_t *sensor_offsets);
 
     /*! Reset the bno055. All register values goes back to default
      * values and calibrations values are lost
