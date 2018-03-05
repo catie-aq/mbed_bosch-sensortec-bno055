@@ -592,13 +592,11 @@ void BNO055::set_sensor_offsets(const bno055_sensors_offsets_t *sensor_offsets)
 
 void BNO055::reset()
 {
-    // check current pageID
-    if (_currentPageID != PageId::PageZero) {
-        //go to pageID 0
-        set_pageID(PageId::PageZero);
-    }
+    //go to pageID 0
+    set_pageID(PageId::PageZero);
+
     i2c_set_register(RegisterAddress::SysTrigger, RESET_COMMAND);
-    // set the default mode value
+    // after a reset, CONFIG is the default mode value
     _mode = OperationMode::CONFIG;
     wait_ms(TIME_TO_RESET);
 }
