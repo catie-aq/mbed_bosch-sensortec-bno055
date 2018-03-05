@@ -433,8 +433,17 @@ void BNO055::set_operation_mode(OperationMode mode)
         //go to pageID 0
         set_pageID(PageId::PageZero);
     }
-    _mode = mode;
+
+    // if the operation concern the fusion/no-fusion mode switching
+    if ((_mode !=  OperationMode::CONFIG) && (mode != OperationMode::CONFIG)) {
+        // need to select config mode before select the mode asked
+        i2c_set_register(RegisterAddress::OprMode, static_cast<char>(OperationMode::CONFIG));
+        wait_ms(20);
+    }
+
+    // affect new mode
     i2c_set_register(RegisterAddress::OprMode, static_cast<char>(mode));
+    _mode = mode;
     wait_ms(20);
 }
 
