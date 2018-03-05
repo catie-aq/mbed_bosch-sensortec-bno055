@@ -806,8 +806,6 @@ public:
      */
     uint8_t system_error();
 
-    void debug_int_register();
-
 private:
 
     /*! Set register value

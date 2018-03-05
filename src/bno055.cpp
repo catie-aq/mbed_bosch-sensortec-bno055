@@ -137,10 +137,13 @@ void BNO055::set_accelerometer_range(AccelerometerSensorRange range)
     }
     // read acc config register
     i2c_read_register(RegisterAddress::AccelConfig, &reg);
+    printf("\n\rAccel config value = 0x%.2x", reg);
     // fix new configuration : clear concerned bits and affect the new value
     reg = ((reg & 0xFC) | static_cast<char>(range));
     //set new register value
     i2c_set_register(RegisterAddress::AccelConfig, reg);
+    i2c_read_register(RegisterAddress::AccelConfig, &reg);
+    printf("\n\rAccel config value = 0x%.2x", reg);
     // return to the last mode used
     if (current_mode != _mode) {
         set_operation_mode(current_mode);
@@ -429,7 +432,6 @@ void BNO055::enable_acceleration_highG_interrupt(AccelerationInterruptAxisMap ma
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
         set_operation_mode(OperationMode::CONFIG);
-        wait_ms(50);
     }
 
     // check if current page = pageID 1
@@ -462,7 +464,6 @@ void BNO055::enable_acceleration_highG_interrupt(AccelerationInterruptAxisMap ma
     // return to the last mode used
     if (save_mode != _mode) {
         set_operation_mode(save_mode);
-        wait_ms(20);
     }
 
 }
@@ -476,7 +477,6 @@ void BNO055::enable_acceleration_noMotion_interrupt(AccelerationInterruptAxisMap
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
       set_operation_mode(OperationMode::CONFIG);
-      wait_ms(50);
     }
 
     // check if current page = pageID 1
@@ -508,7 +508,6 @@ void BNO055::enable_acceleration_noMotion_interrupt(AccelerationInterruptAxisMap
     // return to the last mode used
     if (save_mode != _mode) {
         set_operation_mode(save_mode);
-        wait_ms(20);
     }
 }
 
@@ -521,7 +520,6 @@ void BNO055::enable_acceleration_anyMotion_interrupt(AccelerationInterruptAxisMa
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
       set_operation_mode(OperationMode::CONFIG);
-      wait_ms(50);
     }
 
     // check if current page = pageID 1
@@ -553,7 +551,6 @@ void BNO055::enable_acceleration_anyMotion_interrupt(AccelerationInterruptAxisMa
     // return to the last mode used
     if (save_mode != _mode) {
         set_operation_mode(save_mode);
-        wait_ms(20);
     }
 }
 
@@ -567,7 +564,6 @@ void BNO055::disable_acceleration_interrupt(AccelerationInterruptMode accelerati
     // check if operation mode = CONFIG
     if (_mode != OperationMode::CONFIG) {
         set_operation_mode(OperationMode::CONFIG);
-        wait_ms(50);
     }
 
     // check if current page = pageID 1
@@ -593,7 +589,6 @@ void BNO055::disable_acceleration_interrupt(AccelerationInterruptMode accelerati
     // return to the last mode used
     if (save_mode != _mode) {
        set_operation_mode(save_mode);
-       wait_ms(20);
     }
 }
 
@@ -661,42 +656,6 @@ uint8_t BNO055::system_error()
     return reg;
 }
 
-void BNO055::debug_int_register()
-{
-    char reg = 0x00;
-    // check if current page = pageID 1
-    if (_currentPageID != PageId::PageOne) {
-        //go to pageID 1
-        set_pageID(PageId::PageOne);
-        wait_ms(20);
-    }
-
-    // set ACC_INT_settings register : enable all axis of highG int
-   i2c_read_register(RegisterAddress::AccelIntrSettings, &reg);
-   printf("\n\rAccel Int settings = 0x%.2x\n\r", reg);
-   wait_ms(20);
-
-   // set threshold High G
-   i2c_read_register(RegisterAddress::AccelHighGThres, &reg);
-   printf("Accel HighG Threshold = 0x%.2x\n\r", reg);
-   wait_ms(20);
-
-   // set High G duration
-   i2c_read_register(RegisterAddress::AccelHighGDurn, &reg);
-   printf("Accel HighG Duration = 0x%.2x\n\r", reg);
-   wait_ms(20);
-
-   // set mask int on the pin
-   i2c_read_register(RegisterAddress::IntMask, &reg);
-   printf("Int mask = 0x%.2x\n\r", reg);
-   wait_ms(20);
-
-   // enbale High_g interrupt
-   i2c_read_register(RegisterAddress::Int, &reg);
-   printf("Int enable = 0x%.2x\n\r\n\r", reg);
-   wait_ms(20);
-}
-
 void BNO055::acceleration_interrupt_callback(Callback<void()> func)
 {
     if (func) {
@@ -732,6 +691,7 @@ void BNO055::set_operation_mode(OperationMode mode)
         set_pageID(PageId::PageZero);
     }
 
+<<<<<<< HEAD
     // if the operation concern the fusion/no-fusion mode switching
     if ((_mode !=  OperationMode::CONFIG) && (mode != OperationMode::CONFIG)) {
         // need to select config mode before select the mode asked
@@ -740,6 +700,8 @@ void BNO055::set_operation_mode(OperationMode mode)
     }
 
     // affect new mode
+=======
+>>>>>>> remove delay time in the accelerometer interrupt functions
     i2c_set_register(RegisterAddress::OprMode, static_cast<char>(mode));
     _mode = mode;
     wait_ms(20);
