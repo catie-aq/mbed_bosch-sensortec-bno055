@@ -21,16 +21,17 @@ namespace sixtron {
 namespace {
 
 /* MACROS */
-#define TEMP_SOURCE_ACC                0x00
-#define TEMP_SOURCE_GYR                0x01
-#define RESET_COMMAND                  0x20
-#define RAW_TO_MICRO_TESLA             16.0
-#define RAW_TO_METERS_PER_SECOND       100.0
-#define RAW_TO_RADIANS                 900.0
-#define RAW_TO_UNITARY_QUATERNIONS     16384.0
-#define CHIP_ID                        0xA0
-#define TIME_TO_RESET                  800
-
+#define TEMP_SOURCE_ACC                         0x00
+#define TEMP_SOURCE_GYR                         0x01
+#define RESET_COMMAND                           0x20
+#define RAW_TO_MICRO_TESLA                      16.0
+#define RAW_TO_METERS_PER_SECOND                100.0
+#define RAW_TO_RADIANS                          900.0
+#define RAW_TO_UNITARY_QUATERNIONS              16384.0
+#define CHIP_ID                                 0xA0
+#define TIME_TO_RESET                           800
+#define TIME_CONFIG_MODE_TO_ANY_MODE_SWITCHING  600 // time config mode to any mode switching in ms
+#define TIME_ANY_MODE_TO_CONFIG_MODE_SWITCHING  20  // time any mode to config mode swicthing in ms
 } // namespace
 
 BNO055::BNO055(I2C *i2c, PinName interrupt_pin, I2CAddress address, int hz):
@@ -87,8 +88,6 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
     }
 
     set_operation_mode(mode);
-    // let's time to bno055 initialize
-    wait_ms(750);
 
     return true;
 }
@@ -691,20 +690,25 @@ void BNO055::set_operation_mode(OperationMode mode)
         set_pageID(PageId::PageZero);
     }
 
-<<<<<<< HEAD
     // if the operation concern the fusion/no-fusion mode switching
     if ((_mode !=  OperationMode::CONFIG) && (mode != OperationMode::CONFIG)) {
         // need to select config mode before select the mode asked
         i2c_set_register(RegisterAddress::OprMode, static_cast<char>(OperationMode::CONFIG));
-        wait_ms(20);
+        wait_ms(TIME_ANY_MODE_TO_CONFIG_MODE_SWITCHING);
     }
 
     // affect new mode
-=======
->>>>>>> remove delay time in the accelerometer interrupt functions
     i2c_set_register(RegisterAddress::OprMode, static_cast<char>(mode));
     _mode = mode;
-    wait_ms(20);
+
+    // manage switching mode delay
+    if (_mode != OperationMode::CONFIG) {
+        // Config mode to other operation mode switching required delay of 600ms
+        wait_ms(TIME_CONFIG_MODE_TO_ANY_MODE_SWITCHING);
+    } else {
+        // other operation mode to config mode switching required delay of 20ms
+        wait_ms(TIME_ANY_MODE_TO_CONFIG_MODE_SWITCHING);
+    }
 }
 
 void BNO055::set_power_mode(PowerMode mode)
