@@ -435,7 +435,6 @@ public:
         XZ                  = 0x05,
         YZ                  = 0x06,
         XYZ                 = 0x07
-
     };
 
     enum class AccelerationInterrutpPinMask : uint8_t {
