@@ -456,9 +456,9 @@ public:
 
     /*! Constructor
      *
+     * \param interrupt_pin interrupt pin name
      * \param i2c pointer to mbed I2C object
      * \param hz frequency of the I2C interface
-     * \param interrupt_pin interrupt pin name
      *
      */
     BNO055(I2C *i2c, PinName interrupt_pin, I2CAddress address = I2CAddress::Address1, int hz = 400000);
