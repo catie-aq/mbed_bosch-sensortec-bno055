@@ -439,8 +439,8 @@ void BNO055::enable_acceleration_highG_interrupt(AccelerationInterruptAxisMap ma
 
     // get ACC_INT_SETTINGS register
     i2c_read_register(RegisterAddress::AccelIntrSettings, &reg);
-    // set ACC_INT_settings register : map enable axis of interrupt
-    i2c_set_register(RegisterAddress::AccelIntrSettings, (reg | (static_cast<char>(map_axis) << 5)));
+    // clear and set new values of ACC_INT_settings register : map enable axis of interrupt
+    i2c_set_register(RegisterAddress::AccelIntrSettings, ((reg & 0x1F)  | (static_cast<char>(map_axis) << 5)));
     // set threshold High G
     i2c_set_register(RegisterAddress::AccelHighGThres, acceleration_threshold);
     // set High G duration : [int_duration + 1] * 2 ms
@@ -485,8 +485,8 @@ void BNO055::enable_acceleration_noMotion_interrupt(AccelerationInterruptAxisMap
 
     // get ACC_INT_SETTINGS register
     i2c_read_register(RegisterAddress::AccelIntrSettings, &reg);
-    // get ACC INT SETTINGS register value
-    i2c_set_register(RegisterAddress::AccelIntrSettings, (reg | (static_cast<char>(map_axis) << 2)));
+    // clear and set ACC INT SETTINGS register value
+    i2c_set_register(RegisterAddress::AccelIntrSettings, ((reg & 0xE3) | (static_cast<char>(map_axis) << 2)));
     // set threshold No Motion
     i2c_set_register(RegisterAddress::AccelNoMotionThres, acceleration_threshold);
     // get register value of ACC_NM_SET
@@ -532,8 +532,8 @@ void BNO055::enable_acceleration_anyMotion_interrupt(AccelerationInterruptAxisMa
 
     // get ACC_INT_SETTINGS register
     i2c_read_register(RegisterAddress::AccelIntrSettings, &reg);
-    // set ACC INT SETTINGS register value
-    i2c_set_register(RegisterAddress::AccelIntrSettings, (reg | (static_cast<char>(map_axis) << 2)));
+    // clear and set ACC INT SETTINGS register value
+    i2c_set_register(RegisterAddress::AccelIntrSettings, ((reg & 0xE3) | (static_cast<char>(map_axis) << 2)));
     // get ACC_INT_SETTINGS register
     i2c_read_register(RegisterAddress::AccelIntrSettings, &reg);
     // set ACC INT SETTINGS register value
