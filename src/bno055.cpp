@@ -491,12 +491,15 @@ void BNO055::enable_acceleration_noMotion_interrupt(AccelerationInterruptAxisMap
     i2c_set_register(RegisterAddress::AccelNoMotionThres, acceleration_threshold);
     // get register value of ACC_NM_SET
     i2c_read_register(RegisterAddress::AccelNoMotionSet, &reg);
-    // set new value of no motion duration
-    i2c_set_register(RegisterAddress::AccelNoMotionThres, (reg | static_cast<char>(interrupt_duration)));
+    // clear and set new value of no motion duration and enable no motion interrupt config
+    i2c_set_register(RegisterAddress::AccelNoMotionSet, (((reg & 0x81) | (static_cast<char>(interrupt_duration) << 1)) & 0xFE));
 
     // set mask int on the pin
+    i2c_read_register(RegisterAddress::IntMask, &reg);
     if (enable_mask_interrupt_pin) {
-        i2c_set_register(RegisterAddress::IntMask, static_cast<char>(AccelerationInterrutpPinMask::NoMotionPinMask));
+        i2c_set_register(RegisterAddress::IntMask, (reg | static_cast<char>(AccelerationInterrutpPinMask::NoMotionPinMask)));
+    } else {
+        i2c_set_register(RegisterAddress::IntMask, (reg & (~static_cast<char>(AccelerationInterrutpPinMask::NoMotionPinMask))));
     }
 
     // enable interrupt
@@ -539,8 +542,11 @@ void BNO055::enable_acceleration_anyMotion_interrupt(AccelerationInterruptAxisMa
     i2c_set_register(RegisterAddress::AccelAnyMotionThres, acceleration_threshold);
 
     // set mask int on the pin
+    i2c_read_register(RegisterAddress::IntMask, &reg);
     if (enable_mask_interrupt_pin) {
         i2c_set_register(RegisterAddress::IntMask, static_cast<char>(AccelerationInterrutpPinMask::AnyMotionPinMask));
+    } else {
+        i2c_set_register(RegisterAddress::IntMask, (reg & (~static_cast<char>(AccelerationInterrutpPinMask::AnyMotionPinMask))));
     }
 
     // enable interrupt
@@ -576,12 +582,18 @@ void BNO055::disable_acceleration_interrupt(AccelerationInterruptMode accelerati
     switch (acceleration_interrupt_mode) {
         case AccelerationInterruptMode::HighG :
             i2c_set_register(RegisterAddress::Int, (reg & (~static_cast<char>(AccelerationInterruptMode::HighG))));
+            i2c_read_register(RegisterAddress::IntMask, &reg);
+            i2c_set_register(RegisterAddress::IntMask, (reg & (~static_cast<char>(AccelerationInterrutpPinMask::HighGPinMask))));
             break;
         case AccelerationInterruptMode::AnyMotion :
             i2c_set_register(RegisterAddress::Int, (reg & (~static_cast<char>(AccelerationInterruptMode::AnyMotion))));
+            i2c_read_register(RegisterAddress::IntMask, &reg);
+            i2c_set_register(RegisterAddress::IntMask, (reg & (~static_cast<char>(AccelerationInterrutpPinMask::AnyMotionPinMask))));
             break;
         case AccelerationInterruptMode::NoMotion :
             i2c_set_register(RegisterAddress::Int, (reg & (~static_cast<char>(AccelerationInterruptMode::NoMotion))));
+            i2c_read_register(RegisterAddress::IntMask, &reg);
+            i2c_set_register(RegisterAddress::IntMask, (reg & (~static_cast<char>(AccelerationInterrutpPinMask::NoMotionPinMask))));
             break;
     }
 
