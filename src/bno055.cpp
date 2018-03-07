@@ -492,7 +492,7 @@ void BNO055::enable_acceleration_noMotion_interrupt(AccelerationInterruptAxisMap
     // get register value of ACC_NM_SET
     i2c_read_register(RegisterAddress::AccelNoMotionSet, &reg);
     // clear and set new value of no motion duration and enable no motion interrupt config
-    i2c_set_register(RegisterAddress::AccelNoMotionSet, (((reg & 0x81) | (static_cast<char>(interrupt_duration) << 1)) & 0xFE));
+    i2c_set_register(RegisterAddress::AccelNoMotionSet, (((reg & 0x81) | (static_cast<char>(interrupt_duration) << 1)) & 0xFF));
 
     // set mask int on the pin
     i2c_read_register(RegisterAddress::IntMask, &reg);
