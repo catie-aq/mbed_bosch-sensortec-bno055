@@ -419,7 +419,7 @@ void BNO055::set_magnetometer_power_mode(MagnetometerSensorPowerMode power_mode)
     }
 }
 
-void BNO055::enable_acceleration_highG_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold,
+void BNO055::enable_highAcceleration_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold,
         uint8_t interrupt_duration, bool enable_mask_interrupt_pin)
 {
     char reg = 0xff;
@@ -449,14 +449,14 @@ void BNO055::enable_acceleration_highG_interrupt(AccelerationInterruptAxisMap ma
     // set mask int on the pin
     i2c_read_register(RegisterAddress::IntMask, &reg);
     if (enable_mask_interrupt_pin) {
-        i2c_set_register(RegisterAddress::IntMask, (reg | static_cast<char>(AccelerationInterrutpPinMask::HighGPinMask)));
+        i2c_set_register(RegisterAddress::IntMask, (reg | static_cast<char>(AccelerationInterrutpPinMask::HighAccelerationPinMask)));
     } else {
-        i2c_set_register(RegisterAddress::IntMask, (reg & (~static_cast<char>(AccelerationInterrutpPinMask::HighGPinMask))));
+        i2c_set_register(RegisterAddress::IntMask, (reg & (~static_cast<char>(AccelerationInterrutpPinMask::HighAccelerationPinMask))));
     }
 
     // enable interrupt
     i2c_read_register(RegisterAddress::Int, &reg);
-    i2c_set_register(RegisterAddress::Int, (reg | static_cast<char>(AccelerationInterruptMode::HighG)));
+    i2c_set_register(RegisterAddress::Int, (reg | static_cast<char>(AccelerationInterruptMode::HighAcceleration)));
 
     // return to the last mode used
     if (current_mode != _mode) {
@@ -465,7 +465,7 @@ void BNO055::enable_acceleration_highG_interrupt(AccelerationInterruptAxisMap ma
 
 }
 
-void BNO055::enable_acceleration_noMotion_interrupt(AccelerationInterruptAxisMap map_axis,
+void BNO055::enable_noMotion_acceleration_interrupt(AccelerationInterruptAxisMap map_axis,
         uint8_t acceleration_threshold, uint8_t interrupt_duration, bool enable_mask_interrupt_pin)
 {
     char reg = 0xff;
@@ -512,7 +512,7 @@ void BNO055::enable_acceleration_noMotion_interrupt(AccelerationInterruptAxisMap
     }
 }
 
-void BNO055::enable_acceleration_anyMotion_interrupt(AccelerationInterruptAxisMap map_axis,
+void BNO055::enable_anyMotion_acceleration_interrupt(AccelerationInterruptAxisMap map_axis,
         uint8_t acceleration_threshold, uint8_t interrupt_duration, bool enable_mask_interrupt_pin)
 {
     char reg = 0xff;
@@ -580,10 +580,10 @@ void BNO055::disable_acceleration_interrupt(AccelerationInterruptMode accelerati
     i2c_read_register(RegisterAddress::Int, &reg);
 
     switch (acceleration_interrupt_mode) {
-        case AccelerationInterruptMode::HighG :
-            i2c_set_register(RegisterAddress::Int, (reg & (~static_cast<char>(AccelerationInterruptMode::HighG))));
+        case AccelerationInterruptMode::HighAcceleration :
+            i2c_set_register(RegisterAddress::Int, (reg & (~static_cast<char>(AccelerationInterruptMode::HighAcceleration))));
             i2c_read_register(RegisterAddress::IntMask, &reg);
-            i2c_set_register(RegisterAddress::IntMask, (reg & (~static_cast<char>(AccelerationInterrutpPinMask::HighGPinMask))));
+            i2c_set_register(RegisterAddress::IntMask, (reg & (~static_cast<char>(AccelerationInterrutpPinMask::HighAccelerationPinMask))));
             break;
         case AccelerationInterruptMode::AnyMotion :
             i2c_set_register(RegisterAddress::Int, (reg & (~static_cast<char>(AccelerationInterruptMode::AnyMotion))));
