@@ -423,7 +423,7 @@ public:
         /* Acceleration interrupt mode */
         NoMotion            = 0x80,
         AnyMotion           = 0x40,
-        HighG               = 0x20
+        HighAcceleration    = 0x20
     };
 
     enum class AccelerationInterruptAxisMap : uint8_t {
@@ -431,18 +431,18 @@ public:
         X                   = 0x01,
         Y                   = 0x02,
         Z                   = 0x04,
-        XY                  = 0x03,
-        XZ                  = 0x05,
-        YZ                  = 0x06,
-        XYZ                 = 0x07
+        XY                  = (X | Y),
+        XZ                  = (X | Z),
+        YZ                  = (Y | Z),
+        XYZ                 = (X | Y | Z)
     };
 
     enum class AccelerationInterrutpPinMask : uint8_t {
         /* Acceleration interrupt settings */
-        NoMotionPinMask        = 0x80,
-        AnyMotionPinMask       = 0x40,
-        HighGPinMask           = 0x20,
-        NoPinMask              = 0x00
+        NoMotionPinMask             = 0x80,
+        AnyMotionPinMask            = 0x40,
+        HighAccelerationPinMask     = 0x20,
+        NoPinMask                   = 0x00
     };
 
     /*! Default constructor
@@ -743,7 +743,7 @@ public:
      * \param enable_mask_interrupt_pin the mask to define if the interrupt pin is map to interrupt event, false to set as none
      *
      */
-    void enable_acceleration_highG_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold,
+    void enable_highAcceleration_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold,
             uint8_t interrupt_duration, bool enable_mask_interrupt_pin = false);
 
     /*! Set BNO055 : Enable No-Motion acceleration interrupt
@@ -754,7 +754,7 @@ public:
      * \param enable_mask_interrupt_pin the mask to define if the interrupt pin is map to interrupt event, false to set as none
      *
      */
-    void enable_acceleration_noMotion_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold,
+    void enable_noMotion_acceleration_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold,
             uint8_t interrupt_duration, bool enable_mask_interrupt_pin =  false);
 
     /*! Set BNO055 : Enable Any-Motion acceleration interrupt
@@ -765,7 +765,7 @@ public:
      * \param enable_mask_interrupt_pin the mask to define if the interrupt pin is map to interrupt event, false to set as none
      *
      */
-    void enable_acceleration_anyMotion_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold,
+    void enable_anyMotion_acceleration_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold,
             uint8_t interrupt_duration, bool enable_mask_interrupt_pin = false);
 
     /*! Set BNO055 : Enable Any-Motion acceleration interrupt
