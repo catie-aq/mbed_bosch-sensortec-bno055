@@ -735,7 +735,7 @@ public:
     char bootloader_version();
 
 
-    /*! Set BNO055 : Enable High-G acceleration interrupt
+    /*! Set BNO055 Enable High-G acceleration interrupt
      *
      * \param map_axis the axis mapping to interrupt will be available
      * \param acceleratgion_threshold configure the interrupt threshold in accord with current range configured (percentage of current range)
@@ -746,7 +746,7 @@ public:
     void enable_highAcceleration_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold,
             uint8_t interrupt_duration, bool enable_mask_interrupt_pin = false);
 
-    /*! Set BNO055 : Enable No-Motion acceleration interrupt
+    /*! Set BNO055: Enable No-Motion acceleration interrupt
      *
      * \param map_axis the axis mapping to interrupt will be available
      * \param acceleratgion_threshold configure the interrupt threshold in accord with current range configured (percentage of current range)
@@ -757,7 +757,7 @@ public:
     void enable_noMotion_acceleration_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold,
             uint8_t interrupt_duration, bool enable_mask_interrupt_pin =  false);
 
-    /*! Set BNO055 : Enable Any-Motion acceleration interrupt
+    /*! Set BNO055 Enable Any-Motion acceleration interrupt
      *
      * \param map_axis the axis mapping to interrupt will be available
      * \param acceleratgion_threshold configure the interrupt threshold in accord with current range configured (percentage of current range)
@@ -768,7 +768,7 @@ public:
     void enable_anyMotion_acceleration_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold,
             uint8_t interrupt_duration, bool enable_mask_interrupt_pin = false);
 
-    /*! Set BNO055 : Enable Any-Motion acceleration interrupt
+    /*! Set BNO055 Enable Any-Motion acceleration interrupt
      *
      * \param acceleration_interrupt_mode the type of acceleration mode
      *
