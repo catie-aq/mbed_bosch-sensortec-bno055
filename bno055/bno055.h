@@ -419,13 +419,51 @@ public:
         ForceMode           = 0x06
     };
 
+    enum class AccelerationInterruptMode : uint8_t {
+        /* Acceleration interrupt mode */
+        NoMotion            = 0x80,
+        AnyMotion           = 0x40,
+        HighAcceleration    = 0x20
+    };
+
+    enum class AccelerationInterruptAxisMap : uint8_t {
+        /* Acceleration interrupt mapping axis */
+        X                   = 0x01,
+        Y                   = 0x02,
+        Z                   = 0x04,
+        XY                  = (X | Y),
+        XZ                  = (X | Z),
+        YZ                  = (Y | Z),
+        XYZ                 = (X | Y | Z)
+    };
+
+    enum class AccelerationInterrutpPinMask : uint8_t {
+        /* Acceleration interrupt settings */
+        NoMotionPinMask             = 0x80,
+        AnyMotionPinMask            = 0x40,
+        HighAccelerationPinMask     = 0x20,
+        NoPinMask                   = 0x00
+    };
+
     /*! Default constructor
      *
      * \param i2c pointer to mbed I2C object
+     * \param address i2c address of the bno055
      * \param hz frequency of the I2C interface
      *
      */
     BNO055(I2C *i2c, I2CAddress address = I2CAddress::Address1, int hz = 400000);
+
+    /*! Constructor
+     *
+     * \param i2c pointer to mbed I2C object
+     * \param interrupt_pin interrupt pin name
+     * \param address i2c address of the bno055
+     * \param hz frequency of the I2C interface
+     *
+     */
+    BNO055(I2C *i2c, PinName interrupt_pin, I2CAddress address = I2CAddress::Address1, int hz = 400000);
+
 
     /*! Initialize the BNO055
      *
@@ -698,6 +736,80 @@ public:
      */
     char bootloader_version();
 
+
+    /*! Set BNO055 Enable High-G acceleration interrupt
+     *
+     * \param map_axis the axis mapping to interrupt will be available
+     * \param acceleratgion_threshold configure the interrupt threshold in accord with current range configured (percentage of current range)
+     * \param interrupt_duration duration of interrupt level
+     * \param enable_mask_interrupt_pin the mask to define if the interrupt pin is map to interrupt event, false to set as none
+     *
+     */
+    void enable_highAcceleration_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold,
+            uint8_t interrupt_duration, bool enable_mask_interrupt_pin = false);
+
+    /*! Set BNO055: Enable No-Motion acceleration interrupt
+     *
+     * \param map_axis the axis mapping to interrupt will be available
+     * \param acceleratgion_threshold configure the interrupt threshold in accord with current range configured (percentage of current range)
+     * \param interrupt_duration duration of interrupt level
+     * \param enable_mask_interrupt_pin the mask to define if the interrupt pin is map to interrupt event, false to set as none
+     *
+     */
+    void enable_noMotion_acceleration_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold,
+            uint8_t interrupt_duration, bool enable_mask_interrupt_pin =  false);
+
+    /*! Set BNO055 Enable Any-Motion acceleration interrupt
+     *
+     * \param map_axis the axis mapping to interrupt will be available
+     * \param acceleratgion_threshold configure the interrupt threshold in accord with current range configured (percentage of current range)
+     * \param interrupt_duration duration of interrupt level
+     * \param enable_mask_interrupt_pin the mask to define if the interrupt pin is map to interrupt event, false to set as none
+     *
+     */
+    void enable_anyMotion_acceleration_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold,
+            uint8_t interrupt_duration, bool enable_mask_interrupt_pin = false);
+
+    /*! Set BNO055 Enable Any-Motion acceleration interrupt
+     *
+     * \param acceleration_interrupt_mode the type of acceleration mode
+     *
+     */
+    void disable_acceleration_interrupt(AccelerationInterruptMode acceleration_interrupt_mode);
+
+    /*! Set BNO055 acceleration interrupt callback
+     *
+     * \param func A pointer to a void function, or 0 to set as none
+     *
+     */
+    void acceleration_interrupt_callback(Callback<void()> func);
+
+    /*! BNO055 acceleration interrupt
+     *
+     * \return the register value of interrupt status
+     *
+     */
+    uint8_t acceleration_interrupt();
+
+    /*! BNO055 clear interrupt flag
+     *
+     */
+    void clear_interrupt_flag();
+
+    /*! BNO055 system status
+     *
+     * \return the status of system (see p.68 of datasheet)
+     *
+     */
+    uint8_t system_status();
+
+    /*! BNO055 system error
+     *
+     * \return the error of system (see p.69 of datasheet)
+     *
+     */
+    uint8_t system_error();
+
 private:
 
     /*! Set register value
@@ -744,6 +856,7 @@ private:
     I2CAddress _i2cAddress;
     OperationMode _mode;
     PageId _currentPageID;
+    InterruptIn _interrupt_pin;
 
     char _chipId = 0;
     char _accelerometerRevisionId = 0;
