@@ -422,7 +422,7 @@ void BNO055::set_magnetometer_power_mode(MagnetometerSensorPowerMode power_mode)
 void BNO055::enable_highAcceleration_interrupt(AccelerationInterruptAxisMap map_axis, uint8_t acceleration_threshold,
         uint8_t interrupt_duration, bool enable_mask_interrupt_pin)
 {
-    char reg = 0xff;
+    char reg = 0x00;
     // save last mode used
     OperationMode current_mode = _mode;
 
@@ -468,7 +468,7 @@ void BNO055::enable_highAcceleration_interrupt(AccelerationInterruptAxisMap map_
 void BNO055::enable_noMotion_acceleration_interrupt(AccelerationInterruptAxisMap map_axis,
         uint8_t acceleration_threshold, uint8_t interrupt_duration, bool enable_mask_interrupt_pin)
 {
-    char reg = 0xff;
+    char reg = 0x00;
     // save last mode used
     OperationMode current_mode = _mode;
 
@@ -515,7 +515,7 @@ void BNO055::enable_noMotion_acceleration_interrupt(AccelerationInterruptAxisMap
 void BNO055::enable_anyMotion_acceleration_interrupt(AccelerationInterruptAxisMap map_axis,
         uint8_t acceleration_threshold, uint8_t interrupt_duration, bool enable_mask_interrupt_pin)
 {
-    char reg = 0xff;
+    char reg = 0x00;
     // save last mode used
     OperationMode current_mode = _mode;
 
@@ -561,7 +561,7 @@ void BNO055::enable_anyMotion_acceleration_interrupt(AccelerationInterruptAxisMa
 
 void BNO055::disable_acceleration_interrupt(AccelerationInterruptMode acceleration_interrupt_mode)
 {
-    char reg = 0xff;
+    char reg = 0x00;
 
     // save last mode used
     OperationMode current_mode = _mode;
@@ -620,7 +620,7 @@ uint8_t BNO055::acceleration_interrupt()
 
 void BNO055::clear_interrupt_flag()
 {
-    char reg = 0xff;
+    char reg = 0x00;
 
     // check if current page = pageID 0
     if (_currentPageID != PageId::PageZero) {
@@ -639,7 +639,7 @@ void BNO055::clear_interrupt_flag()
 
 uint8_t BNO055::system_status()
 {
-    char reg = 0xff;
+    char reg = 0x00;
 
     // check if current page = pageID 0
     if (_currentPageID != PageId::PageZero) {
@@ -654,7 +654,7 @@ uint8_t BNO055::system_status()
 
 uint8_t BNO055::system_error()
 {
-    char reg = 0xff;
+    char reg = 0x00;
 
     // check if current page = pageID 0
     if (_currentPageID != PageId::PageZero) {
