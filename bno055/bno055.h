@@ -448,6 +448,7 @@ public:
     /*! Default constructor
      *
      * \param i2c pointer to mbed I2C object
+     * \param address i2c address of the bno055
      * \param hz frequency of the I2C interface
      *
      */
@@ -457,6 +458,7 @@ public:
      *
      * \param i2c pointer to mbed I2C object
      * \param interrupt_pin interrupt pin name
+     * \param address i2c address of the bno055
      * \param hz frequency of the I2C interface
      *
      */
