@@ -455,8 +455,8 @@ public:
 
     /*! Constructor
      *
-     * \param interrupt_pin interrupt pin name
      * \param i2c pointer to mbed I2C object
+     * \param interrupt_pin interrupt pin name
      * \param hz frequency of the I2C interface
      *
      */
