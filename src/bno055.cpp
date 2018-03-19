@@ -733,10 +733,10 @@ void BNO055::set_power_mode(PowerMode mode)
     i2c_set_register(RegisterAddress::PwrMode, static_cast<char>(mode));
 }
 
-bno055_accelerometer_t BNO055::accelerometer()
+bno055_acceleration_t BNO055::acceleration()
 {
     static int16_t raw_acc[3];
-    bno055_accelerometer_t accel_val;
+    bno055_acceleration_t acceleration_values;
     // check current pageID
     if (_currentPageID != PageId::PageZero) {
         //go to pageID 0
@@ -745,17 +745,17 @@ bno055_accelerometer_t BNO055::accelerometer()
     // read accel data register
     i2c_read_vector(RegisterAddress::AccelData_X_Lsb, raw_acc);
     // formatting accel data
-    accel_val.x = ((double)raw_acc[0]) / RAW_TO_METERS_PER_SECOND;
-    accel_val.y = ((double)raw_acc[1]) / RAW_TO_METERS_PER_SECOND;
-    accel_val.z = ((double)raw_acc[2]) / RAW_TO_METERS_PER_SECOND;
+    acceleration_values.x = ((double)raw_acc[0]) / RAW_TO_METERS_PER_SECOND;
+    acceleration_values.y = ((double)raw_acc[1]) / RAW_TO_METERS_PER_SECOND;
+    acceleration_values.z = ((double)raw_acc[2]) / RAW_TO_METERS_PER_SECOND;
     // return accel values
-    return accel_val;
+    return acceleration_values;
 }
 
-bno055_gyroscope_t BNO055::gyroscope()
+bno055_angular_velocity_t BNO055::angular_velocity()
 {
     static int16_t raw_gyro[3];
-    bno055_gyroscope_t gyro_val;
+    bno055_angular_velocity_t angular_velocity_values;
     // check current pageID
     if (_currentPageID != PageId::PageZero) {
         //go to pageID 0
@@ -764,11 +764,11 @@ bno055_gyroscope_t BNO055::gyroscope()
     // read gyro data register
     i2c_read_vector(RegisterAddress::GyroData_X_Lsb, raw_gyro);
     // formatting gyro val
-    gyro_val.x = ((double)raw_gyro[0]) / RAW_TO_RADIANS;
-    gyro_val.y = ((double)raw_gyro[1]) / RAW_TO_RADIANS;
-    gyro_val.z = ((double)raw_gyro[2]) / RAW_TO_RADIANS;
+    angular_velocity_values.x = ((double)raw_gyro[0]) / RAW_TO_RADIANS;
+    angular_velocity_values.y = ((double)raw_gyro[1]) / RAW_TO_RADIANS;
+    angular_velocity_values.z = ((double)raw_gyro[2]) / RAW_TO_RADIANS;
     // return gyro values
-    return gyro_val;
+    return angular_velocity_values;
 }
 
 bno055_temperature_sensors_t BNO055::temperature_sensors()
@@ -794,10 +794,10 @@ bno055_temperature_sensors_t BNO055::temperature_sensors()
     return temp;
 }
 
-bno055_magnetometer_t BNO055::magnetometer()
+bno055_magnetic_field_t BNO055::magnetic_field()
 {
     static int16_t raw_mag[3];
-    bno055_magnetometer_t mag_val;
+    bno055_magnetic_field_t magnetic_field_values;
     // check current pageID
     if (_currentPageID != PageId::PageZero) {
         //go to pageID 0
@@ -806,11 +806,11 @@ bno055_magnetometer_t BNO055::magnetometer()
     // read mag data register
     i2c_read_vector(RegisterAddress::MagData_X_Lsb, raw_mag);
     // formatting mag data
-    mag_val.x = ((double)raw_mag[0]) / RAW_TO_MICRO_TESLA;
-    mag_val.y = ((double)raw_mag[1]) / RAW_TO_MICRO_TESLA;
-    mag_val.z = ((double)raw_mag[2]) / RAW_TO_MICRO_TESLA;
+    magnetic_field_values.x = ((double)raw_mag[0]) / RAW_TO_MICRO_TESLA;
+    magnetic_field_values.y = ((double)raw_mag[1]) / RAW_TO_MICRO_TESLA;
+    magnetic_field_values.z = ((double)raw_mag[2]) / RAW_TO_MICRO_TESLA;
     // return mag values
-    return mag_val;
+    return magnetic_field_values;
 }
 
 bno055_linear_acceleration_t BNO055::linear_acceleration()
