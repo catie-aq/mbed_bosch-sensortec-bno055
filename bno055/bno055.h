@@ -36,12 +36,12 @@ typedef struct {
     int16_t magnetometer_radius;
 } bno055_sensors_offsets_t;
 
-/* raw accel values in m/s^2 */
+/* raw acceleration values in m/s^2 */
 typedef struct {
     double x;
     double y;
     double z;
-} bno055_accelerometer_t;
+} bno055_acceleration_t;
 
 /* accel values with gravity compensated in m/s^2 */
 typedef struct {
@@ -50,19 +50,19 @@ typedef struct {
     double z;
 } bno055_linear_acceleration_t;
 
-/* gyro values in rad/s */
+/* angular velocity values in rad/s */
 typedef struct {
     double x;
     double y;
     double z;
-} bno055_gyroscope_t;
+} bno055_angular_velocity_t;
 
 /* mag values in uT */
 typedef struct {
     double x;
     double y;
     double z;
-} bno055_magnetometer_t;
+} bno055_magnetic_field_t;
 
 /* euler values in rad */
 typedef struct {
@@ -605,26 +605,26 @@ public:
      */
     PageId pageID(void);
 
-    /*! Get the accelerometer value
+    /*! Get the acceleration values
      *
-     * \returns the accelerometer values structure in m/s²
+     * \returns the acceleration values structure in m/s²
      *
      */
-    bno055_accelerometer_t accelerometer();
+    bno055_acceleration_t acceleration();
 
-    /*! Get the gyrometer value
+    /*! Get the angular velocity values
      *
-     * \returns the gyroscope values structure in rad/s
+     * \returns the angular velocity (yaw rate) values structure in rad/s
      *
      */
-    bno055_gyroscope_t gyroscope();
+    bno055_angular_velocity_t angular_velocity();
 
-    /*! Get the magnetometer value
+    /*! Get the magnetic field values
      *
-     * \returns the magnetometer values structure  in µT
+     * \returns the magnetic field values structure  in µT
      *
      */
-    bno055_magnetometer_t magnetometer();
+    bno055_magnetic_field_t magnetic_field();
 
     /*! Get internal sensors temperatures
      *
