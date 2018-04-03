@@ -614,7 +614,7 @@ public:
 
     /*! Get the angular velocity values
      *
-     * \returns the angular velocity (yaw rate) values structure in rad/s
+     * \returns the angular velocity values structure in rad/s
      *
      */
     bno055_angular_velocity_t angular_velocity();
