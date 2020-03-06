@@ -730,7 +730,12 @@ void BNO055::set_power_mode(PowerMode mode)
         //go to pageID 0
         set_pageID(PageId::PageZero);
     }
+
+    OperationMode old_mode = _mode;
+
+    set_operation_mode(BNO055::OperationMode::CONFIG);
     i2c_set_register(RegisterAddress::PwrMode, static_cast<char>(mode));
+    set_operation_mode(old_mode);
 }
 
 bno055_acceleration_t BNO055::acceleration()
