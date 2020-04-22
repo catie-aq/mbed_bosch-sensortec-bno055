@@ -56,7 +56,7 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
     reset();
     i2c_read_register(RegisterAddress::ChipId, &reg);
     if (reg != CHIP_ID) {
-        wait_ms(1000); //BNO055 may have not finishing to boot !
+        ThisThread::sleep_for(1000); //BNO055 may have not finishing to boot !
         i2c_read_register(RegisterAddress::ChipId, &reg);
         if (reg != CHIP_ID) {
             return false;
@@ -70,9 +70,9 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
     i2c_read_two_bytes_register(RegisterAddress::SwRevId, &_firmwareVersion);
     i2c_read_register(RegisterAddress::BlRevId, &_bootloaderVersion);
     set_operation_mode(OperationMode::CONFIG);
-    wait_ms(20);
+    ThisThread::sleep_for(20);
     i2c_set_register(RegisterAddress::PwrMode, static_cast<char>(PowerMode::NORMAL));
-    wait_ms(10);
+    ThisThread::sleep_for(10);
 
     /* Set the output units */
     uint8_t unitsel = (0 << 7) | // Orientation = Android
@@ -84,7 +84,7 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
 
     if (use_ext_crystal) {
         i2c_set_register(RegisterAddress::SysTrigger, 0X80);
-        wait_ms(10);
+        ThisThread::sleep_for(10);
     }
 
     set_operation_mode(mode);
@@ -706,7 +706,7 @@ void BNO055::set_operation_mode(OperationMode mode)
     if ((_mode !=  OperationMode::CONFIG) && (mode != OperationMode::CONFIG)) {
         // need to select config mode before select the mode asked
         i2c_set_register(RegisterAddress::OprMode, static_cast<char>(OperationMode::CONFIG));
-        wait_ms(TIME_ANY_MODE_TO_CONFIG_MODE_SWITCHING);
+        ThisThread::sleep_for(TIME_ANY_MODE_TO_CONFIG_MODE_SWITCHING);
     }
 
     // affect new mode
@@ -716,10 +716,10 @@ void BNO055::set_operation_mode(OperationMode mode)
     // manage switching mode delay
     if (_mode != OperationMode::CONFIG) {
         // Config mode to other operation mode switching required delay of 600ms
-        wait_ms(TIME_CONFIG_MODE_TO_ANY_MODE_SWITCHING);
+        ThisThread::sleep_for(TIME_CONFIG_MODE_TO_ANY_MODE_SWITCHING);
     } else {
         // other operation mode to config mode switching required delay of 20ms
-        wait_ms(TIME_ANY_MODE_TO_CONFIG_MODE_SWITCHING);
+        ThisThread::sleep_for(TIME_ANY_MODE_TO_CONFIG_MODE_SWITCHING);
     }
 }
 
@@ -787,12 +787,12 @@ bno055_temperature_sensors_t BNO055::temperature_sensors()
     }
     // read temp source acc
     i2c_set_register(BNO055::RegisterAddress::TempSource, TEMP_SOURCE_ACC); //accelerometer temperature
-    wait_ms(1); // \TODO is it necessary ?
+    ThisThread::sleep_for(1); // \TODO is it necessary ?
     i2c_read_register(BNO055::RegisterAddress::Temp, &data);
     temp.accelerometer = data;
     // read temp source gyro
     i2c_set_register(BNO055::RegisterAddress::TempSource, TEMP_SOURCE_GYR); //gyrometer temperature
-    wait_ms(1); // \TODO is it necessary ?
+    ThisThread::sleep_for(1); // \TODO is it necessary ?
     i2c_read_register(BNO055::RegisterAddress::Temp, &data);
     temp.gyroscope = data;
     // return temperature values
@@ -1021,7 +1021,7 @@ void BNO055::reset()
     i2c_set_register(RegisterAddress::SysTrigger, RESET_COMMAND);
     // after a reset, CONFIG is the default mode value
     _mode = OperationMode::CONFIG;
-    wait_ms(TIME_TO_RESET);
+    ThisThread::sleep_for(TIME_TO_RESET);
 }
 
 char BNO055::chip_id()
