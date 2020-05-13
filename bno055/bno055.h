@@ -94,12 +94,6 @@ typedef struct {
     double z;
 } bno055_gravity_t;
 
-/* chip temperatures in °C */
-typedef struct {
-    int8_t accelerometer;
-    int8_t gyroscope;
-} bno055_temperature_sensors_t;
-
 /* calibration values */
 typedef struct {
     int8_t system;
@@ -626,12 +620,25 @@ public:
      */
     bno055_magnetic_field_t magnetic_field();
 
-    /*! Get internal sensors temperatures
+    /*! Select the temperature source
      *
-     * \returns the accelerometer and gyroscope sensor temperature
+     *  @param temperature_source : The value of selected temperature source
+     *
+     *     temperature_source | result
+     *    ----------------  |---------------
+     *      0x00            | BNO055_ACCEL_TEMP_EN
+     *      0X01            | BNO055_GYRO_TEMP_EN
+     *      0X03            | BNO055_MCU_TEMP_EN
      *
      */
-    bno055_temperature_sensors_t temperature_sensors();
+    void set_temperature_source(uint8_t temperature_source);
+
+    /*! Get internal sensor temperature according to temperature source
+     *
+     * \returns the temperature in °C
+     *
+     */
+    int8_t temperature_sensor();
 
     /*! Get the accelerometer value with gravity compensation
      *
