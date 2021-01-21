@@ -29,9 +29,9 @@ namespace {
 #define RAW_TO_RADIANS                          900.0
 #define RAW_TO_UNITARY_QUATERNIONS              16384.0
 #define CHIP_ID                                 0xA0
-#define TIME_TO_RESET                           800
-#define TIME_CONFIG_MODE_TO_ANY_MODE_SWITCHING  600 // time config mode to any mode switching in ms
-#define TIME_ANY_MODE_TO_CONFIG_MODE_SWITCHING  20  // time any mode to config mode swicthing in ms
+#define TIME_TO_RESET                           800ms
+#define TIME_CONFIG_MODE_TO_ANY_MODE_SWITCHING  600ms // time config mode to any mode switching
+#define TIME_ANY_MODE_TO_CONFIG_MODE_SWITCHING  20ms  // time any mode to config mode swicthing
 } // namespace
 
 BNO055::BNO055(I2C *i2c, PinName interrupt_pin, I2CAddress address, int hz):
@@ -56,7 +56,7 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
     reset();
     i2c_read_register(RegisterAddress::ChipId, &reg);
     if (reg != CHIP_ID) {
-        ThisThread::sleep_for(1000); //BNO055 may have not finishing to boot !
+        ThisThread::sleep_for(1s); //BNO055 may have not finishing to boot !
         i2c_read_register(RegisterAddress::ChipId, &reg);
         if (reg != CHIP_ID) {
             return false;
@@ -70,9 +70,9 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
     i2c_read_two_bytes_register(RegisterAddress::SwRevId, &_firmwareVersion);
     i2c_read_register(RegisterAddress::BlRevId, &_bootloaderVersion);
     set_operation_mode(OperationMode::CONFIG);
-    ThisThread::sleep_for(20);
+    ThisThread::sleep_for(20ms);
     i2c_set_register(RegisterAddress::PwrMode, static_cast<char>(PowerMode::NORMAL));
-    ThisThread::sleep_for(10);
+    ThisThread::sleep_for(10ms);
 
     /* Set the output units */
     uint8_t unitsel = (0 << 7) | // Orientation = Android
@@ -84,7 +84,7 @@ bool BNO055::initialize(OperationMode mode, bool use_ext_crystal)
 
     if (use_ext_crystal) {
         i2c_set_register(RegisterAddress::SysTrigger, 0X80);
-        ThisThread::sleep_for(10);
+        ThisThread::sleep_for(10ms);
     }
 
     set_operation_mode(mode);
